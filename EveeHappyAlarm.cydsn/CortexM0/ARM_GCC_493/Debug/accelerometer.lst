@@ -1,0 +1,3030 @@
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"accelerometer.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.Accelerometer_RegWrite,"ax",%progbits
+  18              		.align	2
+  19              		.code	16
+  20              		.thumb_func
+  21              		.type	Accelerometer_RegWrite, %function
+  22              	Accelerometer_RegWrite:
+  23              	.LFB34:
+  24              		.file 1 ".\\accelerometer.c"
+   1:.\accelerometer.c **** /*****************************************************************************
+   2:.\accelerometer.c **** * File Name: accelerometer.c
+   3:.\accelerometer.c **** *
+   4:.\accelerometer.c **** * Version 1.0
+   5:.\accelerometer.c **** *
+   6:.\accelerometer.c **** * Description:
+   7:.\accelerometer.c **** *  This file provides functions to configure the onboard accelerometer of the 
+   8:.\accelerometer.c **** *  PSoC 4 M-Series Pioneer Kit. This file also defines function to read the 
+   9:.\accelerometer.c **** *  acceleration data from the accelerometer.
+  10:.\accelerometer.c **** ******************************************************************************
+  11:.\accelerometer.c **** * Copyright (2015), Cypress Semiconductor Corporation.
+  12:.\accelerometer.c **** ******************************************************************************
+  13:.\accelerometer.c **** * This software is owned by Cypress Semiconductor Corporation (Cypress) and is
+  14:.\accelerometer.c **** * protected by and subject to worldwide patent protection (United States and
+  15:.\accelerometer.c **** * foreign), United States copyright laws and international treaty provisions.
+  16:.\accelerometer.c **** * Cypress hereby grants to licensee a personal, non-exclusive, non-transferable
+  17:.\accelerometer.c **** * license to copy, use, modify, create derivative works of, and compile the
+  18:.\accelerometer.c **** * Cypress Source Code and derivative works for the sole purpose of creating
+  19:.\accelerometer.c **** * custom software in support of licensee product to be used only in conjunction
+  20:.\accelerometer.c **** * with a Cypress integrated circuit as specified in the applicable agreement.
+  21:.\accelerometer.c **** * Any reproduction, modification, translation, compilation, or representation of
+  22:.\accelerometer.c **** * this software except as specified above is prohibited without the express
+  23:.\accelerometer.c **** * written permission of Cypress.
+  24:.\accelerometer.c **** *
+  25:.\accelerometer.c **** * Disclaimer: CYPRESS MAKES NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, WITH
+  26:.\accelerometer.c **** * REGARD TO THIS MATERIAL, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  27:.\accelerometer.c **** * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  28:.\accelerometer.c **** * Cypress reserves the right to make changes without further notice to the
+  29:.\accelerometer.c **** * materials described herein. Cypress does not assume any liability arising out
+  30:.\accelerometer.c **** * of the application or use of any product or circuit described herein. Cypress
+  31:.\accelerometer.c **** * does not authorize its products for use as critical components in life-support
+  32:.\accelerometer.c **** * systems where a malfunction or failure may reasonably be expected to result in
+  33:.\accelerometer.c **** * significant injury to the user. The inclusion of Cypress' product in a life-
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 2
+
+
+  34:.\accelerometer.c **** * support systems application implies that the manufacturer assumes all risk of
+  35:.\accelerometer.c **** * such use and in doing so indemnifies Cypress against all charges. Use may be
+  36:.\accelerometer.c **** * limited by and subject to the applicable Cypress software license agreement.
+  37:.\accelerometer.c **** *****************************************************************************/
+  38:.\accelerometer.c **** #include "accelerometer.h"
+  39:.\accelerometer.c **** #include "project.h"
+  40:.\accelerometer.c **** 
+  41:.\accelerometer.c **** /*****************************************************************************
+  42:.\accelerometer.c **** * Local Function Prototypes
+  43:.\accelerometer.c **** *****************************************************************************/
+  44:.\accelerometer.c **** static uint8 Accelerometer_RegWrite(uint8 reg, uint8 value);
+  45:.\accelerometer.c **** 
+  46:.\accelerometer.c **** 
+  47:.\accelerometer.c **** /*****************************************************************************
+  48:.\accelerometer.c **** * Global Variable Declarations
+  49:.\accelerometer.c **** *****************************************************************************/
+  50:.\accelerometer.c **** 
+  51:.\accelerometer.c **** 
+  52:.\accelerometer.c **** /*****************************************************************************
+  53:.\accelerometer.c **** * Local Global Variable Declarations
+  54:.\accelerometer.c **** *****************************************************************************/
+  55:.\accelerometer.c **** 
+  56:.\accelerometer.c **** 
+  57:.\accelerometer.c **** /*******************************************************************************
+  58:.\accelerometer.c **** * Function Name: Accelerometer_RegWrite
+  59:.\accelerometer.c **** ********************************************************************************
+  60:.\accelerometer.c **** * Summary:
+  61:.\accelerometer.c **** * 	Write a single byte to a specified register location.
+  62:.\accelerometer.c **** *
+  63:.\accelerometer.c **** * Parameters:
+  64:.\accelerometer.c **** *  uint8 reg: Register to which data is to be written.
+  65:.\accelerometer.c **** *  uint8 *value: Variable which holds the data to be written.
+  66:.\accelerometer.c **** *
+  67:.\accelerometer.c **** * Return:
+  68:.\accelerometer.c **** *  uint8: Status of write operation
+  69:.\accelerometer.c **** *
+  70:.\accelerometer.c **** *******************************************************************************/
+  71:.\accelerometer.c **** static uint8 Accelerometer_RegWrite(uint8 reg, uint8 value)
+  72:.\accelerometer.c **** {
+  25              		.loc 1 72 0
+  26              		.cfi_startproc
+  27              	.LVL0:
+  28 0000 38B5     		push	{r3, r4, r5, lr}
+  29              		.cfi_def_cfa_offset 16
+  30              		.cfi_offset 3, -16
+  31              		.cfi_offset 4, -12
+  32              		.cfi_offset 5, -8
+  33              		.cfi_offset 14, -4
+  34 0002 051C     		mov	r5, r0
+  35 0004 0C1C     		mov	r4, r1
+  36              	.LVL1:
+  73:.\accelerometer.c **** 	uint8 ackStatus = COMM_FAIL;
+  74:.\accelerometer.c **** 	ackStatus = I2C_I2CMasterSendStart(ACCELEROMETER_ADDR, ACC_WRITE);
+  37              		.loc 1 74 0
+  38 0006 0F20     		mov	r0, #15
+  39              	.LVL2:
+  40 0008 0021     		mov	r1, #0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 3
+
+
+  41              	.LVL3:
+  42 000a FFF7FEFF 		bl	I2C_I2CMasterSendStart
+  43              	.LVL4:
+  44 000e C0B2     		uxtb	r0, r0
+  45              	.LVL5:
+  75:.\accelerometer.c **** 	if(ackStatus == I2C_I2C_MSTR_NO_ERROR)
+  46              		.loc 1 75 0
+  47 0010 0028     		cmp	r0, #0
+  48 0012 05D1     		bne	.L2
+  76:.\accelerometer.c **** 	{
+  77:.\accelerometer.c **** 		ackStatus = I2C_I2CMasterWriteByte(reg);
+  49              		.loc 1 77 0
+  50 0014 281C     		mov	r0, r5
+  51              	.LVL6:
+  52 0016 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+  53              	.LVL7:
+  78:.\accelerometer.c **** 		ackStatus = I2C_I2CMasterWriteByte(value);
+  54              		.loc 1 78 0
+  55 001a 201C     		mov	r0, r4
+  56 001c FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+  57              	.LVL8:
+  58              	.L2:
+  79:.\accelerometer.c **** 	}
+  80:.\accelerometer.c **** 	ackStatus = I2C_I2CMasterSendStop();
+  59              		.loc 1 80 0
+  60 0020 FFF7FEFF 		bl	I2C_I2CMasterSendStop
+  61              	.LVL9:
+  62 0024 C0B2     		uxtb	r0, r0
+  63              	.LVL10:
+  81:.\accelerometer.c **** 	return(ackStatus);
+  82:.\accelerometer.c **** }
+  64              		.loc 1 82 0
+  65              		@ sp needed
+  66 0026 38BD     		pop	{r3, r4, r5, pc}
+  67              		.cfi_endproc
+  68              	.LFE34:
+  69              		.size	Accelerometer_RegWrite, .-Accelerometer_RegWrite
+  70              		.section	.text.Accelerometer_RegRead,"ax",%progbits
+  71              		.align	2
+  72              		.global	Accelerometer_RegRead
+  73              		.code	16
+  74              		.thumb_func
+  75              		.type	Accelerometer_RegRead, %function
+  76              	Accelerometer_RegRead:
+  77              	.LFB35:
+  83:.\accelerometer.c **** 
+  84:.\accelerometer.c **** /*******************************************************************************
+  85:.\accelerometer.c **** * Function Name: Accelerometer_RegRead
+  86:.\accelerometer.c **** ********************************************************************************
+  87:.\accelerometer.c **** * Summary:
+  88:.\accelerometer.c **** * 	Read a single byte from a specified register location.
+  89:.\accelerometer.c **** *
+  90:.\accelerometer.c **** * Parameters:
+  91:.\accelerometer.c **** *  uint8 reg: Register from where data is to be read.
+  92:.\accelerometer.c **** *  uint8 *value: Variable to which the data from register is stored.
+  93:.\accelerometer.c **** *
+  94:.\accelerometer.c **** * Return:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 4
+
+
+  95:.\accelerometer.c **** *  uint8: Status of read operation
+  96:.\accelerometer.c **** *
+  97:.\accelerometer.c **** *******************************************************************************/
+  98:.\accelerometer.c **** uint8 Accelerometer_RegRead(uint8 reg, uint8 *value)
+  99:.\accelerometer.c **** {
+  78              		.loc 1 99 0
+  79              		.cfi_startproc
+  80              	.LVL11:
+  81 0000 38B5     		push	{r3, r4, r5, lr}
+  82              		.cfi_def_cfa_offset 16
+  83              		.cfi_offset 3, -16
+  84              		.cfi_offset 4, -12
+  85              		.cfi_offset 5, -8
+  86              		.cfi_offset 14, -4
+  87 0002 051C     		mov	r5, r0
+  88 0004 0C1C     		mov	r4, r1
+  89              	.LVL12:
+ 100:.\accelerometer.c **** 	uint8 ackStatus = COMM_FAIL;
+ 101:.\accelerometer.c **** 	ackStatus = I2C_I2CMasterSendStart(ACCELEROMETER_ADDR, ACC_WRITE);
+  90              		.loc 1 101 0
+  91 0006 0F20     		mov	r0, #15
+  92              	.LVL13:
+  93 0008 0021     		mov	r1, #0
+  94              	.LVL14:
+  95 000a FFF7FEFF 		bl	I2C_I2CMasterSendStart
+  96              	.LVL15:
+  97 000e C0B2     		uxtb	r0, r0
+  98              	.LVL16:
+ 102:.\accelerometer.c **** 	if(ackStatus == I2C_I2C_MSTR_NO_ERROR)
+  99              		.loc 1 102 0
+ 100 0010 0028     		cmp	r0, #0
+ 101 0012 0AD1     		bne	.L4
+ 103:.\accelerometer.c **** 	{
+ 104:.\accelerometer.c **** 		ackStatus = I2C_I2CMasterWriteByte(reg);
+ 102              		.loc 1 104 0
+ 103 0014 281C     		mov	r0, r5
+ 104              	.LVL17:
+ 105 0016 FFF7FEFF 		bl	I2C_I2CMasterWriteByte
+ 106              	.LVL18:
+ 105:.\accelerometer.c **** 		ackStatus = I2C_I2CMasterSendRestart(ACCELEROMETER_ADDR, ACC_READ);
+ 107              		.loc 1 105 0
+ 108 001a 0F20     		mov	r0, #15
+ 109 001c 0121     		mov	r1, #1
+ 110 001e FFF7FEFF 		bl	I2C_I2CMasterSendRestart
+ 111              	.LVL19:
+ 106:.\accelerometer.c **** 		*value = I2C_I2CMasterReadByte(I2C_I2C_NAK_DATA);
+ 112              		.loc 1 106 0
+ 113 0022 0120     		mov	r0, #1
+ 114 0024 FFF7FEFF 		bl	I2C_I2CMasterReadByte
+ 115              	.LVL20:
+ 116 0028 2070     		strb	r0, [r4]
+ 117              	.L4:
+ 107:.\accelerometer.c **** 	}
+ 108:.\accelerometer.c **** 	ackStatus = I2C_I2CMasterSendStop();
+ 118              		.loc 1 108 0
+ 119 002a FFF7FEFF 		bl	I2C_I2CMasterSendStop
+ 120              	.LVL21:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 5
+
+
+ 121 002e C0B2     		uxtb	r0, r0
+ 122              	.LVL22:
+ 109:.\accelerometer.c **** 	return(ackStatus);
+ 110:.\accelerometer.c **** }
+ 123              		.loc 1 110 0
+ 124              		@ sp needed
+ 125              	.LVL23:
+ 126 0030 38BD     		pop	{r3, r4, r5, pc}
+ 127              		.cfi_endproc
+ 128              	.LFE35:
+ 129              		.size	Accelerometer_RegRead, .-Accelerometer_RegRead
+ 130 0032 C046     		.section	.text.Accelerometer_SelfTest,"ax",%progbits
+ 131              		.align	2
+ 132              		.global	Accelerometer_SelfTest
+ 133              		.code	16
+ 134              		.thumb_func
+ 135              		.type	Accelerometer_SelfTest, %function
+ 136              	Accelerometer_SelfTest:
+ 137              	.LFB36:
+ 111:.\accelerometer.c **** 
+ 112:.\accelerometer.c **** /*******************************************************************************
+ 113:.\accelerometer.c **** * Function Name: Accelerometer_SelfTest
+ 114:.\accelerometer.c **** ********************************************************************************
+ 115:.\accelerometer.c **** * Summary:
+ 116:.\accelerometer.c **** * 	Runs a test routine to make sure that the accelerometer communication is 
+ 117:.\accelerometer.c **** *   functional.
+ 118:.\accelerometer.c **** *
+ 119:.\accelerometer.c **** * Parameters:
+ 120:.\accelerometer.c **** *  void
+ 121:.\accelerometer.c **** *
+ 122:.\accelerometer.c **** * Return:
+ 123:.\accelerometer.c **** *  uint8: Communication functional status.
+ 124:.\accelerometer.c **** *
+ 125:.\accelerometer.c **** *******************************************************************************/
+ 126:.\accelerometer.c **** uint8 Accelerometer_SelfTest(void)
+ 127:.\accelerometer.c **** {
+ 138              		.loc 1 127 0
+ 139              		.cfi_startproc
+ 140 0000 10B5     		push	{r4, lr}
+ 141              		.cfi_def_cfa_offset 8
+ 142              		.cfi_offset 4, -8
+ 143              		.cfi_offset 14, -4
+ 144 0002 82B0     		sub	sp, sp, #8
+ 145              		.cfi_def_cfa_offset 16
+ 146              	.LVL24:
+ 128:.\accelerometer.c **** 	uint8 accStatus = ACC_FAIL;
+ 129:.\accelerometer.c **** 	uint8 accRegValue = ZERO;
+ 147              		.loc 1 129 0
+ 148 0004 6B46     		mov	r3, sp
+ 149 0006 D91D     		add	r1, r3, #7
+ 150 0008 0023     		mov	r3, #0
+ 151 000a 0B70     		strb	r3, [r1]
+ 152              	.LVL25:
+ 130:.\accelerometer.c **** 	uint8 commStatus = COMM_FAIL;
+ 131:.\accelerometer.c **** 	
+ 132:.\accelerometer.c **** 	/* Read the initial value of the DCST register. This must be 0x55 at reset. */
+ 133:.\accelerometer.c **** 	commStatus = Accelerometer_RegRead(ACC_DCST_RESP, &accRegValue);
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 6
+
+
+ 153              		.loc 1 133 0
+ 154 000c 0C20     		mov	r0, #12
+ 155 000e FFF7FEFF 		bl	Accelerometer_RegRead
+ 156              	.LVL26:
+ 134:.\accelerometer.c **** 	if(commStatus == COMM_PASS && accRegValue == ACC_SELF_TEST_VAL_1)
+ 157              		.loc 1 134 0
+ 158 0012 0028     		cmp	r0, #0
+ 159 0014 34D1     		bne	.L7
+ 160              		.loc 1 134 0 is_stmt 0 discriminator 1
+ 161 0016 6B46     		mov	r3, sp
+ 162 0018 0733     		add	r3, r3, #7
+ 163 001a 1B78     		ldrb	r3, [r3]
+ 164 001c 552B     		cmp	r3, #85
+ 165 001e 31D1     		bne	.L8
+ 135:.\accelerometer.c **** 	{
+ 136:.\accelerometer.c **** 		/* Set the PC1 bit of the CTRL_1 register of accelerometer to 0. 
+ 137:.\accelerometer.c **** 		 * This puts the accelerometer in standby mode. */
+ 138:.\accelerometer.c **** 		commStatus = Accelerometer_RegRead(ACC_CTRL_REG_1, &accRegValue);
+ 166              		.loc 1 138 0 is_stmt 1
+ 167 0020 6B46     		mov	r3, sp
+ 168 0022 DC1D     		add	r4, r3, #7
+ 169 0024 1B30     		add	r0, r0, #27
+ 170              	.LVL27:
+ 171 0026 211C     		mov	r1, r4
+ 172 0028 FFF7FEFF 		bl	Accelerometer_RegRead
+ 173              	.LVL28:
+ 139:.\accelerometer.c **** 		accRegValue = accRegValue & ACC_PC1_BIT_AND_MASK;
+ 174              		.loc 1 139 0
+ 175 002c 2378     		ldrb	r3, [r4]
+ 176 002e 7F21     		mov	r1, #127
+ 177 0030 1940     		and	r1, r3
+ 178 0032 2170     		strb	r1, [r4]
+ 140:.\accelerometer.c **** 		commStatus = Accelerometer_RegWrite(ACC_CTRL_REG_1, accRegValue);
+ 179              		.loc 1 140 0
+ 180 0034 1B20     		mov	r0, #27
+ 181 0036 FFF7FEFF 		bl	Accelerometer_RegWrite
+ 182              	.LVL29:
+ 141:.\accelerometer.c **** 		
+ 142:.\accelerometer.c **** 		/* Set the DCST bit of CTRL_2 register of the accelerometer to 
+ 143:.\accelerometer.c **** 		 * 1 for self-test. */
+ 144:.\accelerometer.c **** 		commStatus = Accelerometer_RegRead(ACC_CTRL_REG_2, &accRegValue);
+ 183              		.loc 1 144 0
+ 184 003a 1D20     		mov	r0, #29
+ 185 003c 211C     		mov	r1, r4
+ 186 003e FFF7FEFF 		bl	Accelerometer_RegRead
+ 187              	.LVL30:
+ 145:.\accelerometer.c **** 		accRegValue = accRegValue | ACC_DCST_BIT_OR_MASK;
+ 188              		.loc 1 145 0
+ 189 0042 2178     		ldrb	r1, [r4]
+ 190 0044 1023     		mov	r3, #16
+ 191 0046 1943     		orr	r1, r3
+ 192 0048 2170     		strb	r1, [r4]
+ 146:.\accelerometer.c **** 		commStatus = Accelerometer_RegWrite(ACC_CTRL_REG_2, accRegValue);
+ 193              		.loc 1 146 0
+ 194 004a 1D20     		mov	r0, #29
+ 195 004c FFF7FEFF 		bl	Accelerometer_RegWrite
+ 196              	.LVL31:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 7
+
+
+ 147:.\accelerometer.c **** 		
+ 148:.\accelerometer.c **** 		/* Read the DCST value again. This must be 0xAA after the DCST bit
+ 149:.\accelerometer.c **** 		 * is set to 1 in the CTRL_2 register. */
+ 150:.\accelerometer.c **** 		commStatus = Accelerometer_RegRead(ACC_DCST_RESP, &accRegValue);
+ 197              		.loc 1 150 0
+ 198 0050 0C20     		mov	r0, #12
+ 199 0052 211C     		mov	r1, r4
+ 200 0054 FFF7FEFF 		bl	Accelerometer_RegRead
+ 201              	.LVL32:
+ 151:.\accelerometer.c **** 		if(commStatus == COMM_PASS && accRegValue == ACC_SELF_TEST_VAL_2)
+ 202              		.loc 1 151 0
+ 203 0058 0028     		cmp	r0, #0
+ 204 005a 15D1     		bne	.L9
+ 205              		.loc 1 151 0 is_stmt 0 discriminator 1
+ 206 005c 6B46     		mov	r3, sp
+ 207 005e 0733     		add	r3, r3, #7
+ 208 0060 1B78     		ldrb	r3, [r3]
+ 209 0062 AA2B     		cmp	r3, #170
+ 210 0064 12D1     		bne	.L10
+ 152:.\accelerometer.c **** 		{
+ 153:.\accelerometer.c **** 			/* Read the DCST value again. This must be 0x55 after the 
+ 154:.\accelerometer.c **** 			 * register is read once. */
+ 155:.\accelerometer.c **** 			commStatus = Accelerometer_RegRead(ACC_DCST_RESP, &accRegValue);
+ 211              		.loc 1 155 0 is_stmt 1
+ 212 0066 0C30     		add	r0, r0, #12
+ 213              	.LVL33:
+ 214 0068 6B46     		mov	r3, sp
+ 215 006a D91D     		add	r1, r3, #7
+ 216 006c FFF7FEFF 		bl	Accelerometer_RegRead
+ 217              	.LVL34:
+ 156:.\accelerometer.c **** 			if(commStatus == COMM_PASS && accRegValue == ACC_SELF_TEST_VAL_1)
+ 218              		.loc 1 156 0
+ 219 0070 0028     		cmp	r0, #0
+ 220 0072 0DD1     		bne	.L11
+ 221              		.loc 1 156 0 is_stmt 0 discriminator 1
+ 222 0074 6B46     		mov	r3, sp
+ 223 0076 0733     		add	r3, r3, #7
+ 224 0078 1B78     		ldrb	r3, [r3]
+ 225 007a 552B     		cmp	r3, #85
+ 226 007c 0AD0     		beq	.L12
+ 227 007e 0AE0     		b	.L6
+ 228              	.L7:
+ 128:.\accelerometer.c **** 	uint8 accRegValue = ZERO;
+ 229              		.loc 1 128 0 is_stmt 1
+ 230 0080 0020     		mov	r0, #0
+ 231              	.LVL35:
+ 232 0082 08E0     		b	.L6
+ 233              	.LVL36:
+ 234              	.L8:
+ 235 0084 0020     		mov	r0, #0
+ 236              	.LVL37:
+ 237 0086 06E0     		b	.L6
+ 238              	.LVL38:
+ 239              	.L9:
+ 240 0088 0020     		mov	r0, #0
+ 241              	.LVL39:
+ 242 008a 04E0     		b	.L6
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 8
+
+
+ 243              	.LVL40:
+ 244              	.L10:
+ 245 008c 0020     		mov	r0, #0
+ 246              	.LVL41:
+ 247 008e 02E0     		b	.L6
+ 248              	.LVL42:
+ 249              	.L11:
+ 250 0090 0020     		mov	r0, #0
+ 251              	.LVL43:
+ 252 0092 00E0     		b	.L6
+ 253              	.LVL44:
+ 254              	.L12:
+ 157:.\accelerometer.c **** 			{
+ 158:.\accelerometer.c **** 				accStatus = ACC_PASS;
+ 255              		.loc 1 158 0
+ 256 0094 0120     		mov	r0, #1
+ 257              	.LVL45:
+ 258              	.L6:
+ 159:.\accelerometer.c **** 			}
+ 160:.\accelerometer.c **** 		}
+ 161:.\accelerometer.c **** 	}
+ 162:.\accelerometer.c **** 	return(accStatus);
+ 163:.\accelerometer.c **** }
+ 259              		.loc 1 163 0
+ 260 0096 02B0     		add	sp, sp, #8
+ 261              		@ sp needed
+ 262 0098 10BD     		pop	{r4, pc}
+ 263              		.cfi_endproc
+ 264              	.LFE36:
+ 265              		.size	Accelerometer_SelfTest, .-Accelerometer_SelfTest
+ 266 009a C046     		.section	.text.InitializeAccelerometer,"ax",%progbits
+ 267              		.align	2
+ 268              		.global	InitializeAccelerometer
+ 269              		.code	16
+ 270              		.thumb_func
+ 271              		.type	InitializeAccelerometer, %function
+ 272              	InitializeAccelerometer:
+ 273              	.LFB37:
+ 164:.\accelerometer.c **** 
+ 165:.\accelerometer.c **** /*******************************************************************************
+ 166:.\accelerometer.c **** * Function Name: InitializeAccelerometer
+ 167:.\accelerometer.c **** ********************************************************************************
+ 168:.\accelerometer.c **** * Summary:
+ 169:.\accelerometer.c **** * 	Initializes the accelerometer control registers for proper operation.
+ 170:.\accelerometer.c **** *
+ 171:.\accelerometer.c **** * Parameters:
+ 172:.\accelerometer.c **** *  void
+ 173:.\accelerometer.c **** *
+ 174:.\accelerometer.c **** * Return:
+ 175:.\accelerometer.c **** *  void
+ 176:.\accelerometer.c **** *
+ 177:.\accelerometer.c **** *******************************************************************************/
+ 178:.\accelerometer.c **** void InitializeAccelerometer(void)
+ 179:.\accelerometer.c **** {
+ 274              		.loc 1 179 0
+ 275              		.cfi_startproc
+ 276 0000 00B5     		push	{lr}
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 9
+
+
+ 277              		.cfi_def_cfa_offset 4
+ 278              		.cfi_offset 14, -4
+ 279 0002 83B0     		sub	sp, sp, #12
+ 280              		.cfi_def_cfa_offset 16
+ 281              	.LVL46:
+ 180:.\accelerometer.c **** 	uint8 accWorkStatus = ACC_FAIL;
+ 181:.\accelerometer.c **** 	uint8 accRegValue = ZERO;
+ 282              		.loc 1 181 0
+ 283 0004 0022     		mov	r2, #0
+ 284 0006 6B46     		mov	r3, sp
+ 285 0008 DA71     		strb	r2, [r3, #7]
+ 286              	.LVL47:
+ 182:.\accelerometer.c **** 	uint8 commStatus = COMM_FAIL;
+ 183:.\accelerometer.c **** 	
+ 184:.\accelerometer.c **** 	/* Ensure proper functioning of hardware */
+ 185:.\accelerometer.c **** 	accWorkStatus = Accelerometer_SelfTest();
+ 287              		.loc 1 185 0
+ 288 000a FFF7FEFF 		bl	Accelerometer_SelfTest
+ 289              	.LVL48:
+ 186:.\accelerometer.c **** 	
+ 187:.\accelerometer.c **** 	
+ 188:.\accelerometer.c **** 	if(accWorkStatus == ACC_PASS)
+ 290              		.loc 1 188 0
+ 291 000e 0128     		cmp	r0, #1
+ 292 0010 00D0     		beq	.LCB254
+ 293 0012 BDE0     		b	.L13	@long jump
+ 294              	.LCB254:
+ 189:.\accelerometer.c **** 	{
+ 190:.\accelerometer.c **** 		/* Initialize the CTRL_REG1 after putting the accelerometer in standby mode. */
+ 191:.\accelerometer.c **** 		accRegValue = accRegValue & ACC_PC1_BIT_AND_MASK;
+ 295              		.loc 1 191 0
+ 296 0014 6B46     		mov	r3, sp
+ 297 0016 DA1D     		add	r2, r3, #7
+ 298 0018 DB79     		ldrb	r3, [r3, #7]
+ 299 001a 7F21     		mov	r1, #127
+ 300 001c 1940     		and	r1, r3
+ 301 001e 1170     		strb	r1, [r2]
+ 192:.\accelerometer.c **** 		commStatus = Accelerometer_RegWrite(ACC_CTRL_REG_1, accRegValue);
+ 302              		.loc 1 192 0
+ 303 0020 1A30     		add	r0, r0, #26
+ 304              	.LVL49:
+ 305 0022 FFF7FEFF 		bl	Accelerometer_RegWrite
+ 306              	.LVL50:
+ 193:.\accelerometer.c **** 		
+ 194:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 307              		.loc 1 194 0
+ 308 0026 0028     		cmp	r0, #0
+ 309 0028 0BD1     		bne	.L30
+ 195:.\accelerometer.c **** 		{
+ 196:.\accelerometer.c **** 			/* Modify the current value for the following settings:
+ 197:.\accelerometer.c **** 			 * RES (Resolution) 								= 12-bit mode
+ 198:.\accelerometer.c **** 			 * DRDYE (Report acceleration via Interrupt) 		= DISABLED
+ 199:.\accelerometer.c **** 			 * GSEL1, GSEL0 (Acceleration range of the output) 	= +/-2g
+ 200:.\accelerometer.c **** 			 * WUFE (Wake Up on Motion Detect) 					= ENABLED
+ 201:.\accelerometer.c **** 			 */
+ 202:.\accelerometer.c **** 			accRegValue = accRegValue | ACC_RES_BIT_OR_MASK | ACC_WUFE_BIT_OR_MASK;
+ 310              		.loc 1 202 0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 10
+
+
+ 311 002a 6B46     		mov	r3, sp
+ 312 002c DA1D     		add	r2, r3, #7
+ 313 002e D979     		ldrb	r1, [r3, #7]
+ 314 0030 4223     		mov	r3, #66
+ 315 0032 1943     		orr	r1, r3
+ 203:.\accelerometer.c **** 			accRegValue = accRegValue & ACC_GSEL0_BIT_AND_MASK & ACC_GSEL1_BIT_AND_MASK & ACC_DRDYE_BIT_AND_
+ 316              		.loc 1 203 0
+ 317 0034 0A3B     		sub	r3, r3, #10
+ 318 0036 9943     		bic	r1, r3
+ 319 0038 1170     		strb	r1, [r2]
+ 204:.\accelerometer.c **** 			
+ 205:.\accelerometer.c **** 			/* Write back the modified value. */
+ 206:.\accelerometer.c **** 			commStatus = Accelerometer_RegWrite(ACC_CTRL_REG_1, accRegValue);
+ 320              		.loc 1 206 0
+ 321 003a 1B30     		add	r0, r0, #27
+ 322              	.LVL51:
+ 323 003c FFF7FEFF 		bl	Accelerometer_RegWrite
+ 324              	.LVL52:
+ 325 0040 00E0     		b	.L15
+ 326              	.L30:
+ 207:.\accelerometer.c **** 		}
+ 208:.\accelerometer.c **** 		else
+ 209:.\accelerometer.c **** 		{
+ 210:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 327              		.loc 1 210 0
+ 328 0042 0120     		mov	r0, #1
+ 329              	.LVL53:
+ 330              	.L15:
+ 211:.\accelerometer.c **** 		}
+ 212:.\accelerometer.c **** 		
+ 213:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 331              		.loc 1 213 0
+ 332 0044 0028     		cmp	r0, #0
+ 333 0046 05D1     		bne	.L31
+ 214:.\accelerometer.c **** 		{
+ 215:.\accelerometer.c **** 			/* Initialize the CTRL_REG2 */
+ 216:.\accelerometer.c **** 			/* Read the current value of the CTRL_REG2 register */
+ 217:.\accelerometer.c **** 			commStatus = Accelerometer_RegRead(ACC_CTRL_REG_2, &accRegValue);
+ 334              		.loc 1 217 0
+ 335 0048 1D30     		add	r0, r0, #29
+ 336              	.LVL54:
+ 337 004a 6B46     		mov	r3, sp
+ 338 004c D91D     		add	r1, r3, #7
+ 339 004e FFF7FEFF 		bl	Accelerometer_RegRead
+ 340              	.LVL55:
+ 341 0052 00E0     		b	.L16
+ 342              	.L31:
+ 218:.\accelerometer.c **** 		}
+ 219:.\accelerometer.c **** 		else
+ 220:.\accelerometer.c **** 		{
+ 221:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 343              		.loc 1 221 0
+ 344 0054 0120     		mov	r0, #1
+ 345              	.LVL56:
+ 346              	.L16:
+ 222:.\accelerometer.c **** 		}
+ 223:.\accelerometer.c **** 		
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 11
+
+
+ 224:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 347              		.loc 1 224 0
+ 348 0056 0028     		cmp	r0, #0
+ 349 0058 0BD1     		bne	.L32
+ 225:.\accelerometer.c **** 		{
+ 226:.\accelerometer.c **** 			/* Modify the current value for the following settings:
+ 227:.\accelerometer.c **** 			 * SRST (Software Reset)							= FALSE
+ 228:.\accelerometer.c **** 			 * DCST (Digital Communication Self Test)	 		= DISABLED
+ 229:.\accelerometer.c **** 			 * OWUFA,OWUFB,OWUFC(Output Data Rate for Wakeup)	= 12.5 Hz
+ 230:.\accelerometer.c **** 			 */
+ 231:.\accelerometer.c **** 			accRegValue = accRegValue | ACC_OWUFA_BIT_OR_MASK;
+ 350              		.loc 1 231 0
+ 351 005a 6B46     		mov	r3, sp
+ 352 005c DA1D     		add	r2, r3, #7
+ 353 005e D979     		ldrb	r1, [r3, #7]
+ 354 0060 0423     		mov	r3, #4
+ 355 0062 1943     		orr	r1, r3
+ 232:.\accelerometer.c **** 			accRegValue = accRegValue & ACC_SRST_BIT_AND_MASK & ACC_DCST_BIT_AND_MASK & ACC_OWUFB_BIT_AND_MA
+ 356              		.loc 1 232 0
+ 357 0064 6833     		add	r3, r3, #104
+ 358 0066 1940     		and	r1, r3
+ 359 0068 1170     		strb	r1, [r2]
+ 233:.\accelerometer.c **** 
+ 234:.\accelerometer.c **** 			/* Write back the modified value. */
+ 235:.\accelerometer.c **** 			commStatus = Accelerometer_RegWrite(ACC_CTRL_REG_2, accRegValue);
+ 360              		.loc 1 235 0
+ 361 006a 1D30     		add	r0, r0, #29
+ 362              	.LVL57:
+ 363 006c FFF7FEFF 		bl	Accelerometer_RegWrite
+ 364              	.LVL58:
+ 365 0070 00E0     		b	.L17
+ 366              	.L32:
+ 236:.\accelerometer.c **** 		}
+ 237:.\accelerometer.c **** 		else
+ 238:.\accelerometer.c **** 		{
+ 239:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 367              		.loc 1 239 0
+ 368 0072 0120     		mov	r0, #1
+ 369              	.LVL59:
+ 370              	.L17:
+ 240:.\accelerometer.c **** 		}
+ 241:.\accelerometer.c **** 		
+ 242:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 371              		.loc 1 242 0
+ 372 0074 0028     		cmp	r0, #0
+ 373 0076 05D1     		bne	.L33
+ 243:.\accelerometer.c **** 		{
+ 244:.\accelerometer.c **** 			/* Read the current value of the INT_CTRL_REG1 register */
+ 245:.\accelerometer.c **** 			commStatus = Accelerometer_RegRead(ACC_INT_CTRL_REG_1, &accRegValue);
+ 374              		.loc 1 245 0
+ 375 0078 1E30     		add	r0, r0, #30
+ 376              	.LVL60:
+ 377 007a 6B46     		mov	r3, sp
+ 378 007c D91D     		add	r1, r3, #7
+ 379 007e FFF7FEFF 		bl	Accelerometer_RegRead
+ 380              	.LVL61:
+ 381 0082 00E0     		b	.L18
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 12
+
+
+ 382              	.L33:
+ 246:.\accelerometer.c **** 		}
+ 247:.\accelerometer.c **** 		else
+ 248:.\accelerometer.c **** 		{
+ 249:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 383              		.loc 1 249 0
+ 384 0084 0120     		mov	r0, #1
+ 385              	.LVL62:
+ 386              	.L18:
+ 250:.\accelerometer.c **** 		}
+ 251:.\accelerometer.c **** 		
+ 252:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 387              		.loc 1 252 0
+ 388 0086 0028     		cmp	r0, #0
+ 389 0088 0BD1     		bne	.L34
+ 253:.\accelerometer.c **** 		{
+ 254:.\accelerometer.c **** 			/* Modify the current value for the following settings:
+ 255:.\accelerometer.c **** 			 * IEN (Physical Interrupt Pin)						= ENABLED
+ 256:.\accelerometer.c **** 			 * IEA (Interrupt Polarity)					 		= ACTIVE HIGH
+ 257:.\accelerometer.c **** 			 * IEL (Interrupt Latch/Pulse Enable)				= LATCH INTERRUPT
+ 258:.\accelerometer.c **** 			 */
+ 259:.\accelerometer.c **** 			accRegValue = accRegValue | ACC_IEN_BIT_OR_MASK | ACC_IEA_BIT_OR_MASK;
+ 390              		.loc 1 259 0
+ 391 008a 6B46     		mov	r3, sp
+ 392 008c DA1D     		add	r2, r3, #7
+ 393 008e D979     		ldrb	r1, [r3, #7]
+ 394 0090 3023     		mov	r3, #48
+ 395 0092 1943     		orr	r1, r3
+ 260:.\accelerometer.c **** 			accRegValue = accRegValue & ACC_IEL_BIT_AND_MASK;
+ 396              		.loc 1 260 0
+ 397 0094 283B     		sub	r3, r3, #40
+ 398 0096 9943     		bic	r1, r3
+ 399 0098 1170     		strb	r1, [r2]
+ 261:.\accelerometer.c **** 			
+ 262:.\accelerometer.c **** 			/* Write back the modified value. */
+ 263:.\accelerometer.c **** 			commStatus = Accelerometer_RegWrite(ACC_INT_CTRL_REG_1, accRegValue);
+ 400              		.loc 1 263 0
+ 401 009a 1E30     		add	r0, r0, #30
+ 402              	.LVL63:
+ 403 009c FFF7FEFF 		bl	Accelerometer_RegWrite
+ 404              	.LVL64:
+ 405 00a0 00E0     		b	.L19
+ 406              	.L34:
+ 264:.\accelerometer.c **** 		}
+ 265:.\accelerometer.c **** 		else
+ 266:.\accelerometer.c **** 		{
+ 267:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 407              		.loc 1 267 0
+ 408 00a2 0120     		mov	r0, #1
+ 409              	.LVL65:
+ 410              	.L19:
+ 268:.\accelerometer.c **** 		}
+ 269:.\accelerometer.c **** 		
+ 270:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 411              		.loc 1 270 0
+ 412 00a4 0028     		cmp	r0, #0
+ 413 00a6 05D1     		bne	.L35
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 13
+
+
+ 271:.\accelerometer.c **** 		{
+ 272:.\accelerometer.c **** 			/* Read the current value of the INT_CTRL_REG2 register */
+ 273:.\accelerometer.c **** 			commStatus = Accelerometer_RegRead(ACC_INT_CTRL_REG_2, &accRegValue);
+ 414              		.loc 1 273 0
+ 415 00a8 1F30     		add	r0, r0, #31
+ 416              	.LVL66:
+ 417 00aa 6B46     		mov	r3, sp
+ 418 00ac D91D     		add	r1, r3, #7
+ 419 00ae FFF7FEFF 		bl	Accelerometer_RegRead
+ 420              	.LVL67:
+ 421 00b2 00E0     		b	.L20
+ 422              	.L35:
+ 274:.\accelerometer.c **** 		}
+ 275:.\accelerometer.c **** 		else
+ 276:.\accelerometer.c **** 		{
+ 277:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 423              		.loc 1 277 0
+ 424 00b4 0120     		mov	r0, #1
+ 425              	.LVL68:
+ 426              	.L20:
+ 278:.\accelerometer.c **** 		}
+ 279:.\accelerometer.c **** 		
+ 280:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 427              		.loc 1 280 0
+ 428 00b6 0028     		cmp	r0, #0
+ 429 00b8 09D1     		bne	.L36
+ 281:.\accelerometer.c **** 		{
+ 282:.\accelerometer.c **** 			/* Modify the current value for the following settings:
+ 283:.\accelerometer.c **** 			 * XNWU, XPWU, YNWU, YPWU, ZNWU, ZPWU (Direction)	= SENSING_ENABLED
+ 284:.\accelerometer.c **** 			 */
+ 285:.\accelerometer.c **** 			accRegValue = accRegValue | ACC_XNWUE_BIT_OR_MASK | ACC_XPWUE_BIT_OR_MASK | \
+ 430              		.loc 1 285 0
+ 431 00ba 6B46     		mov	r3, sp
+ 432 00bc DA1D     		add	r2, r3, #7
+ 433 00be D979     		ldrb	r1, [r3, #7]
+ 434 00c0 3F23     		mov	r3, #63
+ 435 00c2 1943     		orr	r1, r3
+ 436 00c4 1170     		strb	r1, [r2]
+ 286:.\accelerometer.c **** 			ACC_YNWUE_BIT_OR_MASK | ACC_YPWUE_BIT_OR_MASK | ACC_ZNWUE_BIT_OR_MASK | ACC_ZPWUE_BIT_OR_MASK;
+ 287:.\accelerometer.c **** 			
+ 288:.\accelerometer.c **** 			/* Write back the modified value. */
+ 289:.\accelerometer.c **** 			commStatus = Accelerometer_RegWrite(ACC_INT_CTRL_REG_2, accRegValue);
+ 437              		.loc 1 289 0
+ 438 00c6 1F30     		add	r0, r0, #31
+ 439              	.LVL69:
+ 440 00c8 FFF7FEFF 		bl	Accelerometer_RegWrite
+ 441              	.LVL70:
+ 442 00cc 00E0     		b	.L21
+ 443              	.L36:
+ 290:.\accelerometer.c **** 		}
+ 291:.\accelerometer.c **** 		else
+ 292:.\accelerometer.c **** 		{
+ 293:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 444              		.loc 1 293 0
+ 445 00ce 0120     		mov	r0, #1
+ 446              	.LVL71:
+ 447              	.L21:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 14
+
+
+ 294:.\accelerometer.c **** 		}
+ 295:.\accelerometer.c **** 		
+ 296:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 448              		.loc 1 296 0
+ 449 00d0 0028     		cmp	r0, #0
+ 450 00d2 05D1     		bne	.L37
+ 297:.\accelerometer.c **** 		{
+ 298:.\accelerometer.c **** 			/* Read the current value of the DATA_CTRL register */
+ 299:.\accelerometer.c **** 			commStatus = Accelerometer_RegRead(ACC_DATA_CTRL_REG, &accRegValue);
+ 451              		.loc 1 299 0
+ 452 00d4 2130     		add	r0, r0, #33
+ 453              	.LVL72:
+ 454 00d6 6B46     		mov	r3, sp
+ 455 00d8 D91D     		add	r1, r3, #7
+ 456 00da FFF7FEFF 		bl	Accelerometer_RegRead
+ 457              	.LVL73:
+ 458 00de 00E0     		b	.L22
+ 459              	.L37:
+ 300:.\accelerometer.c **** 		}
+ 301:.\accelerometer.c **** 		else
+ 302:.\accelerometer.c **** 		{
+ 303:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 460              		.loc 1 303 0
+ 461 00e0 0120     		mov	r0, #1
+ 462              	.LVL74:
+ 463              	.L22:
+ 304:.\accelerometer.c **** 		}
+ 305:.\accelerometer.c **** 		
+ 306:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 464              		.loc 1 306 0
+ 465 00e2 0028     		cmp	r0, #0
+ 466 00e4 0BD1     		bne	.L38
+ 307:.\accelerometer.c **** 		{
+ 308:.\accelerometer.c **** 			/* Modify the current value for the following settings:
+ 309:.\accelerometer.c **** 			 * OSAA, OSAB, OSAC, OSAD (Output Data Rate)		= 50 Hz
+ 310:.\accelerometer.c **** 			 */
+ 311:.\accelerometer.c **** 			accRegValue = accRegValue | ACC_OSAC_BIT_OR_MASK;
+ 467              		.loc 1 311 0
+ 468 00e6 6B46     		mov	r3, sp
+ 469 00e8 DA1D     		add	r2, r3, #7
+ 470 00ea D979     		ldrb	r1, [r3, #7]
+ 471 00ec 0223     		mov	r3, #2
+ 472 00ee 1943     		orr	r1, r3
+ 312:.\accelerometer.c **** 			accRegValue = accRegValue & ACC_OSAA_BIT_AND_MASK & ACC_OSAB_BIT_AND_MASK & ACC_OSAD_BIT_AND_MAS
+ 473              		.loc 1 312 0
+ 474 00f0 0B33     		add	r3, r3, #11
+ 475 00f2 9943     		bic	r1, r3
+ 476 00f4 1170     		strb	r1, [r2]
+ 313:.\accelerometer.c **** 			
+ 314:.\accelerometer.c **** 			/* Write back the modified value. */
+ 315:.\accelerometer.c **** 			commStatus = Accelerometer_RegWrite(ACC_DATA_CTRL_REG, accRegValue);
+ 477              		.loc 1 315 0
+ 478 00f6 2130     		add	r0, r0, #33
+ 479              	.LVL75:
+ 480 00f8 FFF7FEFF 		bl	Accelerometer_RegWrite
+ 481              	.LVL76:
+ 482 00fc 00E0     		b	.L23
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 15
+
+
+ 483              	.L38:
+ 316:.\accelerometer.c **** 		}
+ 317:.\accelerometer.c **** 		else
+ 318:.\accelerometer.c **** 		{
+ 319:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 484              		.loc 1 319 0
+ 485 00fe 0120     		mov	r0, #1
+ 486              	.LVL77:
+ 487              	.L23:
+ 320:.\accelerometer.c **** 		}
+ 321:.\accelerometer.c **** 		
+ 322:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 488              		.loc 1 322 0
+ 489 0100 0028     		cmp	r0, #0
+ 490 0102 05D1     		bne	.L39
+ 323:.\accelerometer.c **** 		{
+ 324:.\accelerometer.c **** 			/* Read the current value of the WAKEUP_TIMER register */
+ 325:.\accelerometer.c **** 			commStatus = Accelerometer_RegRead(ACC_WAKEUP_TIMER, &accRegValue);
+ 491              		.loc 1 325 0
+ 492 0104 2930     		add	r0, r0, #41
+ 493              	.LVL78:
+ 494 0106 6B46     		mov	r3, sp
+ 495 0108 D91D     		add	r1, r3, #7
+ 496 010a FFF7FEFF 		bl	Accelerometer_RegRead
+ 497              	.LVL79:
+ 498 010e 00E0     		b	.L24
+ 499              	.L39:
+ 326:.\accelerometer.c **** 		}
+ 327:.\accelerometer.c **** 		else
+ 328:.\accelerometer.c **** 		{
+ 329:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 500              		.loc 1 329 0
+ 501 0110 0120     		mov	r0, #1
+ 502              	.LVL80:
+ 503              	.L24:
+ 330:.\accelerometer.c **** 		}
+ 331:.\accelerometer.c **** 		
+ 332:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 504              		.loc 1 332 0
+ 505 0112 0028     		cmp	r0, #0
+ 506 0114 07D1     		bne	.L40
+ 333:.\accelerometer.c **** 		{
+ 334:.\accelerometer.c **** 			/* Modify the current value for the following settings:
+ 335:.\accelerometer.c **** 			 * Wakeup Timer value	 = 0.02s * 50 = 1 count
+ 336:.\accelerometer.c **** 			 * WAKEUP_TIMER (counts) = Desired Delay Time (sec) x OWUF (Hz) 
+ 337:.\accelerometer.c **** 			 */
+ 338:.\accelerometer.c **** 			accRegValue = ACC_WAKEUP_TIMER_VALUE;
+ 507              		.loc 1 338 0
+ 508 0116 0122     		mov	r2, #1
+ 509 0118 6B46     		mov	r3, sp
+ 510 011a DA71     		strb	r2, [r3, #7]
+ 339:.\accelerometer.c **** 			
+ 340:.\accelerometer.c **** 			/* Write back the modified value. */
+ 341:.\accelerometer.c **** 			commStatus = Accelerometer_RegWrite(ACC_WAKEUP_TIMER, accRegValue);
+ 511              		.loc 1 341 0
+ 512 011c 2930     		add	r0, r0, #41
+ 513              	.LVL81:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 16
+
+
+ 514 011e 0121     		mov	r1, #1
+ 515 0120 FFF7FEFF 		bl	Accelerometer_RegWrite
+ 516              	.LVL82:
+ 517 0124 00E0     		b	.L25
+ 518              	.L40:
+ 342:.\accelerometer.c **** 		}
+ 343:.\accelerometer.c **** 		else
+ 344:.\accelerometer.c **** 		{
+ 345:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 519              		.loc 1 345 0
+ 520 0126 0120     		mov	r0, #1
+ 521              	.LVL83:
+ 522              	.L25:
+ 346:.\accelerometer.c **** 		}
+ 347:.\accelerometer.c **** 		
+ 348:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 523              		.loc 1 348 0
+ 524 0128 0028     		cmp	r0, #0
+ 525 012a 05D1     		bne	.L41
+ 349:.\accelerometer.c **** 		{
+ 350:.\accelerometer.c **** 			/* Read the current value of the ACC_WAKUP_THRESHOLD register */
+ 351:.\accelerometer.c **** 			commStatus = Accelerometer_RegRead(ACC_WAKUP_THRESHOLD, &accRegValue);
+ 526              		.loc 1 351 0
+ 527 012c 6A30     		add	r0, r0, #106
+ 528              	.LVL84:
+ 529 012e 6B46     		mov	r3, sp
+ 530 0130 D91D     		add	r1, r3, #7
+ 531 0132 FFF7FEFF 		bl	Accelerometer_RegRead
+ 532              	.LVL85:
+ 533 0136 00E0     		b	.L26
+ 534              	.L41:
+ 352:.\accelerometer.c **** 		}
+ 353:.\accelerometer.c **** 		else
+ 354:.\accelerometer.c **** 		{
+ 355:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 535              		.loc 1 355 0
+ 536 0138 0120     		mov	r0, #1
+ 537              	.LVL86:
+ 538              	.L26:
+ 356:.\accelerometer.c **** 		}
+ 357:.\accelerometer.c **** 		
+ 358:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 539              		.loc 1 358 0
+ 540 013a 0028     		cmp	r0, #0
+ 541 013c 07D1     		bne	.L42
+ 359:.\accelerometer.c **** 		{
+ 360:.\accelerometer.c **** 			/* Modify the current value for the following settings:
+ 361:.\accelerometer.c **** 			 * Wakeup Timer value								= (1/16)g * 16 = 1 count
+ 362:.\accelerometer.c **** 			 * WAKEUP_THRESHOLD (counts) 						= Desired Threshold (g) x 16 (counts/g) 
+ 363:.\accelerometer.c **** 			 */
+ 364:.\accelerometer.c **** 			accRegValue = ACC_WAKUP_THRESHOLD_VAL;
+ 542              		.loc 1 364 0
+ 543 013e 0122     		mov	r2, #1
+ 544 0140 6B46     		mov	r3, sp
+ 545 0142 DA71     		strb	r2, [r3, #7]
+ 365:.\accelerometer.c **** 			
+ 366:.\accelerometer.c **** 			/* Write back the modified value. */
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 17
+
+
+ 367:.\accelerometer.c **** 			commStatus = Accelerometer_RegWrite(ACC_WAKUP_THRESHOLD, accRegValue);
+ 546              		.loc 1 367 0
+ 547 0144 6A30     		add	r0, r0, #106
+ 548              	.LVL87:
+ 549 0146 0121     		mov	r1, #1
+ 550 0148 FFF7FEFF 		bl	Accelerometer_RegWrite
+ 551              	.LVL88:
+ 552 014c 00E0     		b	.L27
+ 553              	.L42:
+ 368:.\accelerometer.c **** 		}
+ 369:.\accelerometer.c **** 		else
+ 370:.\accelerometer.c **** 		{
+ 371:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 554              		.loc 1 371 0
+ 555 014e 0120     		mov	r0, #1
+ 556              	.LVL89:
+ 557              	.L27:
+ 372:.\accelerometer.c **** 		}
+ 373:.\accelerometer.c **** 		
+ 374:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 558              		.loc 1 374 0
+ 559 0150 0028     		cmp	r0, #0
+ 560 0152 05D1     		bne	.L43
+ 375:.\accelerometer.c **** 		{
+ 376:.\accelerometer.c **** 			/* Read the current value of the CTRL_REG1 register */
+ 377:.\accelerometer.c **** 			commStatus = Accelerometer_RegRead(ACC_CTRL_REG_1, &accRegValue);
+ 561              		.loc 1 377 0
+ 562 0154 1B30     		add	r0, r0, #27
+ 563              	.LVL90:
+ 564 0156 6B46     		mov	r3, sp
+ 565 0158 D91D     		add	r1, r3, #7
+ 566 015a FFF7FEFF 		bl	Accelerometer_RegRead
+ 567              	.LVL91:
+ 568 015e 00E0     		b	.L28
+ 569              	.L43:
+ 378:.\accelerometer.c **** 		}
+ 379:.\accelerometer.c **** 		else
+ 380:.\accelerometer.c **** 		{
+ 381:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 570              		.loc 1 381 0
+ 571 0160 0120     		mov	r0, #1
+ 572              	.LVL92:
+ 573              	.L28:
+ 382:.\accelerometer.c **** 		}
+ 383:.\accelerometer.c **** 		
+ 384:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 574              		.loc 1 384 0
+ 575 0162 0028     		cmp	r0, #0
+ 576 0164 09D1     		bne	.L44
+ 385:.\accelerometer.c **** 		{
+ 386:.\accelerometer.c **** 			/* Put the Accelerometer in the Operating Mode */
+ 387:.\accelerometer.c **** 			accRegValue = accRegValue | ACC_PC1_BIT_OR_MASK;
+ 577              		.loc 1 387 0
+ 578 0166 6B46     		mov	r3, sp
+ 579 0168 DA1D     		add	r2, r3, #7
+ 580 016a D979     		ldrb	r1, [r3, #7]
+ 581 016c 8023     		mov	r3, #128
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 18
+
+
+ 582 016e 1943     		orr	r1, r3
+ 583 0170 1170     		strb	r1, [r2]
+ 388:.\accelerometer.c **** 					
+ 389:.\accelerometer.c **** 			/* Write back the modified value. */
+ 390:.\accelerometer.c **** 			commStatus = Accelerometer_RegWrite(ACC_CTRL_REG_1, accRegValue);
+ 584              		.loc 1 390 0
+ 585 0172 1B30     		add	r0, r0, #27
+ 586              	.LVL93:
+ 587 0174 FFF7FEFF 		bl	Accelerometer_RegWrite
+ 588              	.LVL94:
+ 589 0178 00E0     		b	.L29
+ 590              	.L44:
+ 391:.\accelerometer.c **** 		}
+ 392:.\accelerometer.c **** 		else
+ 393:.\accelerometer.c **** 		{
+ 394:.\accelerometer.c **** 			commStatus = COMM_FAIL;
+ 591              		.loc 1 394 0
+ 592 017a 0120     		mov	r0, #1
+ 593              	.LVL95:
+ 594              	.L29:
+ 395:.\accelerometer.c **** 		}
+ 396:.\accelerometer.c **** 		
+ 397:.\accelerometer.c **** 		if(commStatus == COMM_PASS)
+ 595              		.loc 1 397 0
+ 596 017c 0028     		cmp	r0, #0
+ 597 017e 07D1     		bne	.L13
+ 398:.\accelerometer.c **** 		{
+ 399:.\accelerometer.c **** 			/* Set the flag to indicate the accelerometer is configured. */
+ 400:.\accelerometer.c **** 			acclerometer_configured = TRUE;
+ 598              		.loc 1 400 0
+ 599 0180 0122     		mov	r2, #1
+ 600 0182 044B     		ldr	r3, .L45
+ 601 0184 1A70     		strb	r2, [r3]
+ 401:.\accelerometer.c **** 			
+ 402:.\accelerometer.c **** 			/* Clear all pending interrupts from accelerometer. */
+ 403:.\accelerometer.c **** 			Accelerometer_RegRead(ACC_INT_REL, &accRegValue);
+ 602              		.loc 1 403 0
+ 603 0186 1A30     		add	r0, r0, #26
+ 604              	.LVL96:
+ 605 0188 6B46     		mov	r3, sp
+ 606 018a D91D     		add	r1, r3, #7
+ 607 018c FFF7FEFF 		bl	Accelerometer_RegRead
+ 608              	.LVL97:
+ 609              	.L13:
+ 404:.\accelerometer.c **** 		}
+ 405:.\accelerometer.c **** 	}	
+ 406:.\accelerometer.c **** }
+ 610              		.loc 1 406 0
+ 611 0190 03B0     		add	sp, sp, #12
+ 612              		@ sp needed
+ 613 0192 00BD     		pop	{pc}
+ 614              	.L46:
+ 615              		.align	2
+ 616              	.L45:
+ 617 0194 00000000 		.word	acclerometer_configured
+ 618              		.cfi_endproc
+ 619              	.LFE37:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 19
+
+
+ 620              		.size	InitializeAccelerometer, .-InitializeAccelerometer
+ 621              		.section	.text.ReadAccelerometer,"ax",%progbits
+ 622              		.align	2
+ 623              		.global	ReadAccelerometer
+ 624              		.code	16
+ 625              		.thumb_func
+ 626              		.type	ReadAccelerometer, %function
+ 627              	ReadAccelerometer:
+ 628              	.LFB38:
+ 407:.\accelerometer.c **** 
+ 408:.\accelerometer.c **** /*******************************************************************************
+ 409:.\accelerometer.c **** * Function Name: ReadAccelerometer
+ 410:.\accelerometer.c **** ********************************************************************************
+ 411:.\accelerometer.c **** * Summary:
+ 412:.\accelerometer.c **** * 	Reads the accelerometer acceleration values in x, y, and z directions.
+ 413:.\accelerometer.c **** *
+ 414:.\accelerometer.c **** * Parameters:
+ 415:.\accelerometer.c **** *  int16 *xData: Pointer to the variable in which the acceleration data 
+ 416:.\accelerometer.c **** *                for x-direction is to be stored. 
+ 417:.\accelerometer.c **** *
+ 418:.\accelerometer.c **** *  int16 *yData: Pointer to the variable in which the acceleration data 
+ 419:.\accelerometer.c **** *                for y-direction is to be stored. 
+ 420:.\accelerometer.c **** *
+ 421:.\accelerometer.c **** *  int16 *zData: Pointer to the variable in which the acceleration data 
+ 422:.\accelerometer.c **** *                for z-direction is to be stored. 
+ 423:.\accelerometer.c **** *
+ 424:.\accelerometer.c **** * Return:
+ 425:.\accelerometer.c **** *  void
+ 426:.\accelerometer.c **** *
+ 427:.\accelerometer.c **** *******************************************************************************/
+ 428:.\accelerometer.c **** void ReadAccelerometer(int16 *xData, int16 *yData, int16 *zData)
+ 429:.\accelerometer.c **** {
+ 629              		.loc 1 429 0
+ 630              		.cfi_startproc
+ 631              	.LVL98:
+ 632 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 633              		.cfi_def_cfa_offset 20
+ 634              		.cfi_offset 4, -20
+ 635              		.cfi_offset 5, -16
+ 636              		.cfi_offset 6, -12
+ 637              		.cfi_offset 7, -8
+ 638              		.cfi_offset 14, -4
+ 639 0002 83B0     		sub	sp, sp, #12
+ 640              		.cfi_def_cfa_offset 32
+ 641 0004 071C     		mov	r7, r0
+ 642 0006 0C1C     		mov	r4, r1
+ 643 0008 161C     		mov	r6, r2
+ 430:.\accelerometer.c **** 	/* Temporary variable for extracting only the 12 most significant
+ 431:.\accelerometer.c **** 	 * bits of accelerometer data registers. */
+ 432:.\accelerometer.c **** 	uint8 tempVal = ZERO;
+ 644              		.loc 1 432 0
+ 645 000a 6B46     		mov	r3, sp
+ 646 000c DD1D     		add	r5, r3, #7
+ 647 000e 0023     		mov	r3, #0
+ 648 0010 2B70     		strb	r3, [r5]
+ 433:.\accelerometer.c **** 	
+ 434:.\accelerometer.c **** 	Accelerometer_RegRead(ACC_XOUT_H, &tempVal);
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 20
+
+
+ 649              		.loc 1 434 0
+ 650 0012 0720     		mov	r0, #7
+ 651              	.LVL99:
+ 652 0014 291C     		mov	r1, r5
+ 653              	.LVL100:
+ 654 0016 FFF7FEFF 		bl	Accelerometer_RegRead
+ 655              	.LVL101:
+ 435:.\accelerometer.c **** 	*xData = tempVal;
+ 656              		.loc 1 435 0
+ 657 001a 2B78     		ldrb	r3, [r5]
+ 658 001c 3B80     		strh	r3, [r7]
+ 436:.\accelerometer.c **** 	Accelerometer_RegRead(ACC_XOUT_L, &tempVal);
+ 659              		.loc 1 436 0
+ 660 001e 0620     		mov	r0, #6
+ 661 0020 291C     		mov	r1, r5
+ 662 0022 FFF7FEFF 		bl	Accelerometer_RegRead
+ 663              	.LVL102:
+ 437:.\accelerometer.c **** 	*xData = (*xData << 8) | tempVal;
+ 664              		.loc 1 437 0
+ 665 0026 0022     		mov	r2, #0
+ 666 0028 BB5E     		ldrsh	r3, [r7, r2]
+ 667 002a 1B02     		lsl	r3, r3, #8
+ 668 002c 2A78     		ldrb	r2, [r5]
+ 669 002e 1343     		orr	r3, r2
+ 670 0030 9BB2     		uxth	r3, r3
+ 671 0032 3B80     		strh	r3, [r7]
+ 438:.\accelerometer.c **** 	if((*xData & 0x8000) == 0x8000)
+ 672              		.loc 1 438 0
+ 673 0034 1AB2     		sxth	r2, r3
+ 674 0036 002A     		cmp	r2, #0
+ 675 0038 04DA     		bge	.L48
+ 439:.\accelerometer.c **** 	{
+ 440:.\accelerometer.c **** 		*xData = *xData >> 4;
+ 676              		.loc 1 440 0
+ 677 003a 1311     		asr	r3, r2, #4
+ 441:.\accelerometer.c **** 		*xData |= 0xF000;
+ 678              		.loc 1 441 0
+ 679 003c 224A     		ldr	r2, .L54
+ 680 003e 1343     		orr	r3, r2
+ 681 0040 3B80     		strh	r3, [r7]
+ 682 0042 02E0     		b	.L49
+ 683              	.L48:
+ 442:.\accelerometer.c **** 	}
+ 443:.\accelerometer.c **** 	else
+ 444:.\accelerometer.c **** 	{
+ 445:.\accelerometer.c **** 		*xData = *xData >> 4;
+ 684              		.loc 1 445 0
+ 685 0044 1BB2     		sxth	r3, r3
+ 686 0046 1B11     		asr	r3, r3, #4
+ 687 0048 3B80     		strh	r3, [r7]
+ 688              	.L49:
+ 446:.\accelerometer.c **** 	}
+ 447:.\accelerometer.c **** 	
+ 448:.\accelerometer.c **** 	Accelerometer_RegRead(ACC_YOUT_H, &tempVal);
+ 689              		.loc 1 448 0
+ 690 004a 6B46     		mov	r3, sp
+ 691 004c DD1D     		add	r5, r3, #7
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 21
+
+
+ 692 004e 0920     		mov	r0, #9
+ 693 0050 291C     		mov	r1, r5
+ 694 0052 FFF7FEFF 		bl	Accelerometer_RegRead
+ 695              	.LVL103:
+ 449:.\accelerometer.c **** 	*yData = tempVal;
+ 696              		.loc 1 449 0
+ 697 0056 2B78     		ldrb	r3, [r5]
+ 698 0058 2380     		strh	r3, [r4]
+ 450:.\accelerometer.c **** 	Accelerometer_RegRead(ACC_YOUT_L, &tempVal);
+ 699              		.loc 1 450 0
+ 700 005a 0820     		mov	r0, #8
+ 701 005c 291C     		mov	r1, r5
+ 702 005e FFF7FEFF 		bl	Accelerometer_RegRead
+ 703              	.LVL104:
+ 451:.\accelerometer.c **** 	*yData = (*yData << 8) | tempVal;
+ 704              		.loc 1 451 0
+ 705 0062 0022     		mov	r2, #0
+ 706 0064 A35E     		ldrsh	r3, [r4, r2]
+ 707 0066 1B02     		lsl	r3, r3, #8
+ 708 0068 2A78     		ldrb	r2, [r5]
+ 709 006a 1343     		orr	r3, r2
+ 710 006c 9BB2     		uxth	r3, r3
+ 711 006e 2380     		strh	r3, [r4]
+ 452:.\accelerometer.c **** 	
+ 453:.\accelerometer.c **** 	if((*yData & 0x8000) == 0x8000)
+ 712              		.loc 1 453 0
+ 713 0070 1AB2     		sxth	r2, r3
+ 714 0072 002A     		cmp	r2, #0
+ 715 0074 04DA     		bge	.L50
+ 454:.\accelerometer.c **** 	{
+ 455:.\accelerometer.c **** 		*yData = *yData >> 4;
+ 716              		.loc 1 455 0
+ 717 0076 1311     		asr	r3, r2, #4
+ 456:.\accelerometer.c **** 		*yData |= 0xF000;
+ 718              		.loc 1 456 0
+ 719 0078 134A     		ldr	r2, .L54
+ 720 007a 1343     		orr	r3, r2
+ 721 007c 2380     		strh	r3, [r4]
+ 722 007e 02E0     		b	.L51
+ 723              	.L50:
+ 457:.\accelerometer.c **** 	}
+ 458:.\accelerometer.c **** 	else
+ 459:.\accelerometer.c **** 	{
+ 460:.\accelerometer.c **** 		*yData = *yData >> 4;
+ 724              		.loc 1 460 0
+ 725 0080 1BB2     		sxth	r3, r3
+ 726 0082 1B11     		asr	r3, r3, #4
+ 727 0084 2380     		strh	r3, [r4]
+ 728              	.L51:
+ 461:.\accelerometer.c **** 	}
+ 462:.\accelerometer.c **** 	
+ 463:.\accelerometer.c **** 	Accelerometer_RegRead(ACC_ZOUT_H, &tempVal);
+ 729              		.loc 1 463 0
+ 730 0086 6B46     		mov	r3, sp
+ 731 0088 DC1D     		add	r4, r3, #7
+ 732              	.LVL105:
+ 733 008a 0B20     		mov	r0, #11
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 22
+
+
+ 734 008c 211C     		mov	r1, r4
+ 735 008e FFF7FEFF 		bl	Accelerometer_RegRead
+ 736              	.LVL106:
+ 464:.\accelerometer.c **** 	*zData = tempVal;
+ 737              		.loc 1 464 0
+ 738 0092 2378     		ldrb	r3, [r4]
+ 739 0094 3380     		strh	r3, [r6]
+ 465:.\accelerometer.c **** 	Accelerometer_RegRead(ACC_ZOUT_L, &tempVal);
+ 740              		.loc 1 465 0
+ 741 0096 0A20     		mov	r0, #10
+ 742 0098 211C     		mov	r1, r4
+ 743 009a FFF7FEFF 		bl	Accelerometer_RegRead
+ 744              	.LVL107:
+ 466:.\accelerometer.c **** 	*zData = (*zData << 8) | tempVal;
+ 745              		.loc 1 466 0
+ 746 009e 0022     		mov	r2, #0
+ 747 00a0 B35E     		ldrsh	r3, [r6, r2]
+ 748 00a2 1B02     		lsl	r3, r3, #8
+ 749 00a4 2278     		ldrb	r2, [r4]
+ 750 00a6 1343     		orr	r3, r2
+ 751 00a8 9BB2     		uxth	r3, r3
+ 752 00aa 3380     		strh	r3, [r6]
+ 467:.\accelerometer.c **** 	
+ 468:.\accelerometer.c **** 	if((*zData & 0x8000) == 0x8000)
+ 753              		.loc 1 468 0
+ 754 00ac 1AB2     		sxth	r2, r3
+ 755 00ae 002A     		cmp	r2, #0
+ 756 00b0 04DA     		bge	.L52
+ 469:.\accelerometer.c **** 	{
+ 470:.\accelerometer.c **** 		*zData = *zData >> 4;
+ 757              		.loc 1 470 0
+ 758 00b2 1311     		asr	r3, r2, #4
+ 471:.\accelerometer.c **** 		*zData |= 0xF000;
+ 759              		.loc 1 471 0
+ 760 00b4 044A     		ldr	r2, .L54
+ 761 00b6 1343     		orr	r3, r2
+ 762 00b8 3380     		strh	r3, [r6]
+ 763 00ba 02E0     		b	.L47
+ 764              	.L52:
+ 472:.\accelerometer.c **** 	}
+ 473:.\accelerometer.c **** 	else
+ 474:.\accelerometer.c **** 	{
+ 475:.\accelerometer.c **** 		*zData = *zData >> 4;
+ 765              		.loc 1 475 0
+ 766 00bc 1BB2     		sxth	r3, r3
+ 767 00be 1B11     		asr	r3, r3, #4
+ 768 00c0 3380     		strh	r3, [r6]
+ 769              	.L47:
+ 476:.\accelerometer.c **** 	}
+ 477:.\accelerometer.c **** }
+ 770              		.loc 1 477 0
+ 771 00c2 03B0     		add	sp, sp, #12
+ 772              		@ sp needed
+ 773              	.LVL108:
+ 774              	.LVL109:
+ 775 00c4 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 776              	.L55:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 23
+
+
+ 777 00c6 C046     		.align	2
+ 778              	.L54:
+ 779 00c8 00F0FFFF 		.word	-4096
+ 780              		.cfi_endproc
+ 781              	.LFE38:
+ 782              		.size	ReadAccelerometer, .-ReadAccelerometer
+ 783              		.text
+ 784              	.Letext0:
+ 785              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 786              		.file 3 "Generated_Source\\PSoC4/I2C_I2C.h"
+ 787              		.file 4 ".\\accelerometer.h"
+ 788              		.section	.debug_info,"",%progbits
+ 789              	.Ldebug_info0:
+ 790 0000 67050000 		.4byte	0x567
+ 791 0004 0400     		.2byte	0x4
+ 792 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 793 000a 04       		.byte	0x4
+ 794 000b 01       		.uleb128 0x1
+ 795 000c B6010000 		.4byte	.LASF33
+ 796 0010 01       		.byte	0x1
+ 797 0011 8C000000 		.4byte	.LASF34
+ 798 0015 77010000 		.4byte	.LASF35
+ 799 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 800 001d 00000000 		.4byte	0
+ 801 0021 00000000 		.4byte	.Ldebug_line0
+ 802 0025 02       		.uleb128 0x2
+ 803 0026 01       		.byte	0x1
+ 804 0027 06       		.byte	0x6
+ 805 0028 7F020000 		.4byte	.LASF0
+ 806 002c 02       		.uleb128 0x2
+ 807 002d 01       		.byte	0x1
+ 808 002e 08       		.byte	0x8
+ 809 002f 7E000000 		.4byte	.LASF1
+ 810 0033 02       		.uleb128 0x2
+ 811 0034 02       		.byte	0x2
+ 812 0035 05       		.byte	0x5
+ 813 0036 44020000 		.4byte	.LASF2
+ 814 003a 02       		.uleb128 0x2
+ 815 003b 02       		.byte	0x2
+ 816 003c 07       		.byte	0x7
+ 817 003d 8B020000 		.4byte	.LASF3
+ 818 0041 02       		.uleb128 0x2
+ 819 0042 04       		.byte	0x4
+ 820 0043 05       		.byte	0x5
+ 821 0044 76020000 		.4byte	.LASF4
+ 822 0048 02       		.uleb128 0x2
+ 823 0049 04       		.byte	0x4
+ 824 004a 07       		.byte	0x7
+ 825 004b A4000000 		.4byte	.LASF5
+ 826 004f 02       		.uleb128 0x2
+ 827 0050 08       		.byte	0x8
+ 828 0051 05       		.byte	0x5
+ 829 0052 4D010000 		.4byte	.LASF6
+ 830 0056 02       		.uleb128 0x2
+ 831 0057 08       		.byte	0x8
+ 832 0058 07       		.byte	0x7
+ 833 0059 FF000000 		.4byte	.LASF7
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 24
+
+
+ 834 005d 03       		.uleb128 0x3
+ 835 005e 04       		.byte	0x4
+ 836 005f 05       		.byte	0x5
+ 837 0060 696E7400 		.ascii	"int\000"
+ 838 0064 02       		.uleb128 0x2
+ 839 0065 04       		.byte	0x4
+ 840 0066 07       		.byte	0x7
+ 841 0067 F2000000 		.4byte	.LASF8
+ 842 006b 04       		.uleb128 0x4
+ 843 006c B6000000 		.4byte	.LASF9
+ 844 0070 02       		.byte	0x2
+ 845 0071 B3       		.byte	0xb3
+ 846 0072 2C000000 		.4byte	0x2c
+ 847 0076 04       		.uleb128 0x4
+ 848 0077 E5000000 		.4byte	.LASF10
+ 849 007b 02       		.byte	0x2
+ 850 007c B5       		.byte	0xb5
+ 851 007d 48000000 		.4byte	0x48
+ 852 0081 04       		.uleb128 0x4
+ 853 0082 9E000000 		.4byte	.LASF11
+ 854 0086 02       		.byte	0x2
+ 855 0087 B7       		.byte	0xb7
+ 856 0088 33000000 		.4byte	0x33
+ 857 008c 02       		.uleb128 0x2
+ 858 008d 04       		.byte	0x4
+ 859 008e 04       		.byte	0x4
+ 860 008f 72000000 		.4byte	.LASF12
+ 861 0093 02       		.uleb128 0x2
+ 862 0094 08       		.byte	0x8
+ 863 0095 04       		.byte	0x4
+ 864 0096 CA000000 		.4byte	.LASF13
+ 865 009a 02       		.uleb128 0x2
+ 866 009b 01       		.byte	0x1
+ 867 009c 08       		.byte	0x8
+ 868 009d 5B010000 		.4byte	.LASF14
+ 869 00a1 02       		.uleb128 0x2
+ 870 00a2 04       		.byte	0x4
+ 871 00a3 07       		.byte	0x7
+ 872 00a4 44010000 		.4byte	.LASF15
+ 873 00a8 05       		.uleb128 0x5
+ 874 00a9 04       		.byte	0x4
+ 875 00aa 6B000000 		.4byte	0x6b
+ 876 00ae 06       		.uleb128 0x6
+ 877 00af 45000000 		.4byte	.LASF36
+ 878 00b3 01       		.byte	0x1
+ 879 00b4 47       		.byte	0x47
+ 880 00b5 6B000000 		.4byte	0x6b
+ 881 00b9 00000000 		.4byte	.LFB34
+ 882 00bd 28000000 		.4byte	.LFE34-.LFB34
+ 883 00c1 01       		.uleb128 0x1
+ 884 00c2 9C       		.byte	0x9c
+ 885 00c3 3E010000 		.4byte	0x13e
+ 886 00c7 07       		.uleb128 0x7
+ 887 00c8 72656700 		.ascii	"reg\000"
+ 888 00cc 01       		.byte	0x1
+ 889 00cd 47       		.byte	0x47
+ 890 00ce 6B000000 		.4byte	0x6b
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 25
+
+
+ 891 00d2 00000000 		.4byte	.LLST0
+ 892 00d6 08       		.uleb128 0x8
+ 893 00d7 3F000000 		.4byte	.LASF16
+ 894 00db 01       		.byte	0x1
+ 895 00dc 47       		.byte	0x47
+ 896 00dd 6B000000 		.4byte	0x6b
+ 897 00e1 21000000 		.4byte	.LLST1
+ 898 00e5 09       		.uleb128 0x9
+ 899 00e6 35000000 		.4byte	.LASF17
+ 900 00ea 01       		.byte	0x1
+ 901 00eb 49       		.byte	0x49
+ 902 00ec 6B000000 		.4byte	0x6b
+ 903 00f0 42000000 		.4byte	.LLST2
+ 904 00f4 0A       		.uleb128 0xa
+ 905 00f5 0E000000 		.4byte	.LVL4
+ 906 00f9 05050000 		.4byte	0x505
+ 907 00fd 0C010000 		.4byte	0x10c
+ 908 0101 0B       		.uleb128 0xb
+ 909 0102 01       		.uleb128 0x1
+ 910 0103 51       		.byte	0x51
+ 911 0104 01       		.uleb128 0x1
+ 912 0105 30       		.byte	0x30
+ 913 0106 0B       		.uleb128 0xb
+ 914 0107 01       		.uleb128 0x1
+ 915 0108 50       		.byte	0x50
+ 916 0109 01       		.uleb128 0x1
+ 917 010a 3F       		.byte	0x3f
+ 918 010b 00       		.byte	0
+ 919 010c 0A       		.uleb128 0xa
+ 920 010d 1A000000 		.4byte	.LVL7
+ 921 0111 1F050000 		.4byte	0x51f
+ 922 0115 20010000 		.4byte	0x120
+ 923 0119 0B       		.uleb128 0xb
+ 924 011a 01       		.uleb128 0x1
+ 925 011b 50       		.byte	0x50
+ 926 011c 02       		.uleb128 0x2
+ 927 011d 75       		.byte	0x75
+ 928 011e 00       		.sleb128 0
+ 929 011f 00       		.byte	0
+ 930 0120 0A       		.uleb128 0xa
+ 931 0121 20000000 		.4byte	.LVL8
+ 932 0125 1F050000 		.4byte	0x51f
+ 933 0129 34010000 		.4byte	0x134
+ 934 012d 0B       		.uleb128 0xb
+ 935 012e 01       		.uleb128 0x1
+ 936 012f 50       		.byte	0x50
+ 937 0130 02       		.uleb128 0x2
+ 938 0131 74       		.byte	0x74
+ 939 0132 00       		.sleb128 0
+ 940 0133 00       		.byte	0
+ 941 0134 0C       		.uleb128 0xc
+ 942 0135 24000000 		.4byte	.LVL9
+ 943 0139 34050000 		.4byte	0x534
+ 944 013d 00       		.byte	0
+ 945 013e 0D       		.uleb128 0xd
+ 946 013f 5C000000 		.4byte	.LASF18
+ 947 0143 01       		.byte	0x1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 26
+
+
+ 948 0144 62       		.byte	0x62
+ 949 0145 6B000000 		.4byte	0x6b
+ 950 0149 00000000 		.4byte	.LFB35
+ 951 014d 32000000 		.4byte	.LFE35-.LFB35
+ 952 0151 01       		.uleb128 0x1
+ 953 0152 9C       		.byte	0x9c
+ 954 0153 E5010000 		.4byte	0x1e5
+ 955 0157 07       		.uleb128 0x7
+ 956 0158 72656700 		.ascii	"reg\000"
+ 957 015c 01       		.byte	0x1
+ 958 015d 62       		.byte	0x62
+ 959 015e 6B000000 		.4byte	0x6b
+ 960 0162 6C000000 		.4byte	.LLST3
+ 961 0166 08       		.uleb128 0x8
+ 962 0167 3F000000 		.4byte	.LASF16
+ 963 016b 01       		.byte	0x1
+ 964 016c 62       		.byte	0x62
+ 965 016d A8000000 		.4byte	0xa8
+ 966 0171 8D000000 		.4byte	.LLST4
+ 967 0175 09       		.uleb128 0x9
+ 968 0176 35000000 		.4byte	.LASF17
+ 969 017a 01       		.byte	0x1
+ 970 017b 64       		.byte	0x64
+ 971 017c 6B000000 		.4byte	0x6b
+ 972 0180 B9000000 		.4byte	.LLST5
+ 973 0184 0A       		.uleb128 0xa
+ 974 0185 0E000000 		.4byte	.LVL15
+ 975 0189 05050000 		.4byte	0x505
+ 976 018d 9C010000 		.4byte	0x19c
+ 977 0191 0B       		.uleb128 0xb
+ 978 0192 01       		.uleb128 0x1
+ 979 0193 51       		.byte	0x51
+ 980 0194 01       		.uleb128 0x1
+ 981 0195 30       		.byte	0x30
+ 982 0196 0B       		.uleb128 0xb
+ 983 0197 01       		.uleb128 0x1
+ 984 0198 50       		.byte	0x50
+ 985 0199 01       		.uleb128 0x1
+ 986 019a 3F       		.byte	0x3f
+ 987 019b 00       		.byte	0
+ 988 019c 0A       		.uleb128 0xa
+ 989 019d 1A000000 		.4byte	.LVL18
+ 990 01a1 1F050000 		.4byte	0x51f
+ 991 01a5 B0010000 		.4byte	0x1b0
+ 992 01a9 0B       		.uleb128 0xb
+ 993 01aa 01       		.uleb128 0x1
+ 994 01ab 50       		.byte	0x50
+ 995 01ac 02       		.uleb128 0x2
+ 996 01ad 75       		.byte	0x75
+ 997 01ae 00       		.sleb128 0
+ 998 01af 00       		.byte	0
+ 999 01b0 0A       		.uleb128 0xa
+ 1000 01b1 22000000 		.4byte	.LVL19
+ 1001 01b5 3F050000 		.4byte	0x53f
+ 1002 01b9 C8010000 		.4byte	0x1c8
+ 1003 01bd 0B       		.uleb128 0xb
+ 1004 01be 01       		.uleb128 0x1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 27
+
+
+ 1005 01bf 51       		.byte	0x51
+ 1006 01c0 01       		.uleb128 0x1
+ 1007 01c1 31       		.byte	0x31
+ 1008 01c2 0B       		.uleb128 0xb
+ 1009 01c3 01       		.uleb128 0x1
+ 1010 01c4 50       		.byte	0x50
+ 1011 01c5 01       		.uleb128 0x1
+ 1012 01c6 3F       		.byte	0x3f
+ 1013 01c7 00       		.byte	0
+ 1014 01c8 0A       		.uleb128 0xa
+ 1015 01c9 28000000 		.4byte	.LVL20
+ 1016 01cd 59050000 		.4byte	0x559
+ 1017 01d1 DB010000 		.4byte	0x1db
+ 1018 01d5 0B       		.uleb128 0xb
+ 1019 01d6 01       		.uleb128 0x1
+ 1020 01d7 50       		.byte	0x50
+ 1021 01d8 01       		.uleb128 0x1
+ 1022 01d9 31       		.byte	0x31
+ 1023 01da 00       		.byte	0
+ 1024 01db 0C       		.uleb128 0xc
+ 1025 01dc 2E000000 		.4byte	.LVL21
+ 1026 01e0 34050000 		.4byte	0x534
+ 1027 01e4 00       		.byte	0
+ 1028 01e5 0D       		.uleb128 0xd
+ 1029 01e6 CC020000 		.4byte	.LASF19
+ 1030 01ea 01       		.byte	0x1
+ 1031 01eb 7E       		.byte	0x7e
+ 1032 01ec 6B000000 		.4byte	0x6b
+ 1033 01f0 00000000 		.4byte	.LFB36
+ 1034 01f4 9A000000 		.4byte	.LFE36-.LFB36
+ 1035 01f8 01       		.uleb128 0x1
+ 1036 01f9 9C       		.byte	0x9c
+ 1037 01fa C0020000 		.4byte	0x2c0
+ 1038 01fe 09       		.uleb128 0x9
+ 1039 01ff 21010000 		.4byte	.LASF20
+ 1040 0203 01       		.byte	0x1
+ 1041 0204 80       		.byte	0x80
+ 1042 0205 6B000000 		.4byte	0x6b
+ 1043 0209 E3000000 		.4byte	.LLST6
+ 1044 020d 0E       		.uleb128 0xe
+ 1045 020e D1000000 		.4byte	.LASF21
+ 1046 0212 01       		.byte	0x1
+ 1047 0213 81       		.byte	0x81
+ 1048 0214 6B000000 		.4byte	0x6b
+ 1049 0218 02       		.uleb128 0x2
+ 1050 0219 91       		.byte	0x91
+ 1051 021a 77       		.sleb128 -9
+ 1052 021b 09       		.uleb128 0x9
+ 1053 021c 16010000 		.4byte	.LASF22
+ 1054 0220 01       		.byte	0x1
+ 1055 0221 82       		.byte	0x82
+ 1056 0222 6B000000 		.4byte	0x6b
+ 1057 0226 02010000 		.4byte	.LLST7
+ 1058 022a 0A       		.uleb128 0xa
+ 1059 022b 12000000 		.4byte	.LVL26
+ 1060 022f 3E010000 		.4byte	0x13e
+ 1061 0233 43020000 		.4byte	0x243
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 28
+
+
+ 1062 0237 0B       		.uleb128 0xb
+ 1063 0238 01       		.uleb128 0x1
+ 1064 0239 51       		.byte	0x51
+ 1065 023a 02       		.uleb128 0x2
+ 1066 023b 7D       		.byte	0x7d
+ 1067 023c 07       		.sleb128 7
+ 1068 023d 0B       		.uleb128 0xb
+ 1069 023e 01       		.uleb128 0x1
+ 1070 023f 50       		.byte	0x50
+ 1071 0240 01       		.uleb128 0x1
+ 1072 0241 3C       		.byte	0x3c
+ 1073 0242 00       		.byte	0
+ 1074 0243 0A       		.uleb128 0xa
+ 1075 0244 2C000000 		.4byte	.LVL28
+ 1076 0248 3E010000 		.4byte	0x13e
+ 1077 024c 57020000 		.4byte	0x257
+ 1078 0250 0B       		.uleb128 0xb
+ 1079 0251 01       		.uleb128 0x1
+ 1080 0252 51       		.byte	0x51
+ 1081 0253 02       		.uleb128 0x2
+ 1082 0254 74       		.byte	0x74
+ 1083 0255 00       		.sleb128 0
+ 1084 0256 00       		.byte	0
+ 1085 0257 0A       		.uleb128 0xa
+ 1086 0258 3A000000 		.4byte	.LVL29
+ 1087 025c AE000000 		.4byte	0xae
+ 1088 0260 6A020000 		.4byte	0x26a
+ 1089 0264 0B       		.uleb128 0xb
+ 1090 0265 01       		.uleb128 0x1
+ 1091 0266 50       		.byte	0x50
+ 1092 0267 01       		.uleb128 0x1
+ 1093 0268 4B       		.byte	0x4b
+ 1094 0269 00       		.byte	0
+ 1095 026a 0A       		.uleb128 0xa
+ 1096 026b 42000000 		.4byte	.LVL30
+ 1097 026f 3E010000 		.4byte	0x13e
+ 1098 0273 83020000 		.4byte	0x283
+ 1099 0277 0B       		.uleb128 0xb
+ 1100 0278 01       		.uleb128 0x1
+ 1101 0279 51       		.byte	0x51
+ 1102 027a 02       		.uleb128 0x2
+ 1103 027b 74       		.byte	0x74
+ 1104 027c 00       		.sleb128 0
+ 1105 027d 0B       		.uleb128 0xb
+ 1106 027e 01       		.uleb128 0x1
+ 1107 027f 50       		.byte	0x50
+ 1108 0280 01       		.uleb128 0x1
+ 1109 0281 4D       		.byte	0x4d
+ 1110 0282 00       		.byte	0
+ 1111 0283 0A       		.uleb128 0xa
+ 1112 0284 50000000 		.4byte	.LVL31
+ 1113 0288 AE000000 		.4byte	0xae
+ 1114 028c 96020000 		.4byte	0x296
+ 1115 0290 0B       		.uleb128 0xb
+ 1116 0291 01       		.uleb128 0x1
+ 1117 0292 50       		.byte	0x50
+ 1118 0293 01       		.uleb128 0x1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 29
+
+
+ 1119 0294 4D       		.byte	0x4d
+ 1120 0295 00       		.byte	0
+ 1121 0296 0A       		.uleb128 0xa
+ 1122 0297 58000000 		.4byte	.LVL32
+ 1123 029b 3E010000 		.4byte	0x13e
+ 1124 029f AF020000 		.4byte	0x2af
+ 1125 02a3 0B       		.uleb128 0xb
+ 1126 02a4 01       		.uleb128 0x1
+ 1127 02a5 51       		.byte	0x51
+ 1128 02a6 02       		.uleb128 0x2
+ 1129 02a7 74       		.byte	0x74
+ 1130 02a8 00       		.sleb128 0
+ 1131 02a9 0B       		.uleb128 0xb
+ 1132 02aa 01       		.uleb128 0x1
+ 1133 02ab 50       		.byte	0x50
+ 1134 02ac 01       		.uleb128 0x1
+ 1135 02ad 3C       		.byte	0x3c
+ 1136 02ae 00       		.byte	0
+ 1137 02af 0F       		.uleb128 0xf
+ 1138 02b0 70000000 		.4byte	.LVL34
+ 1139 02b4 3E010000 		.4byte	0x13e
+ 1140 02b8 0B       		.uleb128 0xb
+ 1141 02b9 01       		.uleb128 0x1
+ 1142 02ba 51       		.byte	0x51
+ 1143 02bb 02       		.uleb128 0x2
+ 1144 02bc 74       		.byte	0x74
+ 1145 02bd 00       		.sleb128 0
+ 1146 02be 00       		.byte	0
+ 1147 02bf 00       		.byte	0
+ 1148 02c0 10       		.uleb128 0x10
+ 1149 02c1 9E020000 		.4byte	.LASF24
+ 1150 02c5 01       		.byte	0x1
+ 1151 02c6 B2       		.byte	0xb2
+ 1152 02c7 00000000 		.4byte	.LFB37
+ 1153 02cb 98010000 		.4byte	.LFE37-.LFB37
+ 1154 02cf 01       		.uleb128 0x1
+ 1155 02d0 9C       		.byte	0x9c
+ 1156 02d1 0C040000 		.4byte	0x40c
+ 1157 02d5 09       		.uleb128 0x9
+ 1158 02d6 BC000000 		.4byte	.LASF23
+ 1159 02da 01       		.byte	0x1
+ 1160 02db B4       		.byte	0xb4
+ 1161 02dc 6B000000 		.4byte	0x6b
+ 1162 02e0 6E010000 		.4byte	.LLST8
+ 1163 02e4 0E       		.uleb128 0xe
+ 1164 02e5 D1000000 		.4byte	.LASF21
+ 1165 02e9 01       		.byte	0x1
+ 1166 02ea B5       		.byte	0xb5
+ 1167 02eb 6B000000 		.4byte	0x6b
+ 1168 02ef 02       		.uleb128 0x2
+ 1169 02f0 91       		.byte	0x91
+ 1170 02f1 77       		.sleb128 -9
+ 1171 02f2 09       		.uleb128 0x9
+ 1172 02f3 16010000 		.4byte	.LASF22
+ 1173 02f7 01       		.byte	0x1
+ 1174 02f8 B6       		.byte	0xb6
+ 1175 02f9 6B000000 		.4byte	0x6b
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 30
+
+
+ 1176 02fd 8D010000 		.4byte	.LLST9
+ 1177 0301 0C       		.uleb128 0xc
+ 1178 0302 0E000000 		.4byte	.LVL48
+ 1179 0306 E5010000 		.4byte	0x1e5
+ 1180 030a 0C       		.uleb128 0xc
+ 1181 030b 26000000 		.4byte	.LVL50
+ 1182 030f AE000000 		.4byte	0xae
+ 1183 0313 0C       		.uleb128 0xc
+ 1184 0314 40000000 		.4byte	.LVL52
+ 1185 0318 AE000000 		.4byte	0xae
+ 1186 031c 0A       		.uleb128 0xa
+ 1187 031d 52000000 		.4byte	.LVL55
+ 1188 0321 3E010000 		.4byte	0x13e
+ 1189 0325 30030000 		.4byte	0x330
+ 1190 0329 0B       		.uleb128 0xb
+ 1191 032a 01       		.uleb128 0x1
+ 1192 032b 51       		.byte	0x51
+ 1193 032c 02       		.uleb128 0x2
+ 1194 032d 7D       		.byte	0x7d
+ 1195 032e 07       		.sleb128 7
+ 1196 032f 00       		.byte	0
+ 1197 0330 0C       		.uleb128 0xc
+ 1198 0331 70000000 		.4byte	.LVL58
+ 1199 0335 AE000000 		.4byte	0xae
+ 1200 0339 0A       		.uleb128 0xa
+ 1201 033a 82000000 		.4byte	.LVL61
+ 1202 033e 3E010000 		.4byte	0x13e
+ 1203 0342 4D030000 		.4byte	0x34d
+ 1204 0346 0B       		.uleb128 0xb
+ 1205 0347 01       		.uleb128 0x1
+ 1206 0348 51       		.byte	0x51
+ 1207 0349 02       		.uleb128 0x2
+ 1208 034a 7D       		.byte	0x7d
+ 1209 034b 07       		.sleb128 7
+ 1210 034c 00       		.byte	0
+ 1211 034d 0C       		.uleb128 0xc
+ 1212 034e A0000000 		.4byte	.LVL64
+ 1213 0352 AE000000 		.4byte	0xae
+ 1214 0356 0A       		.uleb128 0xa
+ 1215 0357 B2000000 		.4byte	.LVL67
+ 1216 035b 3E010000 		.4byte	0x13e
+ 1217 035f 6A030000 		.4byte	0x36a
+ 1218 0363 0B       		.uleb128 0xb
+ 1219 0364 01       		.uleb128 0x1
+ 1220 0365 51       		.byte	0x51
+ 1221 0366 02       		.uleb128 0x2
+ 1222 0367 7D       		.byte	0x7d
+ 1223 0368 07       		.sleb128 7
+ 1224 0369 00       		.byte	0
+ 1225 036a 0C       		.uleb128 0xc
+ 1226 036b CC000000 		.4byte	.LVL70
+ 1227 036f AE000000 		.4byte	0xae
+ 1228 0373 0A       		.uleb128 0xa
+ 1229 0374 DE000000 		.4byte	.LVL73
+ 1230 0378 3E010000 		.4byte	0x13e
+ 1231 037c 87030000 		.4byte	0x387
+ 1232 0380 0B       		.uleb128 0xb
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 31
+
+
+ 1233 0381 01       		.uleb128 0x1
+ 1234 0382 51       		.byte	0x51
+ 1235 0383 02       		.uleb128 0x2
+ 1236 0384 7D       		.byte	0x7d
+ 1237 0385 07       		.sleb128 7
+ 1238 0386 00       		.byte	0
+ 1239 0387 0C       		.uleb128 0xc
+ 1240 0388 FC000000 		.4byte	.LVL76
+ 1241 038c AE000000 		.4byte	0xae
+ 1242 0390 0A       		.uleb128 0xa
+ 1243 0391 0E010000 		.4byte	.LVL79
+ 1244 0395 3E010000 		.4byte	0x13e
+ 1245 0399 A4030000 		.4byte	0x3a4
+ 1246 039d 0B       		.uleb128 0xb
+ 1247 039e 01       		.uleb128 0x1
+ 1248 039f 51       		.byte	0x51
+ 1249 03a0 02       		.uleb128 0x2
+ 1250 03a1 7D       		.byte	0x7d
+ 1251 03a2 07       		.sleb128 7
+ 1252 03a3 00       		.byte	0
+ 1253 03a4 0A       		.uleb128 0xa
+ 1254 03a5 24010000 		.4byte	.LVL82
+ 1255 03a9 AE000000 		.4byte	0xae
+ 1256 03ad B7030000 		.4byte	0x3b7
+ 1257 03b1 0B       		.uleb128 0xb
+ 1258 03b2 01       		.uleb128 0x1
+ 1259 03b3 51       		.byte	0x51
+ 1260 03b4 01       		.uleb128 0x1
+ 1261 03b5 31       		.byte	0x31
+ 1262 03b6 00       		.byte	0
+ 1263 03b7 0A       		.uleb128 0xa
+ 1264 03b8 36010000 		.4byte	.LVL85
+ 1265 03bc 3E010000 		.4byte	0x13e
+ 1266 03c0 CB030000 		.4byte	0x3cb
+ 1267 03c4 0B       		.uleb128 0xb
+ 1268 03c5 01       		.uleb128 0x1
+ 1269 03c6 51       		.byte	0x51
+ 1270 03c7 02       		.uleb128 0x2
+ 1271 03c8 7D       		.byte	0x7d
+ 1272 03c9 07       		.sleb128 7
+ 1273 03ca 00       		.byte	0
+ 1274 03cb 0A       		.uleb128 0xa
+ 1275 03cc 4C010000 		.4byte	.LVL88
+ 1276 03d0 AE000000 		.4byte	0xae
+ 1277 03d4 DE030000 		.4byte	0x3de
+ 1278 03d8 0B       		.uleb128 0xb
+ 1279 03d9 01       		.uleb128 0x1
+ 1280 03da 51       		.byte	0x51
+ 1281 03db 01       		.uleb128 0x1
+ 1282 03dc 31       		.byte	0x31
+ 1283 03dd 00       		.byte	0
+ 1284 03de 0A       		.uleb128 0xa
+ 1285 03df 5E010000 		.4byte	.LVL91
+ 1286 03e3 3E010000 		.4byte	0x13e
+ 1287 03e7 F2030000 		.4byte	0x3f2
+ 1288 03eb 0B       		.uleb128 0xb
+ 1289 03ec 01       		.uleb128 0x1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 32
+
+
+ 1290 03ed 51       		.byte	0x51
+ 1291 03ee 02       		.uleb128 0x2
+ 1292 03ef 7D       		.byte	0x7d
+ 1293 03f0 07       		.sleb128 7
+ 1294 03f1 00       		.byte	0
+ 1295 03f2 0C       		.uleb128 0xc
+ 1296 03f3 78010000 		.4byte	.LVL94
+ 1297 03f7 AE000000 		.4byte	0xae
+ 1298 03fb 0F       		.uleb128 0xf
+ 1299 03fc 90010000 		.4byte	.LVL97
+ 1300 0400 3E010000 		.4byte	0x13e
+ 1301 0404 0B       		.uleb128 0xb
+ 1302 0405 01       		.uleb128 0x1
+ 1303 0406 51       		.byte	0x51
+ 1304 0407 02       		.uleb128 0x2
+ 1305 0408 7D       		.byte	0x7d
+ 1306 0409 07       		.sleb128 7
+ 1307 040a 00       		.byte	0
+ 1308 040b 00       		.byte	0
+ 1309 040c 11       		.uleb128 0x11
+ 1310 040d 64020000 		.4byte	.LASF25
+ 1311 0411 01       		.byte	0x1
+ 1312 0412 AC01     		.2byte	0x1ac
+ 1313 0414 00000000 		.4byte	.LFB38
+ 1314 0418 CC000000 		.4byte	.LFE38-.LFB38
+ 1315 041c 01       		.uleb128 0x1
+ 1316 041d 9C       		.byte	0x9c
+ 1317 041e F4040000 		.4byte	0x4f4
+ 1318 0422 12       		.uleb128 0x12
+ 1319 0423 2F000000 		.4byte	.LASF26
+ 1320 0427 01       		.byte	0x1
+ 1321 0428 AC01     		.2byte	0x1ac
+ 1322 042a F4040000 		.4byte	0x4f4
+ 1323 042e 51020000 		.4byte	.LLST10
+ 1324 0432 12       		.uleb128 0x12
+ 1325 0433 78000000 		.4byte	.LASF27
+ 1326 0437 01       		.byte	0x1
+ 1327 0438 AC01     		.2byte	0x1ac
+ 1328 043a F4040000 		.4byte	0x4f4
+ 1329 043e 7D020000 		.4byte	.LLST11
+ 1330 0442 12       		.uleb128 0x12
+ 1331 0443 EC000000 		.4byte	.LASF28
+ 1332 0447 01       		.byte	0x1
+ 1333 0448 AC01     		.2byte	0x1ac
+ 1334 044a F4040000 		.4byte	0x4f4
+ 1335 044e A9020000 		.4byte	.LLST12
+ 1336 0452 13       		.uleb128 0x13
+ 1337 0453 DD000000 		.4byte	.LASF29
+ 1338 0457 01       		.byte	0x1
+ 1339 0458 B001     		.2byte	0x1b0
+ 1340 045a 6B000000 		.4byte	0x6b
+ 1341 045e 02       		.uleb128 0x2
+ 1342 045f 91       		.byte	0x91
+ 1343 0460 67       		.sleb128 -25
+ 1344 0461 0A       		.uleb128 0xa
+ 1345 0462 1A000000 		.4byte	.LVL101
+ 1346 0466 3E010000 		.4byte	0x13e
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 33
+
+
+ 1347 046a 7A040000 		.4byte	0x47a
+ 1348 046e 0B       		.uleb128 0xb
+ 1349 046f 01       		.uleb128 0x1
+ 1350 0470 51       		.byte	0x51
+ 1351 0471 02       		.uleb128 0x2
+ 1352 0472 75       		.byte	0x75
+ 1353 0473 00       		.sleb128 0
+ 1354 0474 0B       		.uleb128 0xb
+ 1355 0475 01       		.uleb128 0x1
+ 1356 0476 50       		.byte	0x50
+ 1357 0477 01       		.uleb128 0x1
+ 1358 0478 37       		.byte	0x37
+ 1359 0479 00       		.byte	0
+ 1360 047a 0A       		.uleb128 0xa
+ 1361 047b 26000000 		.4byte	.LVL102
+ 1362 047f 3E010000 		.4byte	0x13e
+ 1363 0483 93040000 		.4byte	0x493
+ 1364 0487 0B       		.uleb128 0xb
+ 1365 0488 01       		.uleb128 0x1
+ 1366 0489 51       		.byte	0x51
+ 1367 048a 02       		.uleb128 0x2
+ 1368 048b 75       		.byte	0x75
+ 1369 048c 00       		.sleb128 0
+ 1370 048d 0B       		.uleb128 0xb
+ 1371 048e 01       		.uleb128 0x1
+ 1372 048f 50       		.byte	0x50
+ 1373 0490 01       		.uleb128 0x1
+ 1374 0491 36       		.byte	0x36
+ 1375 0492 00       		.byte	0
+ 1376 0493 0A       		.uleb128 0xa
+ 1377 0494 56000000 		.4byte	.LVL103
+ 1378 0498 3E010000 		.4byte	0x13e
+ 1379 049c AC040000 		.4byte	0x4ac
+ 1380 04a0 0B       		.uleb128 0xb
+ 1381 04a1 01       		.uleb128 0x1
+ 1382 04a2 51       		.byte	0x51
+ 1383 04a3 02       		.uleb128 0x2
+ 1384 04a4 75       		.byte	0x75
+ 1385 04a5 00       		.sleb128 0
+ 1386 04a6 0B       		.uleb128 0xb
+ 1387 04a7 01       		.uleb128 0x1
+ 1388 04a8 50       		.byte	0x50
+ 1389 04a9 01       		.uleb128 0x1
+ 1390 04aa 39       		.byte	0x39
+ 1391 04ab 00       		.byte	0
+ 1392 04ac 0A       		.uleb128 0xa
+ 1393 04ad 62000000 		.4byte	.LVL104
+ 1394 04b1 3E010000 		.4byte	0x13e
+ 1395 04b5 C5040000 		.4byte	0x4c5
+ 1396 04b9 0B       		.uleb128 0xb
+ 1397 04ba 01       		.uleb128 0x1
+ 1398 04bb 51       		.byte	0x51
+ 1399 04bc 02       		.uleb128 0x2
+ 1400 04bd 75       		.byte	0x75
+ 1401 04be 00       		.sleb128 0
+ 1402 04bf 0B       		.uleb128 0xb
+ 1403 04c0 01       		.uleb128 0x1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 34
+
+
+ 1404 04c1 50       		.byte	0x50
+ 1405 04c2 01       		.uleb128 0x1
+ 1406 04c3 38       		.byte	0x38
+ 1407 04c4 00       		.byte	0
+ 1408 04c5 0A       		.uleb128 0xa
+ 1409 04c6 92000000 		.4byte	.LVL106
+ 1410 04ca 3E010000 		.4byte	0x13e
+ 1411 04ce DE040000 		.4byte	0x4de
+ 1412 04d2 0B       		.uleb128 0xb
+ 1413 04d3 01       		.uleb128 0x1
+ 1414 04d4 51       		.byte	0x51
+ 1415 04d5 02       		.uleb128 0x2
+ 1416 04d6 75       		.byte	0x75
+ 1417 04d7 00       		.sleb128 0
+ 1418 04d8 0B       		.uleb128 0xb
+ 1419 04d9 01       		.uleb128 0x1
+ 1420 04da 50       		.byte	0x50
+ 1421 04db 01       		.uleb128 0x1
+ 1422 04dc 3B       		.byte	0x3b
+ 1423 04dd 00       		.byte	0
+ 1424 04de 0F       		.uleb128 0xf
+ 1425 04df 9E000000 		.4byte	.LVL107
+ 1426 04e3 3E010000 		.4byte	0x13e
+ 1427 04e7 0B       		.uleb128 0xb
+ 1428 04e8 01       		.uleb128 0x1
+ 1429 04e9 51       		.byte	0x51
+ 1430 04ea 02       		.uleb128 0x2
+ 1431 04eb 75       		.byte	0x75
+ 1432 04ec 00       		.sleb128 0
+ 1433 04ed 0B       		.uleb128 0xb
+ 1434 04ee 01       		.uleb128 0x1
+ 1435 04ef 50       		.byte	0x50
+ 1436 04f0 01       		.uleb128 0x1
+ 1437 04f1 3A       		.byte	0x3a
+ 1438 04f2 00       		.byte	0
+ 1439 04f3 00       		.byte	0
+ 1440 04f4 05       		.uleb128 0x5
+ 1441 04f5 04       		.byte	0x4
+ 1442 04f6 81000000 		.4byte	0x81
+ 1443 04fa 14       		.uleb128 0x14
+ 1444 04fb 17000000 		.4byte	.LASF37
+ 1445 04ff 04       		.byte	0x4
+ 1446 0500 BD       		.byte	0xbd
+ 1447 0501 6B000000 		.4byte	0x6b
+ 1448 0505 15       		.uleb128 0x15
+ 1449 0506 00000000 		.4byte	.LASF30
+ 1450 050a 03       		.byte	0x3
+ 1451 050b CC       		.byte	0xcc
+ 1452 050c 76000000 		.4byte	0x76
+ 1453 0510 1F050000 		.4byte	0x51f
+ 1454 0514 16       		.uleb128 0x16
+ 1455 0515 76000000 		.4byte	0x76
+ 1456 0519 16       		.uleb128 0x16
+ 1457 051a 76000000 		.4byte	0x76
+ 1458 051e 00       		.byte	0
+ 1459 051f 15       		.uleb128 0x15
+ 1460 0520 60010000 		.4byte	.LASF31
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 35
+
+
+ 1461 0524 03       		.byte	0x3
+ 1462 0525 CF       		.byte	0xcf
+ 1463 0526 76000000 		.4byte	0x76
+ 1464 052a 34050000 		.4byte	0x534
+ 1465 052e 16       		.uleb128 0x16
+ 1466 052f 76000000 		.4byte	0x76
+ 1467 0533 00       		.byte	0
+ 1468 0534 17       		.uleb128 0x17
+ 1469 0535 B6020000 		.4byte	.LASF38
+ 1470 0539 03       		.byte	0x3
+ 1471 053a CE       		.byte	0xce
+ 1472 053b 76000000 		.4byte	0x76
+ 1473 053f 15       		.uleb128 0x15
+ 1474 0540 2B010000 		.4byte	.LASF32
+ 1475 0544 03       		.byte	0x3
+ 1476 0545 CD       		.byte	0xcd
+ 1477 0546 76000000 		.4byte	0x76
+ 1478 054a 59050000 		.4byte	0x559
+ 1479 054e 16       		.uleb128 0x16
+ 1480 054f 76000000 		.4byte	0x76
+ 1481 0553 16       		.uleb128 0x16
+ 1482 0554 76000000 		.4byte	0x76
+ 1483 0558 00       		.byte	0
+ 1484 0559 18       		.uleb128 0x18
+ 1485 055a 4E020000 		.4byte	.LASF39
+ 1486 055e 03       		.byte	0x3
+ 1487 055f D0       		.byte	0xd0
+ 1488 0560 76000000 		.4byte	0x76
+ 1489 0564 16       		.uleb128 0x16
+ 1490 0565 76000000 		.4byte	0x76
+ 1491 0569 00       		.byte	0
+ 1492 056a 00       		.byte	0
+ 1493              		.section	.debug_abbrev,"",%progbits
+ 1494              	.Ldebug_abbrev0:
+ 1495 0000 01       		.uleb128 0x1
+ 1496 0001 11       		.uleb128 0x11
+ 1497 0002 01       		.byte	0x1
+ 1498 0003 25       		.uleb128 0x25
+ 1499 0004 0E       		.uleb128 0xe
+ 1500 0005 13       		.uleb128 0x13
+ 1501 0006 0B       		.uleb128 0xb
+ 1502 0007 03       		.uleb128 0x3
+ 1503 0008 0E       		.uleb128 0xe
+ 1504 0009 1B       		.uleb128 0x1b
+ 1505 000a 0E       		.uleb128 0xe
+ 1506 000b 55       		.uleb128 0x55
+ 1507 000c 17       		.uleb128 0x17
+ 1508 000d 11       		.uleb128 0x11
+ 1509 000e 01       		.uleb128 0x1
+ 1510 000f 10       		.uleb128 0x10
+ 1511 0010 17       		.uleb128 0x17
+ 1512 0011 00       		.byte	0
+ 1513 0012 00       		.byte	0
+ 1514 0013 02       		.uleb128 0x2
+ 1515 0014 24       		.uleb128 0x24
+ 1516 0015 00       		.byte	0
+ 1517 0016 0B       		.uleb128 0xb
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 36
+
+
+ 1518 0017 0B       		.uleb128 0xb
+ 1519 0018 3E       		.uleb128 0x3e
+ 1520 0019 0B       		.uleb128 0xb
+ 1521 001a 03       		.uleb128 0x3
+ 1522 001b 0E       		.uleb128 0xe
+ 1523 001c 00       		.byte	0
+ 1524 001d 00       		.byte	0
+ 1525 001e 03       		.uleb128 0x3
+ 1526 001f 24       		.uleb128 0x24
+ 1527 0020 00       		.byte	0
+ 1528 0021 0B       		.uleb128 0xb
+ 1529 0022 0B       		.uleb128 0xb
+ 1530 0023 3E       		.uleb128 0x3e
+ 1531 0024 0B       		.uleb128 0xb
+ 1532 0025 03       		.uleb128 0x3
+ 1533 0026 08       		.uleb128 0x8
+ 1534 0027 00       		.byte	0
+ 1535 0028 00       		.byte	0
+ 1536 0029 04       		.uleb128 0x4
+ 1537 002a 16       		.uleb128 0x16
+ 1538 002b 00       		.byte	0
+ 1539 002c 03       		.uleb128 0x3
+ 1540 002d 0E       		.uleb128 0xe
+ 1541 002e 3A       		.uleb128 0x3a
+ 1542 002f 0B       		.uleb128 0xb
+ 1543 0030 3B       		.uleb128 0x3b
+ 1544 0031 0B       		.uleb128 0xb
+ 1545 0032 49       		.uleb128 0x49
+ 1546 0033 13       		.uleb128 0x13
+ 1547 0034 00       		.byte	0
+ 1548 0035 00       		.byte	0
+ 1549 0036 05       		.uleb128 0x5
+ 1550 0037 0F       		.uleb128 0xf
+ 1551 0038 00       		.byte	0
+ 1552 0039 0B       		.uleb128 0xb
+ 1553 003a 0B       		.uleb128 0xb
+ 1554 003b 49       		.uleb128 0x49
+ 1555 003c 13       		.uleb128 0x13
+ 1556 003d 00       		.byte	0
+ 1557 003e 00       		.byte	0
+ 1558 003f 06       		.uleb128 0x6
+ 1559 0040 2E       		.uleb128 0x2e
+ 1560 0041 01       		.byte	0x1
+ 1561 0042 03       		.uleb128 0x3
+ 1562 0043 0E       		.uleb128 0xe
+ 1563 0044 3A       		.uleb128 0x3a
+ 1564 0045 0B       		.uleb128 0xb
+ 1565 0046 3B       		.uleb128 0x3b
+ 1566 0047 0B       		.uleb128 0xb
+ 1567 0048 27       		.uleb128 0x27
+ 1568 0049 19       		.uleb128 0x19
+ 1569 004a 49       		.uleb128 0x49
+ 1570 004b 13       		.uleb128 0x13
+ 1571 004c 11       		.uleb128 0x11
+ 1572 004d 01       		.uleb128 0x1
+ 1573 004e 12       		.uleb128 0x12
+ 1574 004f 06       		.uleb128 0x6
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 37
+
+
+ 1575 0050 40       		.uleb128 0x40
+ 1576 0051 18       		.uleb128 0x18
+ 1577 0052 9742     		.uleb128 0x2117
+ 1578 0054 19       		.uleb128 0x19
+ 1579 0055 01       		.uleb128 0x1
+ 1580 0056 13       		.uleb128 0x13
+ 1581 0057 00       		.byte	0
+ 1582 0058 00       		.byte	0
+ 1583 0059 07       		.uleb128 0x7
+ 1584 005a 05       		.uleb128 0x5
+ 1585 005b 00       		.byte	0
+ 1586 005c 03       		.uleb128 0x3
+ 1587 005d 08       		.uleb128 0x8
+ 1588 005e 3A       		.uleb128 0x3a
+ 1589 005f 0B       		.uleb128 0xb
+ 1590 0060 3B       		.uleb128 0x3b
+ 1591 0061 0B       		.uleb128 0xb
+ 1592 0062 49       		.uleb128 0x49
+ 1593 0063 13       		.uleb128 0x13
+ 1594 0064 02       		.uleb128 0x2
+ 1595 0065 17       		.uleb128 0x17
+ 1596 0066 00       		.byte	0
+ 1597 0067 00       		.byte	0
+ 1598 0068 08       		.uleb128 0x8
+ 1599 0069 05       		.uleb128 0x5
+ 1600 006a 00       		.byte	0
+ 1601 006b 03       		.uleb128 0x3
+ 1602 006c 0E       		.uleb128 0xe
+ 1603 006d 3A       		.uleb128 0x3a
+ 1604 006e 0B       		.uleb128 0xb
+ 1605 006f 3B       		.uleb128 0x3b
+ 1606 0070 0B       		.uleb128 0xb
+ 1607 0071 49       		.uleb128 0x49
+ 1608 0072 13       		.uleb128 0x13
+ 1609 0073 02       		.uleb128 0x2
+ 1610 0074 17       		.uleb128 0x17
+ 1611 0075 00       		.byte	0
+ 1612 0076 00       		.byte	0
+ 1613 0077 09       		.uleb128 0x9
+ 1614 0078 34       		.uleb128 0x34
+ 1615 0079 00       		.byte	0
+ 1616 007a 03       		.uleb128 0x3
+ 1617 007b 0E       		.uleb128 0xe
+ 1618 007c 3A       		.uleb128 0x3a
+ 1619 007d 0B       		.uleb128 0xb
+ 1620 007e 3B       		.uleb128 0x3b
+ 1621 007f 0B       		.uleb128 0xb
+ 1622 0080 49       		.uleb128 0x49
+ 1623 0081 13       		.uleb128 0x13
+ 1624 0082 02       		.uleb128 0x2
+ 1625 0083 17       		.uleb128 0x17
+ 1626 0084 00       		.byte	0
+ 1627 0085 00       		.byte	0
+ 1628 0086 0A       		.uleb128 0xa
+ 1629 0087 898201   		.uleb128 0x4109
+ 1630 008a 01       		.byte	0x1
+ 1631 008b 11       		.uleb128 0x11
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 38
+
+
+ 1632 008c 01       		.uleb128 0x1
+ 1633 008d 31       		.uleb128 0x31
+ 1634 008e 13       		.uleb128 0x13
+ 1635 008f 01       		.uleb128 0x1
+ 1636 0090 13       		.uleb128 0x13
+ 1637 0091 00       		.byte	0
+ 1638 0092 00       		.byte	0
+ 1639 0093 0B       		.uleb128 0xb
+ 1640 0094 8A8201   		.uleb128 0x410a
+ 1641 0097 00       		.byte	0
+ 1642 0098 02       		.uleb128 0x2
+ 1643 0099 18       		.uleb128 0x18
+ 1644 009a 9142     		.uleb128 0x2111
+ 1645 009c 18       		.uleb128 0x18
+ 1646 009d 00       		.byte	0
+ 1647 009e 00       		.byte	0
+ 1648 009f 0C       		.uleb128 0xc
+ 1649 00a0 898201   		.uleb128 0x4109
+ 1650 00a3 00       		.byte	0
+ 1651 00a4 11       		.uleb128 0x11
+ 1652 00a5 01       		.uleb128 0x1
+ 1653 00a6 31       		.uleb128 0x31
+ 1654 00a7 13       		.uleb128 0x13
+ 1655 00a8 00       		.byte	0
+ 1656 00a9 00       		.byte	0
+ 1657 00aa 0D       		.uleb128 0xd
+ 1658 00ab 2E       		.uleb128 0x2e
+ 1659 00ac 01       		.byte	0x1
+ 1660 00ad 3F       		.uleb128 0x3f
+ 1661 00ae 19       		.uleb128 0x19
+ 1662 00af 03       		.uleb128 0x3
+ 1663 00b0 0E       		.uleb128 0xe
+ 1664 00b1 3A       		.uleb128 0x3a
+ 1665 00b2 0B       		.uleb128 0xb
+ 1666 00b3 3B       		.uleb128 0x3b
+ 1667 00b4 0B       		.uleb128 0xb
+ 1668 00b5 27       		.uleb128 0x27
+ 1669 00b6 19       		.uleb128 0x19
+ 1670 00b7 49       		.uleb128 0x49
+ 1671 00b8 13       		.uleb128 0x13
+ 1672 00b9 11       		.uleb128 0x11
+ 1673 00ba 01       		.uleb128 0x1
+ 1674 00bb 12       		.uleb128 0x12
+ 1675 00bc 06       		.uleb128 0x6
+ 1676 00bd 40       		.uleb128 0x40
+ 1677 00be 18       		.uleb128 0x18
+ 1678 00bf 9742     		.uleb128 0x2117
+ 1679 00c1 19       		.uleb128 0x19
+ 1680 00c2 01       		.uleb128 0x1
+ 1681 00c3 13       		.uleb128 0x13
+ 1682 00c4 00       		.byte	0
+ 1683 00c5 00       		.byte	0
+ 1684 00c6 0E       		.uleb128 0xe
+ 1685 00c7 34       		.uleb128 0x34
+ 1686 00c8 00       		.byte	0
+ 1687 00c9 03       		.uleb128 0x3
+ 1688 00ca 0E       		.uleb128 0xe
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 39
+
+
+ 1689 00cb 3A       		.uleb128 0x3a
+ 1690 00cc 0B       		.uleb128 0xb
+ 1691 00cd 3B       		.uleb128 0x3b
+ 1692 00ce 0B       		.uleb128 0xb
+ 1693 00cf 49       		.uleb128 0x49
+ 1694 00d0 13       		.uleb128 0x13
+ 1695 00d1 02       		.uleb128 0x2
+ 1696 00d2 18       		.uleb128 0x18
+ 1697 00d3 00       		.byte	0
+ 1698 00d4 00       		.byte	0
+ 1699 00d5 0F       		.uleb128 0xf
+ 1700 00d6 898201   		.uleb128 0x4109
+ 1701 00d9 01       		.byte	0x1
+ 1702 00da 11       		.uleb128 0x11
+ 1703 00db 01       		.uleb128 0x1
+ 1704 00dc 31       		.uleb128 0x31
+ 1705 00dd 13       		.uleb128 0x13
+ 1706 00de 00       		.byte	0
+ 1707 00df 00       		.byte	0
+ 1708 00e0 10       		.uleb128 0x10
+ 1709 00e1 2E       		.uleb128 0x2e
+ 1710 00e2 01       		.byte	0x1
+ 1711 00e3 3F       		.uleb128 0x3f
+ 1712 00e4 19       		.uleb128 0x19
+ 1713 00e5 03       		.uleb128 0x3
+ 1714 00e6 0E       		.uleb128 0xe
+ 1715 00e7 3A       		.uleb128 0x3a
+ 1716 00e8 0B       		.uleb128 0xb
+ 1717 00e9 3B       		.uleb128 0x3b
+ 1718 00ea 0B       		.uleb128 0xb
+ 1719 00eb 27       		.uleb128 0x27
+ 1720 00ec 19       		.uleb128 0x19
+ 1721 00ed 11       		.uleb128 0x11
+ 1722 00ee 01       		.uleb128 0x1
+ 1723 00ef 12       		.uleb128 0x12
+ 1724 00f0 06       		.uleb128 0x6
+ 1725 00f1 40       		.uleb128 0x40
+ 1726 00f2 18       		.uleb128 0x18
+ 1727 00f3 9742     		.uleb128 0x2117
+ 1728 00f5 19       		.uleb128 0x19
+ 1729 00f6 01       		.uleb128 0x1
+ 1730 00f7 13       		.uleb128 0x13
+ 1731 00f8 00       		.byte	0
+ 1732 00f9 00       		.byte	0
+ 1733 00fa 11       		.uleb128 0x11
+ 1734 00fb 2E       		.uleb128 0x2e
+ 1735 00fc 01       		.byte	0x1
+ 1736 00fd 3F       		.uleb128 0x3f
+ 1737 00fe 19       		.uleb128 0x19
+ 1738 00ff 03       		.uleb128 0x3
+ 1739 0100 0E       		.uleb128 0xe
+ 1740 0101 3A       		.uleb128 0x3a
+ 1741 0102 0B       		.uleb128 0xb
+ 1742 0103 3B       		.uleb128 0x3b
+ 1743 0104 05       		.uleb128 0x5
+ 1744 0105 27       		.uleb128 0x27
+ 1745 0106 19       		.uleb128 0x19
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 40
+
+
+ 1746 0107 11       		.uleb128 0x11
+ 1747 0108 01       		.uleb128 0x1
+ 1748 0109 12       		.uleb128 0x12
+ 1749 010a 06       		.uleb128 0x6
+ 1750 010b 40       		.uleb128 0x40
+ 1751 010c 18       		.uleb128 0x18
+ 1752 010d 9742     		.uleb128 0x2117
+ 1753 010f 19       		.uleb128 0x19
+ 1754 0110 01       		.uleb128 0x1
+ 1755 0111 13       		.uleb128 0x13
+ 1756 0112 00       		.byte	0
+ 1757 0113 00       		.byte	0
+ 1758 0114 12       		.uleb128 0x12
+ 1759 0115 05       		.uleb128 0x5
+ 1760 0116 00       		.byte	0
+ 1761 0117 03       		.uleb128 0x3
+ 1762 0118 0E       		.uleb128 0xe
+ 1763 0119 3A       		.uleb128 0x3a
+ 1764 011a 0B       		.uleb128 0xb
+ 1765 011b 3B       		.uleb128 0x3b
+ 1766 011c 05       		.uleb128 0x5
+ 1767 011d 49       		.uleb128 0x49
+ 1768 011e 13       		.uleb128 0x13
+ 1769 011f 02       		.uleb128 0x2
+ 1770 0120 17       		.uleb128 0x17
+ 1771 0121 00       		.byte	0
+ 1772 0122 00       		.byte	0
+ 1773 0123 13       		.uleb128 0x13
+ 1774 0124 34       		.uleb128 0x34
+ 1775 0125 00       		.byte	0
+ 1776 0126 03       		.uleb128 0x3
+ 1777 0127 0E       		.uleb128 0xe
+ 1778 0128 3A       		.uleb128 0x3a
+ 1779 0129 0B       		.uleb128 0xb
+ 1780 012a 3B       		.uleb128 0x3b
+ 1781 012b 05       		.uleb128 0x5
+ 1782 012c 49       		.uleb128 0x49
+ 1783 012d 13       		.uleb128 0x13
+ 1784 012e 02       		.uleb128 0x2
+ 1785 012f 18       		.uleb128 0x18
+ 1786 0130 00       		.byte	0
+ 1787 0131 00       		.byte	0
+ 1788 0132 14       		.uleb128 0x14
+ 1789 0133 34       		.uleb128 0x34
+ 1790 0134 00       		.byte	0
+ 1791 0135 03       		.uleb128 0x3
+ 1792 0136 0E       		.uleb128 0xe
+ 1793 0137 3A       		.uleb128 0x3a
+ 1794 0138 0B       		.uleb128 0xb
+ 1795 0139 3B       		.uleb128 0x3b
+ 1796 013a 0B       		.uleb128 0xb
+ 1797 013b 49       		.uleb128 0x49
+ 1798 013c 13       		.uleb128 0x13
+ 1799 013d 3F       		.uleb128 0x3f
+ 1800 013e 19       		.uleb128 0x19
+ 1801 013f 3C       		.uleb128 0x3c
+ 1802 0140 19       		.uleb128 0x19
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 41
+
+
+ 1803 0141 00       		.byte	0
+ 1804 0142 00       		.byte	0
+ 1805 0143 15       		.uleb128 0x15
+ 1806 0144 2E       		.uleb128 0x2e
+ 1807 0145 01       		.byte	0x1
+ 1808 0146 3F       		.uleb128 0x3f
+ 1809 0147 19       		.uleb128 0x19
+ 1810 0148 03       		.uleb128 0x3
+ 1811 0149 0E       		.uleb128 0xe
+ 1812 014a 3A       		.uleb128 0x3a
+ 1813 014b 0B       		.uleb128 0xb
+ 1814 014c 3B       		.uleb128 0x3b
+ 1815 014d 0B       		.uleb128 0xb
+ 1816 014e 27       		.uleb128 0x27
+ 1817 014f 19       		.uleb128 0x19
+ 1818 0150 49       		.uleb128 0x49
+ 1819 0151 13       		.uleb128 0x13
+ 1820 0152 3C       		.uleb128 0x3c
+ 1821 0153 19       		.uleb128 0x19
+ 1822 0154 01       		.uleb128 0x1
+ 1823 0155 13       		.uleb128 0x13
+ 1824 0156 00       		.byte	0
+ 1825 0157 00       		.byte	0
+ 1826 0158 16       		.uleb128 0x16
+ 1827 0159 05       		.uleb128 0x5
+ 1828 015a 00       		.byte	0
+ 1829 015b 49       		.uleb128 0x49
+ 1830 015c 13       		.uleb128 0x13
+ 1831 015d 00       		.byte	0
+ 1832 015e 00       		.byte	0
+ 1833 015f 17       		.uleb128 0x17
+ 1834 0160 2E       		.uleb128 0x2e
+ 1835 0161 00       		.byte	0
+ 1836 0162 3F       		.uleb128 0x3f
+ 1837 0163 19       		.uleb128 0x19
+ 1838 0164 03       		.uleb128 0x3
+ 1839 0165 0E       		.uleb128 0xe
+ 1840 0166 3A       		.uleb128 0x3a
+ 1841 0167 0B       		.uleb128 0xb
+ 1842 0168 3B       		.uleb128 0x3b
+ 1843 0169 0B       		.uleb128 0xb
+ 1844 016a 27       		.uleb128 0x27
+ 1845 016b 19       		.uleb128 0x19
+ 1846 016c 49       		.uleb128 0x49
+ 1847 016d 13       		.uleb128 0x13
+ 1848 016e 3C       		.uleb128 0x3c
+ 1849 016f 19       		.uleb128 0x19
+ 1850 0170 00       		.byte	0
+ 1851 0171 00       		.byte	0
+ 1852 0172 18       		.uleb128 0x18
+ 1853 0173 2E       		.uleb128 0x2e
+ 1854 0174 01       		.byte	0x1
+ 1855 0175 3F       		.uleb128 0x3f
+ 1856 0176 19       		.uleb128 0x19
+ 1857 0177 03       		.uleb128 0x3
+ 1858 0178 0E       		.uleb128 0xe
+ 1859 0179 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 42
+
+
+ 1860 017a 0B       		.uleb128 0xb
+ 1861 017b 3B       		.uleb128 0x3b
+ 1862 017c 0B       		.uleb128 0xb
+ 1863 017d 27       		.uleb128 0x27
+ 1864 017e 19       		.uleb128 0x19
+ 1865 017f 49       		.uleb128 0x49
+ 1866 0180 13       		.uleb128 0x13
+ 1867 0181 3C       		.uleb128 0x3c
+ 1868 0182 19       		.uleb128 0x19
+ 1869 0183 00       		.byte	0
+ 1870 0184 00       		.byte	0
+ 1871 0185 00       		.byte	0
+ 1872              		.section	.debug_loc,"",%progbits
+ 1873              	.Ldebug_loc0:
+ 1874              	.LLST0:
+ 1875 0000 00000000 		.4byte	.LVL0
+ 1876 0004 08000000 		.4byte	.LVL2
+ 1877 0008 0100     		.2byte	0x1
+ 1878 000a 50       		.byte	0x50
+ 1879 000b 08000000 		.4byte	.LVL2
+ 1880 000f 28000000 		.4byte	.LFE34
+ 1881 0013 0400     		.2byte	0x4
+ 1882 0015 F3       		.byte	0xf3
+ 1883 0016 01       		.uleb128 0x1
+ 1884 0017 50       		.byte	0x50
+ 1885 0018 9F       		.byte	0x9f
+ 1886 0019 00000000 		.4byte	0
+ 1887 001d 00000000 		.4byte	0
+ 1888              	.LLST1:
+ 1889 0021 00000000 		.4byte	.LVL0
+ 1890 0025 0A000000 		.4byte	.LVL3
+ 1891 0029 0100     		.2byte	0x1
+ 1892 002b 51       		.byte	0x51
+ 1893 002c 0A000000 		.4byte	.LVL3
+ 1894 0030 28000000 		.4byte	.LFE34
+ 1895 0034 0400     		.2byte	0x4
+ 1896 0036 F3       		.byte	0xf3
+ 1897 0037 01       		.uleb128 0x1
+ 1898 0038 51       		.byte	0x51
+ 1899 0039 9F       		.byte	0x9f
+ 1900 003a 00000000 		.4byte	0
+ 1901 003e 00000000 		.4byte	0
+ 1902              	.LLST2:
+ 1903 0042 06000000 		.4byte	.LVL1
+ 1904 0046 10000000 		.4byte	.LVL5
+ 1905 004a 0200     		.2byte	0x2
+ 1906 004c 31       		.byte	0x31
+ 1907 004d 9F       		.byte	0x9f
+ 1908 004e 10000000 		.4byte	.LVL5
+ 1909 0052 16000000 		.4byte	.LVL6
+ 1910 0056 0100     		.2byte	0x1
+ 1911 0058 50       		.byte	0x50
+ 1912 0059 26000000 		.4byte	.LVL10
+ 1913 005d 28000000 		.4byte	.LFE34
+ 1914 0061 0100     		.2byte	0x1
+ 1915 0063 50       		.byte	0x50
+ 1916 0064 00000000 		.4byte	0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 43
+
+
+ 1917 0068 00000000 		.4byte	0
+ 1918              	.LLST3:
+ 1919 006c 00000000 		.4byte	.LVL11
+ 1920 0070 08000000 		.4byte	.LVL13
+ 1921 0074 0100     		.2byte	0x1
+ 1922 0076 50       		.byte	0x50
+ 1923 0077 08000000 		.4byte	.LVL13
+ 1924 007b 32000000 		.4byte	.LFE35
+ 1925 007f 0400     		.2byte	0x4
+ 1926 0081 F3       		.byte	0xf3
+ 1927 0082 01       		.uleb128 0x1
+ 1928 0083 50       		.byte	0x50
+ 1929 0084 9F       		.byte	0x9f
+ 1930 0085 00000000 		.4byte	0
+ 1931 0089 00000000 		.4byte	0
+ 1932              	.LLST4:
+ 1933 008d 00000000 		.4byte	.LVL11
+ 1934 0091 0A000000 		.4byte	.LVL14
+ 1935 0095 0100     		.2byte	0x1
+ 1936 0097 51       		.byte	0x51
+ 1937 0098 0A000000 		.4byte	.LVL14
+ 1938 009c 30000000 		.4byte	.LVL23
+ 1939 00a0 0100     		.2byte	0x1
+ 1940 00a2 54       		.byte	0x54
+ 1941 00a3 30000000 		.4byte	.LVL23
+ 1942 00a7 32000000 		.4byte	.LFE35
+ 1943 00ab 0400     		.2byte	0x4
+ 1944 00ad F3       		.byte	0xf3
+ 1945 00ae 01       		.uleb128 0x1
+ 1946 00af 51       		.byte	0x51
+ 1947 00b0 9F       		.byte	0x9f
+ 1948 00b1 00000000 		.4byte	0
+ 1949 00b5 00000000 		.4byte	0
+ 1950              	.LLST5:
+ 1951 00b9 06000000 		.4byte	.LVL12
+ 1952 00bd 10000000 		.4byte	.LVL16
+ 1953 00c1 0200     		.2byte	0x2
+ 1954 00c3 31       		.byte	0x31
+ 1955 00c4 9F       		.byte	0x9f
+ 1956 00c5 10000000 		.4byte	.LVL16
+ 1957 00c9 16000000 		.4byte	.LVL17
+ 1958 00cd 0100     		.2byte	0x1
+ 1959 00cf 50       		.byte	0x50
+ 1960 00d0 30000000 		.4byte	.LVL22
+ 1961 00d4 32000000 		.4byte	.LFE35
+ 1962 00d8 0100     		.2byte	0x1
+ 1963 00da 50       		.byte	0x50
+ 1964 00db 00000000 		.4byte	0
+ 1965 00df 00000000 		.4byte	0
+ 1966              	.LLST6:
+ 1967 00e3 04000000 		.4byte	.LVL24
+ 1968 00e7 96000000 		.4byte	.LVL45
+ 1969 00eb 0200     		.2byte	0x2
+ 1970 00ed 30       		.byte	0x30
+ 1971 00ee 9F       		.byte	0x9f
+ 1972 00ef 96000000 		.4byte	.LVL45
+ 1973 00f3 9A000000 		.4byte	.LFE36
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 44
+
+
+ 1974 00f7 0100     		.2byte	0x1
+ 1975 00f9 50       		.byte	0x50
+ 1976 00fa 00000000 		.4byte	0
+ 1977 00fe 00000000 		.4byte	0
+ 1978              	.LLST7:
+ 1979 0102 0C000000 		.4byte	.LVL25
+ 1980 0106 12000000 		.4byte	.LVL26
+ 1981 010a 0200     		.2byte	0x2
+ 1982 010c 31       		.byte	0x31
+ 1983 010d 9F       		.byte	0x9f
+ 1984 010e 12000000 		.4byte	.LVL26
+ 1985 0112 26000000 		.4byte	.LVL27
+ 1986 0116 0100     		.2byte	0x1
+ 1987 0118 50       		.byte	0x50
+ 1988 0119 58000000 		.4byte	.LVL32
+ 1989 011d 68000000 		.4byte	.LVL33
+ 1990 0121 0100     		.2byte	0x1
+ 1991 0123 50       		.byte	0x50
+ 1992 0124 70000000 		.4byte	.LVL34
+ 1993 0128 82000000 		.4byte	.LVL35
+ 1994 012c 0100     		.2byte	0x1
+ 1995 012e 50       		.byte	0x50
+ 1996 012f 84000000 		.4byte	.LVL36
+ 1997 0133 86000000 		.4byte	.LVL37
+ 1998 0137 0100     		.2byte	0x1
+ 1999 0139 50       		.byte	0x50
+ 2000 013a 88000000 		.4byte	.LVL38
+ 2001 013e 8A000000 		.4byte	.LVL39
+ 2002 0142 0100     		.2byte	0x1
+ 2003 0144 50       		.byte	0x50
+ 2004 0145 8C000000 		.4byte	.LVL40
+ 2005 0149 8E000000 		.4byte	.LVL41
+ 2006 014d 0100     		.2byte	0x1
+ 2007 014f 50       		.byte	0x50
+ 2008 0150 90000000 		.4byte	.LVL42
+ 2009 0154 92000000 		.4byte	.LVL43
+ 2010 0158 0100     		.2byte	0x1
+ 2011 015a 50       		.byte	0x50
+ 2012 015b 94000000 		.4byte	.LVL44
+ 2013 015f 96000000 		.4byte	.LVL45
+ 2014 0163 0100     		.2byte	0x1
+ 2015 0165 50       		.byte	0x50
+ 2016 0166 00000000 		.4byte	0
+ 2017 016a 00000000 		.4byte	0
+ 2018              	.LLST8:
+ 2019 016e 04000000 		.4byte	.LVL46
+ 2020 0172 0E000000 		.4byte	.LVL48
+ 2021 0176 0200     		.2byte	0x2
+ 2022 0178 30       		.byte	0x30
+ 2023 0179 9F       		.byte	0x9f
+ 2024 017a 0E000000 		.4byte	.LVL48
+ 2025 017e 22000000 		.4byte	.LVL49
+ 2026 0182 0100     		.2byte	0x1
+ 2027 0184 50       		.byte	0x50
+ 2028 0185 00000000 		.4byte	0
+ 2029 0189 00000000 		.4byte	0
+ 2030              	.LLST9:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 45
+
+
+ 2031 018d 0A000000 		.4byte	.LVL47
+ 2032 0191 26000000 		.4byte	.LVL50
+ 2033 0195 0200     		.2byte	0x2
+ 2034 0197 31       		.byte	0x31
+ 2035 0198 9F       		.byte	0x9f
+ 2036 0199 26000000 		.4byte	.LVL50
+ 2037 019d 3C000000 		.4byte	.LVL51
+ 2038 01a1 0100     		.2byte	0x1
+ 2039 01a3 50       		.byte	0x50
+ 2040 01a4 40000000 		.4byte	.LVL52
+ 2041 01a8 4A000000 		.4byte	.LVL54
+ 2042 01ac 0100     		.2byte	0x1
+ 2043 01ae 50       		.byte	0x50
+ 2044 01af 52000000 		.4byte	.LVL55
+ 2045 01b3 6C000000 		.4byte	.LVL57
+ 2046 01b7 0100     		.2byte	0x1
+ 2047 01b9 50       		.byte	0x50
+ 2048 01ba 70000000 		.4byte	.LVL58
+ 2049 01be 7A000000 		.4byte	.LVL60
+ 2050 01c2 0100     		.2byte	0x1
+ 2051 01c4 50       		.byte	0x50
+ 2052 01c5 82000000 		.4byte	.LVL61
+ 2053 01c9 9C000000 		.4byte	.LVL63
+ 2054 01cd 0100     		.2byte	0x1
+ 2055 01cf 50       		.byte	0x50
+ 2056 01d0 A0000000 		.4byte	.LVL64
+ 2057 01d4 AA000000 		.4byte	.LVL66
+ 2058 01d8 0100     		.2byte	0x1
+ 2059 01da 50       		.byte	0x50
+ 2060 01db B2000000 		.4byte	.LVL67
+ 2061 01df C8000000 		.4byte	.LVL69
+ 2062 01e3 0100     		.2byte	0x1
+ 2063 01e5 50       		.byte	0x50
+ 2064 01e6 CC000000 		.4byte	.LVL70
+ 2065 01ea D6000000 		.4byte	.LVL72
+ 2066 01ee 0100     		.2byte	0x1
+ 2067 01f0 50       		.byte	0x50
+ 2068 01f1 DE000000 		.4byte	.LVL73
+ 2069 01f5 F8000000 		.4byte	.LVL75
+ 2070 01f9 0100     		.2byte	0x1
+ 2071 01fb 50       		.byte	0x50
+ 2072 01fc FC000000 		.4byte	.LVL76
+ 2073 0200 06010000 		.4byte	.LVL78
+ 2074 0204 0100     		.2byte	0x1
+ 2075 0206 50       		.byte	0x50
+ 2076 0207 0E010000 		.4byte	.LVL79
+ 2077 020b 1E010000 		.4byte	.LVL81
+ 2078 020f 0100     		.2byte	0x1
+ 2079 0211 50       		.byte	0x50
+ 2080 0212 24010000 		.4byte	.LVL82
+ 2081 0216 2E010000 		.4byte	.LVL84
+ 2082 021a 0100     		.2byte	0x1
+ 2083 021c 50       		.byte	0x50
+ 2084 021d 36010000 		.4byte	.LVL85
+ 2085 0221 46010000 		.4byte	.LVL87
+ 2086 0225 0100     		.2byte	0x1
+ 2087 0227 50       		.byte	0x50
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 46
+
+
+ 2088 0228 4C010000 		.4byte	.LVL88
+ 2089 022c 56010000 		.4byte	.LVL90
+ 2090 0230 0100     		.2byte	0x1
+ 2091 0232 50       		.byte	0x50
+ 2092 0233 5E010000 		.4byte	.LVL91
+ 2093 0237 74010000 		.4byte	.LVL93
+ 2094 023b 0100     		.2byte	0x1
+ 2095 023d 50       		.byte	0x50
+ 2096 023e 78010000 		.4byte	.LVL94
+ 2097 0242 88010000 		.4byte	.LVL96
+ 2098 0246 0100     		.2byte	0x1
+ 2099 0248 50       		.byte	0x50
+ 2100 0249 00000000 		.4byte	0
+ 2101 024d 00000000 		.4byte	0
+ 2102              	.LLST10:
+ 2103 0251 00000000 		.4byte	.LVL98
+ 2104 0255 14000000 		.4byte	.LVL99
+ 2105 0259 0100     		.2byte	0x1
+ 2106 025b 50       		.byte	0x50
+ 2107 025c 14000000 		.4byte	.LVL99
+ 2108 0260 C4000000 		.4byte	.LVL109
+ 2109 0264 0100     		.2byte	0x1
+ 2110 0266 57       		.byte	0x57
+ 2111 0267 C4000000 		.4byte	.LVL109
+ 2112 026b CC000000 		.4byte	.LFE38
+ 2113 026f 0400     		.2byte	0x4
+ 2114 0271 F3       		.byte	0xf3
+ 2115 0272 01       		.uleb128 0x1
+ 2116 0273 50       		.byte	0x50
+ 2117 0274 9F       		.byte	0x9f
+ 2118 0275 00000000 		.4byte	0
+ 2119 0279 00000000 		.4byte	0
+ 2120              	.LLST11:
+ 2121 027d 00000000 		.4byte	.LVL98
+ 2122 0281 16000000 		.4byte	.LVL100
+ 2123 0285 0100     		.2byte	0x1
+ 2124 0287 51       		.byte	0x51
+ 2125 0288 16000000 		.4byte	.LVL100
+ 2126 028c 8A000000 		.4byte	.LVL105
+ 2127 0290 0100     		.2byte	0x1
+ 2128 0292 54       		.byte	0x54
+ 2129 0293 8A000000 		.4byte	.LVL105
+ 2130 0297 CC000000 		.4byte	.LFE38
+ 2131 029b 0400     		.2byte	0x4
+ 2132 029d F3       		.byte	0xf3
+ 2133 029e 01       		.uleb128 0x1
+ 2134 029f 51       		.byte	0x51
+ 2135 02a0 9F       		.byte	0x9f
+ 2136 02a1 00000000 		.4byte	0
+ 2137 02a5 00000000 		.4byte	0
+ 2138              	.LLST12:
+ 2139 02a9 00000000 		.4byte	.LVL98
+ 2140 02ad 19000000 		.4byte	.LVL101-1
+ 2141 02b1 0100     		.2byte	0x1
+ 2142 02b3 52       		.byte	0x52
+ 2143 02b4 19000000 		.4byte	.LVL101-1
+ 2144 02b8 C4000000 		.4byte	.LVL108
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 47
+
+
+ 2145 02bc 0100     		.2byte	0x1
+ 2146 02be 56       		.byte	0x56
+ 2147 02bf C4000000 		.4byte	.LVL108
+ 2148 02c3 CC000000 		.4byte	.LFE38
+ 2149 02c7 0400     		.2byte	0x4
+ 2150 02c9 F3       		.byte	0xf3
+ 2151 02ca 01       		.uleb128 0x1
+ 2152 02cb 52       		.byte	0x52
+ 2153 02cc 9F       		.byte	0x9f
+ 2154 02cd 00000000 		.4byte	0
+ 2155 02d1 00000000 		.4byte	0
+ 2156              		.section	.debug_aranges,"",%progbits
+ 2157 0000 3C000000 		.4byte	0x3c
+ 2158 0004 0200     		.2byte	0x2
+ 2159 0006 00000000 		.4byte	.Ldebug_info0
+ 2160 000a 04       		.byte	0x4
+ 2161 000b 00       		.byte	0
+ 2162 000c 0000     		.2byte	0
+ 2163 000e 0000     		.2byte	0
+ 2164 0010 00000000 		.4byte	.LFB34
+ 2165 0014 28000000 		.4byte	.LFE34-.LFB34
+ 2166 0018 00000000 		.4byte	.LFB35
+ 2167 001c 32000000 		.4byte	.LFE35-.LFB35
+ 2168 0020 00000000 		.4byte	.LFB36
+ 2169 0024 9A000000 		.4byte	.LFE36-.LFB36
+ 2170 0028 00000000 		.4byte	.LFB37
+ 2171 002c 98010000 		.4byte	.LFE37-.LFB37
+ 2172 0030 00000000 		.4byte	.LFB38
+ 2173 0034 CC000000 		.4byte	.LFE38-.LFB38
+ 2174 0038 00000000 		.4byte	0
+ 2175 003c 00000000 		.4byte	0
+ 2176              		.section	.debug_ranges,"",%progbits
+ 2177              	.Ldebug_ranges0:
+ 2178 0000 00000000 		.4byte	.LFB34
+ 2179 0004 28000000 		.4byte	.LFE34
+ 2180 0008 00000000 		.4byte	.LFB35
+ 2181 000c 32000000 		.4byte	.LFE35
+ 2182 0010 00000000 		.4byte	.LFB36
+ 2183 0014 9A000000 		.4byte	.LFE36
+ 2184 0018 00000000 		.4byte	.LFB37
+ 2185 001c 98010000 		.4byte	.LFE37
+ 2186 0020 00000000 		.4byte	.LFB38
+ 2187 0024 CC000000 		.4byte	.LFE38
+ 2188 0028 00000000 		.4byte	0
+ 2189 002c 00000000 		.4byte	0
+ 2190              		.section	.debug_line,"",%progbits
+ 2191              	.Ldebug_line0:
+ 2192 0000 56010000 		.section	.debug_str,"MS",%progbits,1
+ 2192      02006E00 
+ 2192      00000201 
+ 2192      FB0E0D00 
+ 2192      01010101 
+ 2193              	.LASF30:
+ 2194 0000 4932435F 		.ascii	"I2C_I2CMasterSendStart\000"
+ 2194      4932434D 
+ 2194      61737465 
+ 2194      7253656E 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 48
+
+
+ 2194      64537461 
+ 2195              	.LASF37:
+ 2196 0017 6163636C 		.ascii	"acclerometer_configured\000"
+ 2196      65726F6D 
+ 2196      65746572 
+ 2196      5F636F6E 
+ 2196      66696775 
+ 2197              	.LASF26:
+ 2198 002f 78446174 		.ascii	"xData\000"
+ 2198      6100
+ 2199              	.LASF17:
+ 2200 0035 61636B53 		.ascii	"ackStatus\000"
+ 2200      74617475 
+ 2200      7300
+ 2201              	.LASF16:
+ 2202 003f 76616C75 		.ascii	"value\000"
+ 2202      6500
+ 2203              	.LASF36:
+ 2204 0045 41636365 		.ascii	"Accelerometer_RegWrite\000"
+ 2204      6C65726F 
+ 2204      6D657465 
+ 2204      725F5265 
+ 2204      67577269 
+ 2205              	.LASF18:
+ 2206 005c 41636365 		.ascii	"Accelerometer_RegRead\000"
+ 2206      6C65726F 
+ 2206      6D657465 
+ 2206      725F5265 
+ 2206      67526561 
+ 2207              	.LASF12:
+ 2208 0072 666C6F61 		.ascii	"float\000"
+ 2208      7400
+ 2209              	.LASF27:
+ 2210 0078 79446174 		.ascii	"yData\000"
+ 2210      6100
+ 2211              	.LASF1:
+ 2212 007e 756E7369 		.ascii	"unsigned char\000"
+ 2212      676E6564 
+ 2212      20636861 
+ 2212      7200
+ 2213              	.LASF34:
+ 2214 008c 2E5C6163 		.ascii	".\\accelerometer.c\000"
+ 2214      63656C65 
+ 2214      726F6D65 
+ 2214      7465722E 
+ 2214      6300
+ 2215              	.LASF11:
+ 2216 009e 696E7431 		.ascii	"int16\000"
+ 2216      3600
+ 2217              	.LASF5:
+ 2218 00a4 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2218      20756E73 
+ 2218      69676E65 
+ 2218      6420696E 
+ 2218      7400
+ 2219              	.LASF9:
+ 2220 00b6 75696E74 		.ascii	"uint8\000"
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 49
+
+
+ 2220      3800
+ 2221              	.LASF23:
+ 2222 00bc 61636357 		.ascii	"accWorkStatus\000"
+ 2222      6F726B53 
+ 2222      74617475 
+ 2222      7300
+ 2223              	.LASF13:
+ 2224 00ca 646F7562 		.ascii	"double\000"
+ 2224      6C6500
+ 2225              	.LASF21:
+ 2226 00d1 61636352 		.ascii	"accRegValue\000"
+ 2226      65675661 
+ 2226      6C756500 
+ 2227              	.LASF29:
+ 2228 00dd 74656D70 		.ascii	"tempVal\000"
+ 2228      56616C00 
+ 2229              	.LASF10:
+ 2230 00e5 75696E74 		.ascii	"uint32\000"
+ 2230      333200
+ 2231              	.LASF28:
+ 2232 00ec 7A446174 		.ascii	"zData\000"
+ 2232      6100
+ 2233              	.LASF8:
+ 2234 00f2 756E7369 		.ascii	"unsigned int\000"
+ 2234      676E6564 
+ 2234      20696E74 
+ 2234      00
+ 2235              	.LASF7:
+ 2236 00ff 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2236      206C6F6E 
+ 2236      6720756E 
+ 2236      7369676E 
+ 2236      65642069 
+ 2237              	.LASF22:
+ 2238 0116 636F6D6D 		.ascii	"commStatus\000"
+ 2238      53746174 
+ 2238      757300
+ 2239              	.LASF20:
+ 2240 0121 61636353 		.ascii	"accStatus\000"
+ 2240      74617475 
+ 2240      7300
+ 2241              	.LASF32:
+ 2242 012b 4932435F 		.ascii	"I2C_I2CMasterSendRestart\000"
+ 2242      4932434D 
+ 2242      61737465 
+ 2242      7253656E 
+ 2242      64526573 
+ 2243              	.LASF15:
+ 2244 0144 73697A65 		.ascii	"sizetype\000"
+ 2244      74797065 
+ 2244      00
+ 2245              	.LASF6:
+ 2246 014d 6C6F6E67 		.ascii	"long long int\000"
+ 2246      206C6F6E 
+ 2246      6720696E 
+ 2246      7400
+ 2247              	.LASF14:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 50
+
+
+ 2248 015b 63686172 		.ascii	"char\000"
+ 2248      00
+ 2249              	.LASF31:
+ 2250 0160 4932435F 		.ascii	"I2C_I2CMasterWriteByte\000"
+ 2250      4932434D 
+ 2250      61737465 
+ 2250      72577269 
+ 2250      74654279 
+ 2251              	.LASF35:
+ 2252 0177 433A5C55 		.ascii	"C:\\Users\\merlin\\Documents\\PSoC Creator\\Sandbox"
+ 2252      73657273 
+ 2252      5C6D6572 
+ 2252      6C696E5C 
+ 2252      446F6375 
+ 2253 01a5 5F437261 		.ascii	"_CrazyEyes.cydsn\000"
+ 2253      7A794579 
+ 2253      65732E63 
+ 2253      7964736E 
+ 2253      00
+ 2254              	.LASF33:
+ 2255 01b6 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 2255      4320342E 
+ 2255      392E3320 
+ 2255      32303135 
+ 2255      30333033 
+ 2256 01e9 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 2256      20726576 
+ 2256      6973696F 
+ 2256      6E203232 
+ 2256      31323230 
+ 2257 021c 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2257      66756E63 
+ 2257      74696F6E 
+ 2257      2D736563 
+ 2257      74696F6E 
+ 2258              	.LASF2:
+ 2259 0244 73686F72 		.ascii	"short int\000"
+ 2259      7420696E 
+ 2259      7400
+ 2260              	.LASF39:
+ 2261 024e 4932435F 		.ascii	"I2C_I2CMasterReadByte\000"
+ 2261      4932434D 
+ 2261      61737465 
+ 2261      72526561 
+ 2261      64427974 
+ 2262              	.LASF25:
+ 2263 0264 52656164 		.ascii	"ReadAccelerometer\000"
+ 2263      41636365 
+ 2263      6C65726F 
+ 2263      6D657465 
+ 2263      7200
+ 2264              	.LASF4:
+ 2265 0276 6C6F6E67 		.ascii	"long int\000"
+ 2265      20696E74 
+ 2265      00
+ 2266              	.LASF0:
+ 2267 027f 7369676E 		.ascii	"signed char\000"
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccJ1J6Wj.s 			page 51
+
+
+ 2267      65642063 
+ 2267      68617200 
+ 2268              	.LASF3:
+ 2269 028b 73686F72 		.ascii	"short unsigned int\000"
+ 2269      7420756E 
+ 2269      7369676E 
+ 2269      65642069 
+ 2269      6E7400
+ 2270              	.LASF24:
+ 2271 029e 496E6974 		.ascii	"InitializeAccelerometer\000"
+ 2271      69616C69 
+ 2271      7A654163 
+ 2271      63656C65 
+ 2271      726F6D65 
+ 2272              	.LASF38:
+ 2273 02b6 4932435F 		.ascii	"I2C_I2CMasterSendStop\000"
+ 2273      4932434D 
+ 2273      61737465 
+ 2273      7253656E 
+ 2273      6453746F 
+ 2274              	.LASF19:
+ 2275 02cc 41636365 		.ascii	"Accelerometer_SelfTest\000"
+ 2275      6C65726F 
+ 2275      6D657465 
+ 2275      725F5365 
+ 2275      6C665465 
+ 2276              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

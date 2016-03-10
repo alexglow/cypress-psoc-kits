@@ -1,0 +1,2343 @@
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.StackEventHandler,"ax",%progbits
+  18              		.align	2
+  19              		.global	StackEventHandler
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	StackEventHandler, %function
+  23              	StackEventHandler:
+  24              	.LFB37:
+  25              		.file 1 ".\\main.c"
+   1:.\main.c      **** /*******************************************************************************
+   2:.\main.c      **** * File Name: main.c
+   3:.\main.c      **** *
+   4:.\main.c      **** * Version: 1.0
+   5:.\main.c      **** *
+   6:.\main.c      **** * Description:
+   7:.\main.c      **** *  This is source code for the PSoC 4 BLE Find Me Profile Target example project.
+   8:.\main.c      **** *
+   9:.\main.c      **** * Note:
+  10:.\main.c      **** *
+  11:.\main.c      **** * Owners:
+  12:.\main.c      **** *  OLEG@CYPRESS.COM, KRIS@CYPRESS.COM
+  13:.\main.c      **** *
+  14:.\main.c      **** * Related Document:
+  15:.\main.c      **** *
+  16:.\main.c      **** * Hardware Dependency:
+  17:.\main.c      **** *  1. PSoC 4 BLE device
+  18:.\main.c      **** *  2. CY8CKIT-042 BLE Pioneer Kit
+  19:.\main.c      **** *
+  20:.\main.c      **** * Code Tested With:
+  21:.\main.c      **** *  1. PSoC Creator 3.1
+  22:.\main.c      **** *  2. ARM CM3-RVDS
+  23:.\main.c      **** *  3. ARM CM3-GCC
+  24:.\main.c      **** *  4. ARM CM3-MDK
+  25:.\main.c      **** *
+  26:.\main.c      **** ********************************************************************************
+  27:.\main.c      **** * Copyright 2015, Cypress Semiconductor Corporation.  All rights reserved.
+  28:.\main.c      **** * You may use this file only in accordance with the license, terms, conditions,
+  29:.\main.c      **** * disclaimers, and limitations in the end user license agreement accompanying
+  30:.\main.c      **** * the software package with which this file was provided.
+  31:.\main.c      **** *******************************************************************************/
+  32:.\main.c      **** 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 2
+
+
+  33:.\main.c      **** #include <project.h>
+  34:.\main.c      **** #include "ias.h"
+  35:.\main.c      **** #include "common.h"
+  36:.\main.c      **** #include "main.h"
+  37:.\main.c      **** 
+  38:.\main.c      **** 
+  39:.\main.c      **** /*******************************************************************************
+  40:.\main.c      **** * Function Name: StackEventHandler
+  41:.\main.c      **** ********************************************************************************
+  42:.\main.c      **** *
+  43:.\main.c      **** * Summary:
+  44:.\main.c      **** *  This is an event callback function to receive events from the BLE Component.
+  45:.\main.c      **** *
+  46:.\main.c      **** * Parameters:
+  47:.\main.c      **** *  uint8 event:       Event from the CYBLE component
+  48:.\main.c      **** *  void* eventParams: A structure instance for corresponding event type. The
+  49:.\main.c      **** *                     list of event structure is described in the component
+  50:.\main.c      **** *                     datasheet.
+  51:.\main.c      **** *
+  52:.\main.c      **** * Return:
+  53:.\main.c      **** *  None
+  54:.\main.c      **** *
+  55:.\main.c      **** *******************************************************************************/
+  56:.\main.c      **** void StackEventHandler(uint32 event, void *eventParam)
+  57:.\main.c      **** {
+  26              		.loc 1 57 0
+  27              		.cfi_startproc
+  28 0000 80B5     		push	{r7, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 7, -8
+  31              		.cfi_offset 14, -4
+  32 0002 82B0     		sub	sp, sp, #8
+  33              		.cfi_def_cfa_offset 16
+  34 0004 00AF     		add	r7, sp, #0
+  35              		.cfi_def_cfa_register 7
+  36 0006 7860     		str	r0, [r7, #4]
+  37 0008 3960     		str	r1, [r7]
+  58:.\main.c      ****     switch(event)
+  38              		.loc 1 58 0
+  39 000a 7B68     		ldr	r3, [r7, #4]
+  40 000c 262B     		cmp	r3, #38
+  41 000e 36D0     		beq	.L3
+  42 0010 11D8     		bhi	.L4
+  43 0012 212B     		cmp	r3, #33
+  44 0014 44D0     		beq	.L25
+  45 0016 06D8     		bhi	.L6
+  46 0018 032B     		cmp	r3, #3
+  47 001a 43D0     		beq	.L26
+  48 001c 042B     		cmp	r3, #4
+  49 001e 43D0     		beq	.L27
+  50 0020 012B     		cmp	r3, #1
+  51 0022 1BD0     		beq	.L9
+  59:.\main.c      ****     {
+  60:.\main.c      ****         /* Mandatory events to be handled by Find Me Target design */
+  61:.\main.c      ****         case CYBLE_EVT_STACK_ON:
+  62:.\main.c      ****         case CYBLE_EVT_GAP_DEVICE_DISCONNECTED:
+  63:.\main.c      ****             /* Start BLE advertisement for 30 seconds and update link
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 3
+
+
+  64:.\main.c      ****              * status on LEDs */
+  65:.\main.c      ****             CyBle_GappStartAdvertisement(CYBLE_ADVERTISING_FAST);
+  66:.\main.c      ****             Advertising_LED_Write(LED_ON);
+  67:.\main.c      ****             alertLevel = NO_ALERT;
+  68:.\main.c      ****             break;
+  69:.\main.c      **** 
+  70:.\main.c      ****         case CYBLE_EVT_GAP_DEVICE_CONNECTED:
+  71:.\main.c      ****             /* BLE link is established */
+  72:.\main.c      ****             Advertising_LED_Write(LED_OFF);
+  73:.\main.c      ****             Disconnect_LED_Write(LED_OFF);
+  74:.\main.c      ****             break;
+  75:.\main.c      **** 
+  76:.\main.c      ****         case CYBLE_EVT_GAPP_ADVERTISEMENT_START_STOP:
+  77:.\main.c      ****             if(CyBle_GetState() == CYBLE_STATE_DISCONNECTED)
+  78:.\main.c      ****             {
+  79:.\main.c      ****                 /* Advertisement event timed out, go to low power
+  80:.\main.c      ****                  * mode (Stop mode) and wait for device reset
+  81:.\main.c      ****                  * event to wake up the device again */
+  82:.\main.c      ****                 Advertising_LED_Write(LED_OFF);
+  83:.\main.c      ****                 Disconnect_LED_Write(LED_ON);
+  84:.\main.c      ****                 CySysPmSetWakeupPolarity(CY_PM_STOP_WAKEUP_ACTIVE_HIGH);
+  85:.\main.c      ****                 CySysPmStop();
+  86:.\main.c      ****                
+  87:.\main.c      ****                 /* Code execution will not reach here */
+  88:.\main.c      ****             }
+  89:.\main.c      ****             break;
+  90:.\main.c      **** 
+  91:.\main.c      ****         /* Other events that are generated by the BLE Component that
+  92:.\main.c      ****          * are not required for functioning of this design */
+  93:.\main.c      ****         /**********************************************************
+  94:.\main.c      ****         *                       General Events
+  95:.\main.c      ****         ***********************************************************/
+  96:.\main.c      ****         case CYBLE_EVT_HARDWARE_ERROR:    /* This event indicates that some internal HW error has o
+  97:.\main.c      ****             break;
+  98:.\main.c      **** 
+  99:.\main.c      ****         case CYBLE_EVT_HCI_STATUS:
+ 100:.\main.c      ****             break;
+ 101:.\main.c      **** 
+ 102:.\main.c      ****         /**********************************************************
+ 103:.\main.c      ****         *                       GAP Events
+ 104:.\main.c      ****         ***********************************************************/
+ 105:.\main.c      ****         case CYBLE_EVT_GAP_AUTH_REQ:
+ 106:.\main.c      ****             break;
+ 107:.\main.c      **** 
+ 108:.\main.c      ****         case CYBLE_EVT_GAP_PASSKEY_ENTRY_REQUEST:
+ 109:.\main.c      ****             break;
+ 110:.\main.c      **** 
+ 111:.\main.c      ****         case CYBLE_EVT_GAP_PASSKEY_DISPLAY_REQUEST:
+ 112:.\main.c      ****             break;
+ 113:.\main.c      **** 
+ 114:.\main.c      ****         case CYBLE_EVT_GAP_AUTH_COMPLETE:
+ 115:.\main.c      **** 
+ 116:.\main.c      ****             break;
+ 117:.\main.c      ****         case CYBLE_EVT_GAP_AUTH_FAILED:
+ 118:.\main.c      **** 
+ 119:.\main.c      ****             break;
+ 120:.\main.c      **** 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 4
+
+
+ 121:.\main.c      ****         case CYBLE_EVT_GAP_ENCRYPT_CHANGE:
+ 122:.\main.c      ****             break;
+ 123:.\main.c      **** 
+ 124:.\main.c      ****         case CYBLE_EVT_GAPC_CONNECTION_UPDATE_COMPLETE:
+ 125:.\main.c      ****             break;
+ 126:.\main.c      **** 
+ 127:.\main.c      ****         /**********************************************************
+ 128:.\main.c      ****         *                       GATT Events
+ 129:.\main.c      ****         ***********************************************************/
+ 130:.\main.c      ****         case CYBLE_EVT_GATT_CONNECT_IND:
+ 131:.\main.c      ****             break;
+ 132:.\main.c      **** 
+ 133:.\main.c      ****         case CYBLE_EVT_GATT_DISCONNECT_IND:
+ 134:.\main.c      ****             break;
+ 135:.\main.c      **** 
+ 136:.\main.c      ****         case CYBLE_EVT_GATTS_XCNHG_MTU_REQ:
+ 137:.\main.c      ****             break;
+ 138:.\main.c      **** 
+ 139:.\main.c      ****         case CYBLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ:
+ 140:.\main.c      ****             break;
+ 141:.\main.c      **** 
+ 142:.\main.c      ****         /**********************************************************
+ 143:.\main.c      ****         *                       Other Events
+ 144:.\main.c      ****         ***********************************************************/
+ 145:.\main.c      ****         case CYBLE_EVT_PENDING_FLASH_WRITE:
+ 146:.\main.c      ****             break;
+ 147:.\main.c      **** 
+ 148:.\main.c      ****         default:
+ 149:.\main.c      ****             break;
+  52              		.loc 1 149 0
+  53 0024 57E0     		b	.L1
+  54              	.L6:
+  58:.\main.c      ****     switch(event)
+  55              		.loc 1 58 0
+  56 0026 232B     		cmp	r3, #35
+  57 0028 40D0     		beq	.L28
+  58 002a 41D3     		bcc	.L29
+  59 002c 242B     		cmp	r3, #36
+  60 002e 41D0     		beq	.L30
+  61 0030 252B     		cmp	r3, #37
+  62 0032 41D0     		beq	.L31
+  63              		.loc 1 149 0
+  64 0034 4FE0     		b	.L1
+  65              	.L4:
+  58:.\main.c      ****     switch(event)
+  66              		.loc 1 58 0
+  67 0036 412B     		cmp	r3, #65
+  68 0038 40D0     		beq	.L32
+  69 003a 07D8     		bhi	.L15
+  70 003c 282B     		cmp	r3, #40
+  71 003e 0DD0     		beq	.L9
+  72 0040 16D3     		bcc	.L16
+  73 0042 292B     		cmp	r3, #41
+  74 0044 3CD0     		beq	.L33
+  75 0046 2A2B     		cmp	r3, #42
+  76 0048 3CD0     		beq	.L34
+  77              		.loc 1 149 0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 5
+
+
+  78 004a 44E0     		b	.L1
+  79              	.L15:
+  58:.\main.c      ****     switch(event)
+  80              		.loc 1 58 0
+  81 004c 432B     		cmp	r3, #67
+  82 004e 3BD0     		beq	.L35
+  83 0050 3CD3     		bcc	.L36
+  84 0052 572B     		cmp	r3, #87
+  85 0054 3CD0     		beq	.L37
+  86 0056 FA2B     		cmp	r3, #250
+  87 0058 3CD0     		beq	.L38
+  88              		.loc 1 149 0
+  89 005a 3CE0     		b	.L1
+  90              	.L9:
+  65:.\main.c      ****             Advertising_LED_Write(LED_ON);
+  91              		.loc 1 65 0
+  92 005c 0020     		mov	r0, #0
+  93 005e FFF7FEFF 		bl	CyBle_GappStartAdvertisement
+  66:.\main.c      ****             alertLevel = NO_ALERT;
+  94              		.loc 1 66 0
+  95 0062 0020     		mov	r0, #0
+  96 0064 FFF7FEFF 		bl	Advertising_LED_Write
+  67:.\main.c      ****             break;
+  97              		.loc 1 67 0
+  98 0068 1C4B     		ldr	r3, .L39
+  99 006a 0022     		mov	r2, #0
+ 100 006c 1A70     		strb	r2, [r3]
+  68:.\main.c      **** 
+ 101              		.loc 1 68 0
+ 102 006e 32E0     		b	.L1
+ 103              	.L16:
+  72:.\main.c      ****             Disconnect_LED_Write(LED_OFF);
+ 104              		.loc 1 72 0
+ 105 0070 0120     		mov	r0, #1
+ 106 0072 FFF7FEFF 		bl	Advertising_LED_Write
+  73:.\main.c      ****             break;
+ 107              		.loc 1 73 0
+ 108 0076 0120     		mov	r0, #1
+ 109 0078 FFF7FEFF 		bl	Disconnect_LED_Write
+  74:.\main.c      **** 
+ 110              		.loc 1 74 0
+ 111 007c 2BE0     		b	.L1
+ 112              	.L3:
+  77:.\main.c      ****             {
+ 113              		.loc 1 77 0
+ 114 007e 184B     		ldr	r3, .L39+4
+ 115 0080 1B78     		ldrb	r3, [r3]
+ 116 0082 042B     		cmp	r3, #4
+ 117 0084 0BD1     		bne	.L24
+  82:.\main.c      ****                 Disconnect_LED_Write(LED_ON);
+ 118              		.loc 1 82 0
+ 119 0086 0120     		mov	r0, #1
+ 120 0088 FFF7FEFF 		bl	Advertising_LED_Write
+  83:.\main.c      ****                 CySysPmSetWakeupPolarity(CY_PM_STOP_WAKEUP_ACTIVE_HIGH);
+ 121              		.loc 1 83 0
+ 122 008c 0020     		mov	r0, #0
+ 123 008e FFF7FEFF 		bl	Disconnect_LED_Write
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 6
+
+
+  84:.\main.c      ****                 CySysPmStop();
+ 124              		.loc 1 84 0
+ 125 0092 0120     		mov	r0, #1
+ 126 0094 FFF7FEFF 		bl	CySysPmSetWakeupPolarity
+  85:.\main.c      ****                
+ 127              		.loc 1 85 0
+ 128 0098 FFF7FEFF 		bl	CySysPmStop
+  89:.\main.c      **** 
+ 129              		.loc 1 89 0
+ 130 009c 1BE0     		b	.L1
+ 131              	.L24:
+ 132 009e 1AE0     		b	.L1
+ 133              	.L25:
+ 106:.\main.c      **** 
+ 134              		.loc 1 106 0
+ 135 00a0 C046     		mov	r8, r8
+ 136 00a2 18E0     		b	.L1
+ 137              	.L26:
+  97:.\main.c      **** 
+ 138              		.loc 1 97 0
+ 139 00a4 C046     		mov	r8, r8
+ 140 00a6 16E0     		b	.L1
+ 141              	.L27:
+ 100:.\main.c      **** 
+ 142              		.loc 1 100 0
+ 143 00a8 C046     		mov	r8, r8
+ 144 00aa 14E0     		b	.L1
+ 145              	.L28:
+ 112:.\main.c      **** 
+ 146              		.loc 1 112 0
+ 147 00ac C046     		mov	r8, r8
+ 148 00ae 12E0     		b	.L1
+ 149              	.L29:
+ 109:.\main.c      **** 
+ 150              		.loc 1 109 0
+ 151 00b0 C046     		mov	r8, r8
+ 152 00b2 10E0     		b	.L1
+ 153              	.L30:
+ 116:.\main.c      ****         case CYBLE_EVT_GAP_AUTH_FAILED:
+ 154              		.loc 1 116 0
+ 155 00b4 C046     		mov	r8, r8
+ 156 00b6 0EE0     		b	.L1
+ 157              	.L31:
+ 119:.\main.c      **** 
+ 158              		.loc 1 119 0
+ 159 00b8 C046     		mov	r8, r8
+ 160 00ba 0CE0     		b	.L1
+ 161              	.L32:
+ 131:.\main.c      **** 
+ 162              		.loc 1 131 0
+ 163 00bc C046     		mov	r8, r8
+ 164 00be 0AE0     		b	.L1
+ 165              	.L33:
+ 122:.\main.c      **** 
+ 166              		.loc 1 122 0
+ 167 00c0 C046     		mov	r8, r8
+ 168 00c2 08E0     		b	.L1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 7
+
+
+ 169              	.L34:
+ 125:.\main.c      **** 
+ 170              		.loc 1 125 0
+ 171 00c4 C046     		mov	r8, r8
+ 172 00c6 06E0     		b	.L1
+ 173              	.L35:
+ 137:.\main.c      **** 
+ 174              		.loc 1 137 0
+ 175 00c8 C046     		mov	r8, r8
+ 176 00ca 04E0     		b	.L1
+ 177              	.L36:
+ 134:.\main.c      **** 
+ 178              		.loc 1 134 0
+ 179 00cc C046     		mov	r8, r8
+ 180 00ce 02E0     		b	.L1
+ 181              	.L37:
+ 140:.\main.c      **** 
+ 182              		.loc 1 140 0
+ 183 00d0 C046     		mov	r8, r8
+ 184 00d2 00E0     		b	.L1
+ 185              	.L38:
+ 146:.\main.c      **** 
+ 186              		.loc 1 146 0
+ 187 00d4 C046     		mov	r8, r8
+ 188              	.L1:
+ 150:.\main.c      ****     }
+ 151:.\main.c      **** }
+ 189              		.loc 1 151 0
+ 190 00d6 BD46     		mov	sp, r7
+ 191 00d8 02B0     		add	sp, sp, #8
+ 192              		@ sp needed
+ 193 00da 80BD     		pop	{r7, pc}
+ 194              	.L40:
+ 195              		.align	2
+ 196              	.L39:
+ 197 00dc 00000000 		.word	alertLevel
+ 198 00e0 00000000 		.word	cyBle_state
+ 199              		.cfi_endproc
+ 200              	.LFE37:
+ 201              		.size	StackEventHandler, .-StackEventHandler
+ 202              		.section	.text.main,"ax",%progbits
+ 203              		.align	2
+ 204              		.global	main
+ 205              		.code	16
+ 206              		.thumb_func
+ 207              		.type	main, %function
+ 208              	main:
+ 209              	.LFB38:
+ 152:.\main.c      **** 
+ 153:.\main.c      **** 
+ 154:.\main.c      **** /*******************************************************************************
+ 155:.\main.c      **** * Function Name: main
+ 156:.\main.c      **** ********************************************************************************
+ 157:.\main.c      **** *
+ 158:.\main.c      **** * Summary:
+ 159:.\main.c      **** *  Main function.
+ 160:.\main.c      **** *
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 8
+
+
+ 161:.\main.c      **** * Parameters:
+ 162:.\main.c      **** *  None
+ 163:.\main.c      **** *
+ 164:.\main.c      **** * Return:
+ 165:.\main.c      **** *  None
+ 166:.\main.c      **** *
+ 167:.\main.c      **** *******************************************************************************/
+ 168:.\main.c      **** int main()
+ 169:.\main.c      **** {
+ 210              		.loc 1 169 0
+ 211              		.cfi_startproc
+ 212 0000 90B5     		push	{r4, r7, lr}
+ 213              		.cfi_def_cfa_offset 12
+ 214              		.cfi_offset 4, -12
+ 215              		.cfi_offset 7, -8
+ 216              		.cfi_offset 14, -4
+ 217 0002 83B0     		sub	sp, sp, #12
+ 218              		.cfi_def_cfa_offset 24
+ 219 0004 00AF     		add	r7, sp, #0
+ 220              		.cfi_def_cfa_register 7
+ 170:.\main.c      ****     CYBLE_API_RESULT_T apiResult;
+ 171:.\main.c      **** 
+ 172:.\main.c      ****     CyGlobalIntEnable;
+ 221              		.loc 1 172 0
+ 222              	@ 172 ".\main.c" 1
+ 223 0006 62B6     		CPSIE   i
+ 224              	@ 0 "" 2
+ 173:.\main.c      **** 
+ 174:.\main.c      ****     apiResult = CyBle_Start(StackEventHandler);
+ 225              		.loc 1 174 0
+ 226              		.code	16
+ 227 0008 BC1D     		add	r4, r7, #6
+ 228 000a 404B     		ldr	r3, .L52
+ 229 000c 181C     		mov	r0, r3
+ 230 000e FFF7FEFF 		bl	CyBle_Start
+ 231 0012 031C     		mov	r3, r0
+ 232 0014 2380     		strh	r3, [r4]
+ 175:.\main.c      **** 
+ 176:.\main.c      ****     if(apiResult != CYBLE_ERROR_OK)
+ 233              		.loc 1 176 0
+ 234 0016 BB1D     		add	r3, r7, #6
+ 235 0018 1B88     		ldrh	r3, [r3]
+ 236 001a 002B     		cmp	r3, #0
+ 237 001c 02D0     		beq	.L42
+ 177:.\main.c      ****     {
+ 178:.\main.c      ****         /* BLE stack initialization failed, check your configuration */
+ 179:.\main.c      ****         CYASSERT(0);
+ 238              		.loc 1 179 0 discriminator 1
+ 239 001e 0020     		mov	r0, #0
+ 240 0020 FFF7FEFF 		bl	CyHalt
+ 241              	.L42:
+ 180:.\main.c      ****     }
+ 181:.\main.c      **** 
+ 182:.\main.c      ****     CyBle_IasRegisterAttrCallback(IasEventHandler);
+ 242              		.loc 1 182 0
+ 243 0024 3A4B     		ldr	r3, .L52+4
+ 244 0026 181C     		mov	r0, r3
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 9
+
+
+ 245 0028 FFF7FEFF 		bl	CyBle_IasRegisterAttrCallback
+ 246              	.L51:
+ 247              	.LBB2:
+ 183:.\main.c      **** 
+ 184:.\main.c      ****     for(;;)
+ 185:.\main.c      ****     {
+ 186:.\main.c      ****         static uint8 toggleTimeout = 0;
+ 187:.\main.c      ****         CYBLE_BLESS_STATE_T blessState;
+ 188:.\main.c      ****         uint8 intrStatus;
+ 189:.\main.c      **** 
+ 190:.\main.c      ****         /* Single API call to service all the BLE stack events. Must be
+ 191:.\main.c      ****          * called at least once in a BLE connection interval */
+ 192:.\main.c      ****         CyBle_ProcessEvents();
+ 248              		.loc 1 192 0
+ 249 002c FFF7FEFF 		bl	CyBle_ProcessEvents
+ 193:.\main.c      ****         
+ 194:.\main.c      ****         /* Update Alert Level value on the blue LED */
+ 195:.\main.c      ****         switch(alertLevel)
+ 250              		.loc 1 195 0
+ 251 0030 384B     		ldr	r3, .L52+8
+ 252 0032 1B78     		ldrb	r3, [r3]
+ 253 0034 012B     		cmp	r3, #1
+ 254 0036 07D0     		beq	.L44
+ 255 0038 022B     		cmp	r3, #2
+ 256 003a 2ED0     		beq	.L45
+ 257 003c 002B     		cmp	r3, #0
+ 258 003e 40D1     		bne	.L43
+ 196:.\main.c      ****         {
+ 197:.\main.c      ****             case NO_ALERT:
+ 198:.\main.c      ****             Alert_LED_Write(LED_OFF);
+ 259              		.loc 1 198 0
+ 260 0040 0120     		mov	r0, #1
+ 261 0042 FFF7FEFF 		bl	Alert_LED_Write
+ 199:.\main.c      ****             break;
+ 262              		.loc 1 199 0
+ 263 0046 3CE0     		b	.L43
+ 264              	.L44:
+ 200:.\main.c      **** 
+ 201:.\main.c      ****             case MILD_ALERT:
+ 202:.\main.c      ****             toggleTimeout++;
+ 265              		.loc 1 202 0
+ 266 0048 334B     		ldr	r3, .L52+12
+ 267 004a 1B78     		ldrb	r3, [r3]
+ 268 004c 0133     		add	r3, r3, #1
+ 269 004e DAB2     		uxtb	r2, r3
+ 270 0050 314B     		ldr	r3, .L52+12
+ 271 0052 1A70     		strb	r2, [r3]
+ 203:.\main.c      ****             if(toggleTimeout == LED_TOGGLE_TIMEOUT)
+ 272              		.loc 1 203 0
+ 273 0054 304B     		ldr	r3, .L52+12
+ 274 0056 1B78     		ldrb	r3, [r3]
+ 275 0058 642B     		cmp	r3, #100
+ 276 005a 1DD1     		bne	.L47
+ 204:.\main.c      ****             {
+ 205:.\main.c      ****                 /* Toggle alert LED after timeout */
+ 206:.\main.c      ****                 Alert_LED_Write(Alert_LED_Read() ^ 0x01);
+ 277              		.loc 1 206 0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 10
+
+
+ 278 005c FFF7FEFF 		bl	Alert_LED_Read
+ 279 0060 031C     		mov	r3, r0
+ 280 0062 1A1C     		mov	r2, r3
+ 281 0064 0123     		mov	r3, #1
+ 282 0066 5340     		eor	r3, r2
+ 283 0068 DBB2     		uxtb	r3, r3
+ 284 006a 181C     		mov	r0, r3
+ 285 006c FFF7FEFF 		bl	Alert_LED_Write
+ 207:.\main.c      ****                 toggleTimeout = 0;
+ 286              		.loc 1 207 0
+ 287 0070 294B     		ldr	r3, .L52+12
+ 288 0072 0022     		mov	r2, #0
+ 289 0074 1A70     		strb	r2, [r3]
+ 208:.\main.c      ****                 Laser_Write( ON );
+ 290              		.loc 1 208 0
+ 291 0076 0F20     		mov	r0, #15
+ 292 0078 FFF7FEFF 		bl	Laser_Write
+ 209:.\main.c      ****                 LED_Write( ON );
+ 293              		.loc 1 209 0
+ 294 007c 0F20     		mov	r0, #15
+ 295 007e FFF7FEFF 		bl	LED_Write
+ 210:.\main.c      ****                 CyDelay( 30000 );
+ 296              		.loc 1 210 0
+ 297 0082 264B     		ldr	r3, .L52+16
+ 298 0084 181C     		mov	r0, r3
+ 299 0086 FFF7FEFF 		bl	CyDelay
+ 211:.\main.c      ****                 Laser_Write( OFF );
+ 300              		.loc 1 211 0
+ 301 008a 0020     		mov	r0, #0
+ 302 008c FFF7FEFF 		bl	Laser_Write
+ 212:.\main.c      ****                 LED_Write( OFF );
+ 303              		.loc 1 212 0
+ 304 0090 0020     		mov	r0, #0
+ 305 0092 FFF7FEFF 		bl	LED_Write
+ 213:.\main.c      ****             }
+ 214:.\main.c      ****             break;
+ 306              		.loc 1 214 0
+ 307 0096 14E0     		b	.L43
+ 308              	.L47:
+ 309 0098 13E0     		b	.L43
+ 310              	.L45:
+ 215:.\main.c      **** 
+ 216:.\main.c      ****             case HIGH_ALERT:
+ 217:.\main.c      ****             Alert_LED_Write(LED_ON);
+ 311              		.loc 1 217 0
+ 312 009a 0020     		mov	r0, #0
+ 313 009c FFF7FEFF 		bl	Alert_LED_Write
+ 218:.\main.c      ****                 Laser_Write( ON );
+ 314              		.loc 1 218 0
+ 315 00a0 0F20     		mov	r0, #15
+ 316 00a2 FFF7FEFF 		bl	Laser_Write
+ 219:.\main.c      ****                 LED_Write( ON );
+ 317              		.loc 1 219 0
+ 318 00a6 0F20     		mov	r0, #15
+ 319 00a8 FFF7FEFF 		bl	LED_Write
+ 220:.\main.c      ****                 CyDelay( 900000 );
+ 320              		.loc 1 220 0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 11
+
+
+ 321 00ac 1C4B     		ldr	r3, .L52+20
+ 322 00ae 181C     		mov	r0, r3
+ 323 00b0 FFF7FEFF 		bl	CyDelay
+ 221:.\main.c      ****                 Laser_Write( OFF );
+ 324              		.loc 1 221 0
+ 325 00b4 0020     		mov	r0, #0
+ 326 00b6 FFF7FEFF 		bl	Laser_Write
+ 222:.\main.c      ****                 LED_Write( OFF );
+ 327              		.loc 1 222 0
+ 328 00ba 0020     		mov	r0, #0
+ 329 00bc FFF7FEFF 		bl	LED_Write
+ 223:.\main.c      ****             break;
+ 330              		.loc 1 223 0
+ 331 00c0 C046     		mov	r8, r8
+ 332              	.L43:
+ 224:.\main.c      ****         }
+ 225:.\main.c      **** 
+ 226:.\main.c      ****         /* Configure BLESS in Deep-Sleep mode */
+ 227:.\main.c      ****         CyBle_EnterLPM(CYBLE_BLESS_DEEPSLEEP);
+ 333              		.loc 1 227 0
+ 334 00c2 0320     		mov	r0, #3
+ 335 00c4 FFF7FEFF 		bl	CyBle_EnterLPM
+ 228:.\main.c      ****         
+ 229:.\main.c      ****         /* Prevent interrupts while entering system low power modes */
+ 230:.\main.c      ****         intrStatus = CyEnterCriticalSection();
+ 336              		.loc 1 230 0
+ 337 00c8 7C1D     		add	r4, r7, #5
+ 338 00ca FFF7FEFF 		bl	CyEnterCriticalSection
+ 339 00ce 031C     		mov	r3, r0
+ 340 00d0 2370     		strb	r3, [r4]
+ 231:.\main.c      ****         
+ 232:.\main.c      ****         /* Get the current state of BLESS block */
+ 233:.\main.c      ****         blessState = CyBle_GetBleSsState();
+ 341              		.loc 1 233 0
+ 342 00d2 3C1D     		add	r4, r7, #4
+ 343 00d4 FFF7FEFF 		bl	CyBle_GetBleSsState
+ 344 00d8 031C     		mov	r3, r0
+ 345 00da 2370     		strb	r3, [r4]
+ 234:.\main.c      ****         
+ 235:.\main.c      ****         /* If BLESS is in Deep-Sleep mode or the XTAL oscillator is turning on, 
+ 236:.\main.c      ****          * then PSoC 4 BLE can enter Deep-Sleep mode (1.3uA current consumption) */
+ 237:.\main.c      ****         if(blessState == CYBLE_BLESS_STATE_ECO_ON || 
+ 346              		.loc 1 237 0
+ 347 00dc 3B1D     		add	r3, r7, #4
+ 348 00de 1B78     		ldrb	r3, [r3]
+ 349 00e0 042B     		cmp	r3, #4
+ 350 00e2 03D0     		beq	.L48
+ 351              		.loc 1 237 0 is_stmt 0 discriminator 1
+ 352 00e4 3B1D     		add	r3, r7, #4
+ 353 00e6 1B78     		ldrb	r3, [r3]
+ 354 00e8 062B     		cmp	r3, #6
+ 355 00ea 02D1     		bne	.L49
+ 356              	.L48:
+ 238:.\main.c      ****             blessState == CYBLE_BLESS_STATE_DEEPSLEEP)
+ 239:.\main.c      ****         {
+ 240:.\main.c      ****             CySysPmDeepSleep();
+ 357              		.loc 1 240 0 is_stmt 1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 12
+
+
+ 358 00ec FFF7FEFF 		bl	CySysPmDeepSleep
+ 359 00f0 05E0     		b	.L50
+ 360              	.L49:
+ 241:.\main.c      ****         }
+ 242:.\main.c      ****         else if(blessState != CYBLE_BLESS_STATE_EVENT_CLOSE)
+ 361              		.loc 1 242 0
+ 362 00f2 3B1D     		add	r3, r7, #4
+ 363 00f4 1B78     		ldrb	r3, [r3]
+ 364 00f6 022B     		cmp	r3, #2
+ 365 00f8 01D0     		beq	.L50
+ 243:.\main.c      ****         {
+ 244:.\main.c      ****             /* If BLESS is active, then configure PSoC 4 BLE system in 
+ 245:.\main.c      ****              * Sleep mode (~1.6mA current consumption) */
+ 246:.\main.c      ****             CySysPmSleep();
+ 366              		.loc 1 246 0
+ 367 00fa FFF7FEFF 		bl	CySysPmSleep
+ 368              	.L50:
+ 247:.\main.c      ****         }
+ 248:.\main.c      ****         else
+ 249:.\main.c      ****         {
+ 250:.\main.c      ****             /* Keep trying to enter either Sleep or Deep-Sleep mode */    
+ 251:.\main.c      ****         }
+ 252:.\main.c      ****         CyExitCriticalSection(intrStatus);
+ 369              		.loc 1 252 0
+ 370 00fe 7B1D     		add	r3, r7, #5
+ 371 0100 1B78     		ldrb	r3, [r3]
+ 372 0102 181C     		mov	r0, r3
+ 373 0104 FFF7FEFF 		bl	CyExitCriticalSection
+ 374              	.LBE2:
+ 253:.\main.c      ****         
+ 254:.\main.c      ****         /* BLE link layer timing interrupt will wake up the system from Sleep 
+ 255:.\main.c      ****          * and Deep-Sleep modes */
+ 256:.\main.c      ****     }
+ 375              		.loc 1 256 0
+ 376 0108 90E7     		b	.L51
+ 377              	.L53:
+ 378 010a C046     		.align	2
+ 379              	.L52:
+ 380 010c 00000000 		.word	StackEventHandler
+ 381 0110 00000000 		.word	IasEventHandler
+ 382 0114 00000000 		.word	alertLevel
+ 383 0118 00000000 		.word	toggleTimeout.6490
+ 384 011c 30750000 		.word	30000
+ 385 0120 A0BB0D00 		.word	900000
+ 386              		.cfi_endproc
+ 387              	.LFE38:
+ 388              		.size	main, .-main
+ 389              		.bss
+ 390              	toggleTimeout.6490:
+ 391 0000 00       		.space	1
+ 392              		.text
+ 393              	.Letext0:
+ 394              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 395              		.file 3 "Generated_Source\\PSoC4/BLE_Stack.h"
+ 396              		.file 4 "Generated_Source\\PSoC4/BLE_eventHandler.h"
+ 397              		.file 5 ".\\ias.h"
+ 398              		.section	.debug_info,"",%progbits
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 13
+
+
+ 399              	.Ldebug_info0:
+ 400 0000 32040000 		.4byte	0x432
+ 401 0004 0400     		.2byte	0x4
+ 402 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 403 000a 04       		.byte	0x4
+ 404 000b 01       		.uleb128 0x1
+ 405 000c 890C0000 		.4byte	.LASF131
+ 406 0010 01       		.byte	0x1
+ 407 0011 AC090000 		.4byte	.LASF132
+ 408 0015 580A0000 		.4byte	.LASF133
+ 409 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 410 001d 00000000 		.4byte	0
+ 411 0021 00000000 		.4byte	.Ldebug_line0
+ 412 0025 02       		.uleb128 0x2
+ 413 0026 01       		.byte	0x1
+ 414 0027 06       		.byte	0x6
+ 415 0028 3E020000 		.4byte	.LASF0
+ 416 002c 02       		.uleb128 0x2
+ 417 002d 01       		.byte	0x1
+ 418 002e 08       		.byte	0x8
+ 419 002f E1080000 		.4byte	.LASF1
+ 420 0033 02       		.uleb128 0x2
+ 421 0034 02       		.byte	0x2
+ 422 0035 05       		.byte	0x5
+ 423 0036 EF080000 		.4byte	.LASF2
+ 424 003a 02       		.uleb128 0x2
+ 425 003b 02       		.byte	0x2
+ 426 003c 07       		.byte	0x7
+ 427 003d 300B0000 		.4byte	.LASF3
+ 428 0041 02       		.uleb128 0x2
+ 429 0042 04       		.byte	0x4
+ 430 0043 05       		.byte	0x5
+ 431 0044 3F010000 		.4byte	.LASF4
+ 432 0048 02       		.uleb128 0x2
+ 433 0049 04       		.byte	0x4
+ 434 004a 07       		.byte	0x7
+ 435 004b 3E050000 		.4byte	.LASF5
+ 436 004f 02       		.uleb128 0x2
+ 437 0050 08       		.byte	0x8
+ 438 0051 05       		.byte	0x5
+ 439 0052 30020000 		.4byte	.LASF6
+ 440 0056 02       		.uleb128 0x2
+ 441 0057 08       		.byte	0x8
+ 442 0058 07       		.byte	0x7
+ 443 0059 78040000 		.4byte	.LASF7
+ 444 005d 03       		.uleb128 0x3
+ 445 005e 04       		.byte	0x4
+ 446 005f 05       		.byte	0x5
+ 447 0060 696E7400 		.ascii	"int\000"
+ 448 0064 02       		.uleb128 0x2
+ 449 0065 04       		.byte	0x4
+ 450 0066 07       		.byte	0x7
+ 451 0067 220A0000 		.4byte	.LASF8
+ 452 006b 04       		.uleb128 0x4
+ 453 006c 84030000 		.4byte	.LASF9
+ 454 0070 02       		.byte	0x2
+ 455 0071 3801     		.2byte	0x138
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 14
+
+
+ 456 0073 2C000000 		.4byte	0x2c
+ 457 0077 04       		.uleb128 0x4
+ 458 0078 E5030000 		.4byte	.LASF10
+ 459 007c 02       		.byte	0x2
+ 460 007d 3A01     		.2byte	0x13a
+ 461 007f 48000000 		.4byte	0x48
+ 462 0083 02       		.uleb128 0x2
+ 463 0084 04       		.byte	0x4
+ 464 0085 04       		.byte	0x4
+ 465 0086 86080000 		.4byte	.LASF11
+ 466 008a 02       		.uleb128 0x2
+ 467 008b 08       		.byte	0x8
+ 468 008c 04       		.byte	0x4
+ 469 008d C0030000 		.4byte	.LASF12
+ 470 0091 02       		.uleb128 0x2
+ 471 0092 01       		.byte	0x1
+ 472 0093 08       		.byte	0x8
+ 473 0094 C9090000 		.4byte	.LASF13
+ 474 0098 02       		.uleb128 0x2
+ 475 0099 04       		.byte	0x4
+ 476 009a 07       		.byte	0x7
+ 477 009b 62070000 		.4byte	.LASF14
+ 478 009f 05       		.uleb128 0x5
+ 479 00a0 04       		.byte	0x4
+ 480 00a1 06       		.uleb128 0x6
+ 481 00a2 01       		.byte	0x1
+ 482 00a3 03       		.byte	0x3
+ 483 00a4 A4       		.byte	0xa4
+ 484 00a5 26020000 		.4byte	0x226
+ 485 00a9 07       		.uleb128 0x7
+ 486 00aa F4050000 		.4byte	.LASF15
+ 487 00ae 00       		.sleb128 0
+ 488 00af 07       		.uleb128 0x7
+ 489 00b0 4A020000 		.4byte	.LASF16
+ 490 00b4 01       		.sleb128 1
+ 491 00b5 07       		.uleb128 0x7
+ 492 00b6 2D010000 		.4byte	.LASF17
+ 493 00ba 02       		.sleb128 2
+ 494 00bb 07       		.uleb128 0x7
+ 495 00bc 170B0000 		.4byte	.LASF18
+ 496 00c0 03       		.sleb128 3
+ 497 00c1 07       		.uleb128 0x7
+ 498 00c2 90010000 		.4byte	.LASF19
+ 499 00c6 04       		.sleb128 4
+ 500 00c7 07       		.uleb128 0x7
+ 501 00c8 23000000 		.4byte	.LASF20
+ 502 00cc 05       		.sleb128 5
+ 503 00cd 07       		.uleb128 0x7
+ 504 00ce EF060000 		.4byte	.LASF21
+ 505 00d2 20       		.sleb128 32
+ 506 00d3 07       		.uleb128 0x7
+ 507 00d4 9C020000 		.4byte	.LASF22
+ 508 00d8 21       		.sleb128 33
+ 509 00d9 07       		.uleb128 0x7
+ 510 00da 29060000 		.4byte	.LASF23
+ 511 00de 22       		.sleb128 34
+ 512 00df 07       		.uleb128 0x7
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 15
+
+
+ 513 00e0 92060000 		.4byte	.LASF24
+ 514 00e4 23       		.sleb128 35
+ 515 00e5 07       		.uleb128 0x7
+ 516 00e6 CE070000 		.4byte	.LASF25
+ 517 00ea 24       		.sleb128 36
+ 518 00eb 07       		.uleb128 0x7
+ 519 00ec 84070000 		.4byte	.LASF26
+ 520 00f0 25       		.sleb128 37
+ 521 00f1 07       		.uleb128 0x7
+ 522 00f2 39030000 		.4byte	.LASF27
+ 523 00f6 26       		.sleb128 38
+ 524 00f7 07       		.uleb128 0x7
+ 525 00f8 4D060000 		.4byte	.LASF28
+ 526 00fc 27       		.sleb128 39
+ 527 00fd 07       		.uleb128 0x7
+ 528 00fe 000A0000 		.4byte	.LASF29
+ 529 0102 28       		.sleb128 40
+ 530 0103 07       		.uleb128 0x7
+ 531 0104 FB010000 		.4byte	.LASF30
+ 532 0108 29       		.sleb128 41
+ 533 0109 07       		.uleb128 0x7
+ 534 010a 97000000 		.4byte	.LASF31
+ 535 010e 2A       		.sleb128 42
+ 536 010f 07       		.uleb128 0x7
+ 537 0110 A5010000 		.4byte	.LASF32
+ 538 0114 2B       		.sleb128 43
+ 539 0115 07       		.uleb128 0x7
+ 540 0116 530D0000 		.4byte	.LASF33
+ 541 011a 2C       		.sleb128 44
+ 542 011b 07       		.uleb128 0x7
+ 543 011c 14040000 		.4byte	.LASF34
+ 544 0120 C000     		.sleb128 64
+ 545 0122 07       		.uleb128 0x7
+ 546 0123 B8060000 		.4byte	.LASF35
+ 547 0127 C100     		.sleb128 65
+ 548 0129 07       		.uleb128 0x7
+ 549 012a D60D0000 		.4byte	.LASF36
+ 550 012e C200     		.sleb128 66
+ 551 0130 07       		.uleb128 0x7
+ 552 0131 7F0B0000 		.4byte	.LASF37
+ 553 0135 C300     		.sleb128 67
+ 554 0137 07       		.uleb128 0x7
+ 555 0138 64050000 		.4byte	.LASF38
+ 556 013c C400     		.sleb128 68
+ 557 013e 07       		.uleb128 0x7
+ 558 013f 5F080000 		.4byte	.LASF39
+ 559 0143 C500     		.sleb128 69
+ 560 0145 07       		.uleb128 0x7
+ 561 0146 41070000 		.4byte	.LASF40
+ 562 014a C600     		.sleb128 70
+ 563 014c 07       		.uleb128 0x7
+ 564 014d 0B060000 		.4byte	.LASF41
+ 565 0151 C700     		.sleb128 71
+ 566 0153 07       		.uleb128 0x7
+ 567 0154 170D0000 		.4byte	.LASF42
+ 568 0158 C800     		.sleb128 72
+ 569 015a 07       		.uleb128 0x7
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 16
+
+
+ 570 015b B3020000 		.4byte	.LASF43
+ 571 015f C900     		.sleb128 73
+ 572 0161 07       		.uleb128 0x7
+ 573 0162 CF0B0000 		.4byte	.LASF44
+ 574 0166 CA00     		.sleb128 74
+ 575 0168 07       		.uleb128 0x7
+ 576 0169 E1000000 		.4byte	.LASF45
+ 577 016d CB00     		.sleb128 75
+ 578 016f 07       		.uleb128 0x7
+ 579 0170 6C060000 		.4byte	.LASF46
+ 580 0174 CC00     		.sleb128 76
+ 581 0176 07       		.uleb128 0x7
+ 582 0177 9E070000 		.4byte	.LASF47
+ 583 017b CD00     		.sleb128 77
+ 584 017d 07       		.uleb128 0x7
+ 585 017e E6020000 		.4byte	.LASF48
+ 586 0182 CE00     		.sleb128 78
+ 587 0184 07       		.uleb128 0x7
+ 588 0185 34090000 		.4byte	.LASF49
+ 589 0189 CF00     		.sleb128 79
+ 590 018b 07       		.uleb128 0x7
+ 591 018c 00010000 		.4byte	.LASF50
+ 592 0190 D000     		.sleb128 80
+ 593 0192 07       		.uleb128 0x7
+ 594 0193 A1030000 		.4byte	.LASF51
+ 595 0197 D100     		.sleb128 81
+ 596 0199 07       		.uleb128 0x7
+ 597 019a 07080000 		.4byte	.LASF52
+ 598 019e D200     		.sleb128 82
+ 599 01a0 07       		.uleb128 0x7
+ 600 01a1 F9080000 		.4byte	.LASF53
+ 601 01a5 D300     		.sleb128 83
+ 602 01a7 07       		.uleb128 0x7
+ 603 01a8 6D090000 		.4byte	.LASF54
+ 604 01ac D400     		.sleb128 84
+ 605 01ae 07       		.uleb128 0x7
+ 606 01af 82050000 		.4byte	.LASF55
+ 607 01b3 D500     		.sleb128 85
+ 608 01b5 07       		.uleb128 0x7
+ 609 01b6 8F040000 		.4byte	.LASF56
+ 610 01ba D600     		.sleb128 86
+ 611 01bc 07       		.uleb128 0x7
+ 612 01bd 2F0A0000 		.4byte	.LASF57
+ 613 01c1 D700     		.sleb128 87
+ 614 01c3 07       		.uleb128 0x7
+ 615 01c4 2E040000 		.4byte	.LASF58
+ 616 01c8 F000     		.sleb128 112
+ 617 01ca 07       		.uleb128 0x7
+ 618 01cb 980D0000 		.4byte	.LASF59
+ 619 01cf F100     		.sleb128 113
+ 620 01d1 07       		.uleb128 0x7
+ 621 01d2 04030000 		.4byte	.LASF60
+ 622 01d6 F200     		.sleb128 114
+ 623 01d8 07       		.uleb128 0x7
+ 624 01d9 23070000 		.4byte	.LASF61
+ 625 01dd F300     		.sleb128 115
+ 626 01df 07       		.uleb128 0x7
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 17
+
+
+ 627 01e0 41080000 		.4byte	.LASF62
+ 628 01e4 F400     		.sleb128 116
+ 629 01e6 07       		.uleb128 0x7
+ 630 01e7 770D0000 		.4byte	.LASF63
+ 631 01eb F500     		.sleb128 117
+ 632 01ed 07       		.uleb128 0x7
+ 633 01ee C0000000 		.4byte	.LASF64
+ 634 01f2 F600     		.sleb128 118
+ 635 01f4 07       		.uleb128 0x7
+ 636 01f5 53000000 		.4byte	.LASF65
+ 637 01f9 F700     		.sleb128 119
+ 638 01fb 07       		.uleb128 0x7
+ 639 01fc 00000000 		.4byte	.LASF66
+ 640 0200 F800     		.sleb128 120
+ 641 0202 07       		.uleb128 0x7
+ 642 0203 A10A0000 		.4byte	.LASF67
+ 643 0207 F900     		.sleb128 121
+ 644 0209 07       		.uleb128 0x7
+ 645 020a 54040000 		.4byte	.LASF68
+ 646 020e FA00     		.sleb128 122
+ 647 0210 07       		.uleb128 0x7
+ 648 0211 C4010000 		.4byte	.LASF69
+ 649 0215 FA01     		.sleb128 250
+ 650 0217 07       		.uleb128 0x7
+ 651 0218 DA040000 		.4byte	.LASF70
+ 652 021c FB01     		.sleb128 251
+ 653 021e 07       		.uleb128 0x7
+ 654 021f F7030000 		.4byte	.LASF71
+ 655 0223 FF01     		.sleb128 255
+ 656 0225 00       		.byte	0
+ 657 0226 08       		.uleb128 0x8
+ 658 0227 02       		.byte	0x2
+ 659 0228 03       		.byte	0x3
+ 660 0229 0C02     		.2byte	0x20c
+ 661 022b DD020000 		.4byte	0x2dd
+ 662 022f 07       		.uleb128 0x7
+ 663 0230 05040000 		.4byte	.LASF72
+ 664 0234 00       		.sleb128 0
+ 665 0235 07       		.uleb128 0x7
+ 666 0236 C7030000 		.4byte	.LASF73
+ 667 023a 01       		.sleb128 1
+ 668 023b 07       		.uleb128 0x7
+ 669 023c 610B0000 		.4byte	.LASF74
+ 670 0240 02       		.sleb128 2
+ 671 0241 07       		.uleb128 0x7
+ 672 0242 72000000 		.4byte	.LASF75
+ 673 0246 03       		.sleb128 3
+ 674 0247 07       		.uleb128 0x7
+ 675 0248 6D010000 		.4byte	.LASF76
+ 676 024c 04       		.sleb128 4
+ 677 024d 07       		.uleb128 0x7
+ 678 024e B1040000 		.4byte	.LASF77
+ 679 0252 05       		.sleb128 5
+ 680 0253 07       		.uleb128 0x7
+ 681 0254 1A090000 		.4byte	.LASF78
+ 682 0258 06       		.sleb128 6
+ 683 0259 07       		.uleb128 0x7
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 18
+
+
+ 684 025a 7F020000 		.4byte	.LASF79
+ 685 025e 07       		.sleb128 7
+ 686 025f 07       		.uleb128 0x7
+ 687 0260 8E090000 		.4byte	.LASF80
+ 688 0264 08       		.sleb128 8
+ 689 0265 07       		.uleb128 0x7
+ 690 0266 3E0D0000 		.4byte	.LASF81
+ 691 026a 09       		.sleb128 9
+ 692 026b 07       		.uleb128 0x7
+ 693 026c A4080000 		.4byte	.LASF82
+ 694 0270 0A       		.sleb128 10
+ 695 0271 07       		.uleb128 0x7
+ 696 0272 E0090000 		.4byte	.LASF83
+ 697 0276 0B       		.sleb128 11
+ 698 0277 07       		.uleb128 0x7
+ 699 0278 8A030000 		.4byte	.LASF84
+ 700 027c 0C       		.sleb128 12
+ 701 027d 07       		.uleb128 0x7
+ 702 027e 48010000 		.4byte	.LASF85
+ 703 0282 0D       		.sleb128 13
+ 704 0283 07       		.uleb128 0x7
+ 705 0284 F9040000 		.4byte	.LASF86
+ 706 0288 0E       		.sleb128 14
+ 707 0289 07       		.uleb128 0x7
+ 708 028a 380C0000 		.4byte	.LASF87
+ 709 028e 0F       		.sleb128 15
+ 710 028f 07       		.uleb128 0x7
+ 711 0290 E90A0000 		.4byte	.LASF88
+ 712 0294 10       		.sleb128 16
+ 713 0295 07       		.uleb128 0x7
+ 714 0296 A6050000 		.4byte	.LASF89
+ 715 029a 11       		.sleb128 17
+ 716 029b 07       		.uleb128 0x7
+ 717 029c 61030000 		.4byte	.LASF90
+ 718 02a0 12       		.sleb128 18
+ 719 02a1 07       		.uleb128 0x7
+ 720 02a2 F40D0000 		.4byte	.LASF91
+ 721 02a6 13       		.sleb128 19
+ 722 02a7 07       		.uleb128 0x7
+ 723 02a8 5D020000 		.4byte	.LASF92
+ 724 02ac 27       		.sleb128 39
+ 725 02ad 07       		.uleb128 0x7
+ 726 02ae C40A0000 		.4byte	.LASF93
+ 727 02b2 28       		.sleb128 40
+ 728 02b3 07       		.uleb128 0x7
+ 729 02b4 1C0C0000 		.4byte	.LASF94
+ 730 02b8 29       		.sleb128 41
+ 731 02b9 07       		.uleb128 0x7
+ 732 02ba 13070000 		.4byte	.LASF95
+ 733 02be FF01     		.sleb128 255
+ 734 02c0 07       		.uleb128 0x7
+ 735 02c1 DB050000 		.4byte	.LASF96
+ 736 02c5 8002     		.sleb128 256
+ 737 02c7 07       		.uleb128 0x7
+ 738 02c8 28080000 		.4byte	.LASF97
+ 739 02cc 8102     		.sleb128 257
+ 740 02ce 07       		.uleb128 0x7
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 19
+
+
+ 741 02cf BE080000 		.4byte	.LASF98
+ 742 02d3 8202     		.sleb128 258
+ 743 02d5 07       		.uleb128 0x7
+ 744 02d6 CC020000 		.4byte	.LASF99
+ 745 02da 8302     		.sleb128 259
+ 746 02dc 00       		.byte	0
+ 747 02dd 04       		.uleb128 0x4
+ 748 02de F4070000 		.4byte	.LASF100
+ 749 02e2 03       		.byte	0x3
+ 750 02e3 6902     		.2byte	0x269
+ 751 02e5 26020000 		.4byte	0x226
+ 752 02e9 08       		.uleb128 0x8
+ 753 02ea 01       		.byte	0x1
+ 754 02eb 03       		.byte	0x3
+ 755 02ec 6D02     		.2byte	0x26d
+ 756 02ee 12030000 		.4byte	0x312
+ 757 02f2 07       		.uleb128 0x7
+ 758 02f3 C30D0000 		.4byte	.LASF101
+ 759 02f7 01       		.sleb128 1
+ 760 02f8 07       		.uleb128 0x7
+ 761 02f9 CE090000 		.4byte	.LASF102
+ 762 02fd 02       		.sleb128 2
+ 763 02fe 07       		.uleb128 0x7
+ 764 02ff 730C0000 		.4byte	.LASF103
+ 765 0303 03       		.sleb128 3
+ 766 0304 07       		.uleb128 0x7
+ 767 0305 B8070000 		.4byte	.LASF104
+ 768 0309 04       		.sleb128 4
+ 769 030a 07       		.uleb128 0x7
+ 770 030b 50050000 		.4byte	.LASF105
+ 771 030f FF01     		.sleb128 255
+ 772 0311 00       		.byte	0
+ 773 0312 08       		.uleb128 0x8
+ 774 0313 01       		.byte	0x1
+ 775 0314 03       		.byte	0x3
+ 776 0315 8D02     		.2byte	0x28d
+ 777 0317 4D030000 		.4byte	0x34d
+ 778 031b 07       		.uleb128 0x7
+ 779 031c E2010000 		.4byte	.LASF106
+ 780 0320 01       		.sleb128 1
+ 781 0321 07       		.uleb128 0x7
+ 782 0322 430B0000 		.4byte	.LASF107
+ 783 0326 02       		.sleb128 2
+ 784 0327 07       		.uleb128 0x7
+ 785 0328 8C080000 		.4byte	.LASF108
+ 786 032c 03       		.sleb128 3
+ 787 032d 07       		.uleb128 0x7
+ 788 032e A80B0000 		.4byte	.LASF109
+ 789 0332 04       		.sleb128 4
+ 790 0333 07       		.uleb128 0x7
+ 791 0334 FF0B0000 		.4byte	.LASF110
+ 792 0338 05       		.sleb128 5
+ 793 0339 07       		.uleb128 0x7
+ 794 033a 22050000 		.4byte	.LASF111
+ 795 033e 06       		.sleb128 6
+ 796 033f 07       		.uleb128 0x7
+ 797 0340 D3060000 		.4byte	.LASF112
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 20
+
+
+ 798 0344 07       		.sleb128 7
+ 799 0345 07       		.uleb128 0x7
+ 800 0346 53090000 		.4byte	.LASF113
+ 801 034a FF01     		.sleb128 255
+ 802 034c 00       		.byte	0
+ 803 034d 04       		.uleb128 0x4
+ 804 034e B5090000 		.4byte	.LASF114
+ 805 0352 03       		.byte	0x3
+ 806 0353 9602     		.2byte	0x296
+ 807 0355 12030000 		.4byte	0x312
+ 808 0359 08       		.uleb128 0x8
+ 809 035a 01       		.byte	0x1
+ 810 035b 04       		.byte	0x4
+ 811 035c 3707     		.2byte	0x737
+ 812 035e 81030000 		.4byte	0x381
+ 813 0362 07       		.uleb128 0x7
+ 814 0363 3F000000 		.4byte	.LASF115
+ 815 0367 00       		.sleb128 0
+ 816 0368 07       		.uleb128 0x7
+ 817 0369 6B070000 		.4byte	.LASF116
+ 818 036d 01       		.sleb128 1
+ 819 036e 07       		.uleb128 0x7
+ 820 036f 5D0C0000 		.4byte	.LASF117
+ 821 0373 02       		.sleb128 2
+ 822 0374 07       		.uleb128 0x7
+ 823 0375 18020000 		.4byte	.LASF118
+ 824 0379 03       		.sleb128 3
+ 825 037a 07       		.uleb128 0x7
+ 826 037b 20030000 		.4byte	.LASF119
+ 827 037f 04       		.sleb128 4
+ 828 0380 00       		.byte	0
+ 829 0381 04       		.uleb128 0x4
+ 830 0382 C10B0000 		.4byte	.LASF120
+ 831 0386 04       		.byte	0x4
+ 832 0387 4507     		.2byte	0x745
+ 833 0389 59030000 		.4byte	0x359
+ 834 038d 09       		.uleb128 0x9
+ 835 038e ED0B0000 		.4byte	.LASF123
+ 836 0392 01       		.byte	0x1
+ 837 0393 38       		.byte	0x38
+ 838 0394 00000000 		.4byte	.LFB37
+ 839 0398 E4000000 		.4byte	.LFE37-.LFB37
+ 840 039c 01       		.uleb128 0x1
+ 841 039d 9C       		.byte	0x9c
+ 842 039e BF030000 		.4byte	0x3bf
+ 843 03a2 0A       		.uleb128 0xa
+ 844 03a3 CA050000 		.4byte	.LASF121
+ 845 03a7 01       		.byte	0x1
+ 846 03a8 38       		.byte	0x38
+ 847 03a9 77000000 		.4byte	0x77
+ 848 03ad 02       		.uleb128 0x2
+ 849 03ae 91       		.byte	0x91
+ 850 03af 74       		.sleb128 -12
+ 851 03b0 0A       		.uleb128 0xa
+ 852 03b1 9D0B0000 		.4byte	.LASF122
+ 853 03b5 01       		.byte	0x1
+ 854 03b6 38       		.byte	0x38
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 21
+
+
+ 855 03b7 9F000000 		.4byte	0x9f
+ 856 03bb 02       		.uleb128 0x2
+ 857 03bc 91       		.byte	0x91
+ 858 03bd 70       		.sleb128 -16
+ 859 03be 00       		.byte	0
+ 860 03bf 0B       		.uleb128 0xb
+ 861 03c0 BE0D0000 		.4byte	.LASF124
+ 862 03c4 01       		.byte	0x1
+ 863 03c5 A8       		.byte	0xa8
+ 864 03c6 5D000000 		.4byte	0x5d
+ 865 03ca 00000000 		.4byte	.LFB38
+ 866 03ce 24010000 		.4byte	.LFE38-.LFB38
+ 867 03d2 01       		.uleb128 0x1
+ 868 03d3 9C       		.byte	0x9c
+ 869 03d4 1E040000 		.4byte	0x41e
+ 870 03d8 0C       		.uleb128 0xc
+ 871 03d9 EA070000 		.4byte	.LASF125
+ 872 03dd 01       		.byte	0x1
+ 873 03de AA       		.byte	0xaa
+ 874 03df DD020000 		.4byte	0x2dd
+ 875 03e3 02       		.uleb128 0x2
+ 876 03e4 91       		.byte	0x91
+ 877 03e5 6E       		.sleb128 -18
+ 878 03e6 0D       		.uleb128 0xd
+ 879 03e7 2C000000 		.4byte	.LBB2
+ 880 03eb DC000000 		.4byte	.LBE2-.LBB2
+ 881 03ef 0C       		.uleb128 0xc
+ 882 03f0 1F010000 		.4byte	.LASF126
+ 883 03f4 01       		.byte	0x1
+ 884 03f5 BA       		.byte	0xba
+ 885 03f6 6B000000 		.4byte	0x6b
+ 886 03fa 05       		.uleb128 0x5
+ 887 03fb 03       		.byte	0x3
+ 888 03fc 00000000 		.4byte	toggleTimeout.6490
+ 889 0400 0C       		.uleb128 0xc
+ 890 0401 CF040000 		.4byte	.LASF127
+ 891 0405 01       		.byte	0x1
+ 892 0406 BB       		.byte	0xbb
+ 893 0407 4D030000 		.4byte	0x34d
+ 894 040b 02       		.uleb128 0x2
+ 895 040c 91       		.byte	0x91
+ 896 040d 6C       		.sleb128 -20
+ 897 040e 0C       		.uleb128 0xc
+ 898 040f D0050000 		.4byte	.LASF128
+ 899 0413 01       		.byte	0x1
+ 900 0414 BC       		.byte	0xbc
+ 901 0415 6B000000 		.4byte	0x6b
+ 902 0419 02       		.uleb128 0x2
+ 903 041a 91       		.byte	0x91
+ 904 041b 6D       		.sleb128 -19
+ 905 041c 00       		.byte	0
+ 906 041d 00       		.byte	0
+ 907 041e 0E       		.uleb128 0xe
+ 908 041f 86060000 		.4byte	.LASF129
+ 909 0423 04       		.byte	0x4
+ 910 0424 2C09     		.2byte	0x92c
+ 911 0426 81030000 		.4byte	0x381
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 22
+
+
+ 912 042a 0F       		.uleb128 0xf
+ 913 042b EC030000 		.4byte	.LASF130
+ 914 042f 05       		.byte	0x5
+ 915 0430 19       		.byte	0x19
+ 916 0431 6B000000 		.4byte	0x6b
+ 917 0435 00       		.byte	0
+ 918              		.section	.debug_abbrev,"",%progbits
+ 919              	.Ldebug_abbrev0:
+ 920 0000 01       		.uleb128 0x1
+ 921 0001 11       		.uleb128 0x11
+ 922 0002 01       		.byte	0x1
+ 923 0003 25       		.uleb128 0x25
+ 924 0004 0E       		.uleb128 0xe
+ 925 0005 13       		.uleb128 0x13
+ 926 0006 0B       		.uleb128 0xb
+ 927 0007 03       		.uleb128 0x3
+ 928 0008 0E       		.uleb128 0xe
+ 929 0009 1B       		.uleb128 0x1b
+ 930 000a 0E       		.uleb128 0xe
+ 931 000b 55       		.uleb128 0x55
+ 932 000c 17       		.uleb128 0x17
+ 933 000d 11       		.uleb128 0x11
+ 934 000e 01       		.uleb128 0x1
+ 935 000f 10       		.uleb128 0x10
+ 936 0010 17       		.uleb128 0x17
+ 937 0011 00       		.byte	0
+ 938 0012 00       		.byte	0
+ 939 0013 02       		.uleb128 0x2
+ 940 0014 24       		.uleb128 0x24
+ 941 0015 00       		.byte	0
+ 942 0016 0B       		.uleb128 0xb
+ 943 0017 0B       		.uleb128 0xb
+ 944 0018 3E       		.uleb128 0x3e
+ 945 0019 0B       		.uleb128 0xb
+ 946 001a 03       		.uleb128 0x3
+ 947 001b 0E       		.uleb128 0xe
+ 948 001c 00       		.byte	0
+ 949 001d 00       		.byte	0
+ 950 001e 03       		.uleb128 0x3
+ 951 001f 24       		.uleb128 0x24
+ 952 0020 00       		.byte	0
+ 953 0021 0B       		.uleb128 0xb
+ 954 0022 0B       		.uleb128 0xb
+ 955 0023 3E       		.uleb128 0x3e
+ 956 0024 0B       		.uleb128 0xb
+ 957 0025 03       		.uleb128 0x3
+ 958 0026 08       		.uleb128 0x8
+ 959 0027 00       		.byte	0
+ 960 0028 00       		.byte	0
+ 961 0029 04       		.uleb128 0x4
+ 962 002a 16       		.uleb128 0x16
+ 963 002b 00       		.byte	0
+ 964 002c 03       		.uleb128 0x3
+ 965 002d 0E       		.uleb128 0xe
+ 966 002e 3A       		.uleb128 0x3a
+ 967 002f 0B       		.uleb128 0xb
+ 968 0030 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 23
+
+
+ 969 0031 05       		.uleb128 0x5
+ 970 0032 49       		.uleb128 0x49
+ 971 0033 13       		.uleb128 0x13
+ 972 0034 00       		.byte	0
+ 973 0035 00       		.byte	0
+ 974 0036 05       		.uleb128 0x5
+ 975 0037 0F       		.uleb128 0xf
+ 976 0038 00       		.byte	0
+ 977 0039 0B       		.uleb128 0xb
+ 978 003a 0B       		.uleb128 0xb
+ 979 003b 00       		.byte	0
+ 980 003c 00       		.byte	0
+ 981 003d 06       		.uleb128 0x6
+ 982 003e 04       		.uleb128 0x4
+ 983 003f 01       		.byte	0x1
+ 984 0040 0B       		.uleb128 0xb
+ 985 0041 0B       		.uleb128 0xb
+ 986 0042 3A       		.uleb128 0x3a
+ 987 0043 0B       		.uleb128 0xb
+ 988 0044 3B       		.uleb128 0x3b
+ 989 0045 0B       		.uleb128 0xb
+ 990 0046 01       		.uleb128 0x1
+ 991 0047 13       		.uleb128 0x13
+ 992 0048 00       		.byte	0
+ 993 0049 00       		.byte	0
+ 994 004a 07       		.uleb128 0x7
+ 995 004b 28       		.uleb128 0x28
+ 996 004c 00       		.byte	0
+ 997 004d 03       		.uleb128 0x3
+ 998 004e 0E       		.uleb128 0xe
+ 999 004f 1C       		.uleb128 0x1c
+ 1000 0050 0D       		.uleb128 0xd
+ 1001 0051 00       		.byte	0
+ 1002 0052 00       		.byte	0
+ 1003 0053 08       		.uleb128 0x8
+ 1004 0054 04       		.uleb128 0x4
+ 1005 0055 01       		.byte	0x1
+ 1006 0056 0B       		.uleb128 0xb
+ 1007 0057 0B       		.uleb128 0xb
+ 1008 0058 3A       		.uleb128 0x3a
+ 1009 0059 0B       		.uleb128 0xb
+ 1010 005a 3B       		.uleb128 0x3b
+ 1011 005b 05       		.uleb128 0x5
+ 1012 005c 01       		.uleb128 0x1
+ 1013 005d 13       		.uleb128 0x13
+ 1014 005e 00       		.byte	0
+ 1015 005f 00       		.byte	0
+ 1016 0060 09       		.uleb128 0x9
+ 1017 0061 2E       		.uleb128 0x2e
+ 1018 0062 01       		.byte	0x1
+ 1019 0063 3F       		.uleb128 0x3f
+ 1020 0064 19       		.uleb128 0x19
+ 1021 0065 03       		.uleb128 0x3
+ 1022 0066 0E       		.uleb128 0xe
+ 1023 0067 3A       		.uleb128 0x3a
+ 1024 0068 0B       		.uleb128 0xb
+ 1025 0069 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 24
+
+
+ 1026 006a 0B       		.uleb128 0xb
+ 1027 006b 27       		.uleb128 0x27
+ 1028 006c 19       		.uleb128 0x19
+ 1029 006d 11       		.uleb128 0x11
+ 1030 006e 01       		.uleb128 0x1
+ 1031 006f 12       		.uleb128 0x12
+ 1032 0070 06       		.uleb128 0x6
+ 1033 0071 40       		.uleb128 0x40
+ 1034 0072 18       		.uleb128 0x18
+ 1035 0073 9642     		.uleb128 0x2116
+ 1036 0075 19       		.uleb128 0x19
+ 1037 0076 01       		.uleb128 0x1
+ 1038 0077 13       		.uleb128 0x13
+ 1039 0078 00       		.byte	0
+ 1040 0079 00       		.byte	0
+ 1041 007a 0A       		.uleb128 0xa
+ 1042 007b 05       		.uleb128 0x5
+ 1043 007c 00       		.byte	0
+ 1044 007d 03       		.uleb128 0x3
+ 1045 007e 0E       		.uleb128 0xe
+ 1046 007f 3A       		.uleb128 0x3a
+ 1047 0080 0B       		.uleb128 0xb
+ 1048 0081 3B       		.uleb128 0x3b
+ 1049 0082 0B       		.uleb128 0xb
+ 1050 0083 49       		.uleb128 0x49
+ 1051 0084 13       		.uleb128 0x13
+ 1052 0085 02       		.uleb128 0x2
+ 1053 0086 18       		.uleb128 0x18
+ 1054 0087 00       		.byte	0
+ 1055 0088 00       		.byte	0
+ 1056 0089 0B       		.uleb128 0xb
+ 1057 008a 2E       		.uleb128 0x2e
+ 1058 008b 01       		.byte	0x1
+ 1059 008c 3F       		.uleb128 0x3f
+ 1060 008d 19       		.uleb128 0x19
+ 1061 008e 03       		.uleb128 0x3
+ 1062 008f 0E       		.uleb128 0xe
+ 1063 0090 3A       		.uleb128 0x3a
+ 1064 0091 0B       		.uleb128 0xb
+ 1065 0092 3B       		.uleb128 0x3b
+ 1066 0093 0B       		.uleb128 0xb
+ 1067 0094 49       		.uleb128 0x49
+ 1068 0095 13       		.uleb128 0x13
+ 1069 0096 11       		.uleb128 0x11
+ 1070 0097 01       		.uleb128 0x1
+ 1071 0098 12       		.uleb128 0x12
+ 1072 0099 06       		.uleb128 0x6
+ 1073 009a 40       		.uleb128 0x40
+ 1074 009b 18       		.uleb128 0x18
+ 1075 009c 9642     		.uleb128 0x2116
+ 1076 009e 19       		.uleb128 0x19
+ 1077 009f 01       		.uleb128 0x1
+ 1078 00a0 13       		.uleb128 0x13
+ 1079 00a1 00       		.byte	0
+ 1080 00a2 00       		.byte	0
+ 1081 00a3 0C       		.uleb128 0xc
+ 1082 00a4 34       		.uleb128 0x34
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 25
+
+
+ 1083 00a5 00       		.byte	0
+ 1084 00a6 03       		.uleb128 0x3
+ 1085 00a7 0E       		.uleb128 0xe
+ 1086 00a8 3A       		.uleb128 0x3a
+ 1087 00a9 0B       		.uleb128 0xb
+ 1088 00aa 3B       		.uleb128 0x3b
+ 1089 00ab 0B       		.uleb128 0xb
+ 1090 00ac 49       		.uleb128 0x49
+ 1091 00ad 13       		.uleb128 0x13
+ 1092 00ae 02       		.uleb128 0x2
+ 1093 00af 18       		.uleb128 0x18
+ 1094 00b0 00       		.byte	0
+ 1095 00b1 00       		.byte	0
+ 1096 00b2 0D       		.uleb128 0xd
+ 1097 00b3 0B       		.uleb128 0xb
+ 1098 00b4 01       		.byte	0x1
+ 1099 00b5 11       		.uleb128 0x11
+ 1100 00b6 01       		.uleb128 0x1
+ 1101 00b7 12       		.uleb128 0x12
+ 1102 00b8 06       		.uleb128 0x6
+ 1103 00b9 00       		.byte	0
+ 1104 00ba 00       		.byte	0
+ 1105 00bb 0E       		.uleb128 0xe
+ 1106 00bc 34       		.uleb128 0x34
+ 1107 00bd 00       		.byte	0
+ 1108 00be 03       		.uleb128 0x3
+ 1109 00bf 0E       		.uleb128 0xe
+ 1110 00c0 3A       		.uleb128 0x3a
+ 1111 00c1 0B       		.uleb128 0xb
+ 1112 00c2 3B       		.uleb128 0x3b
+ 1113 00c3 05       		.uleb128 0x5
+ 1114 00c4 49       		.uleb128 0x49
+ 1115 00c5 13       		.uleb128 0x13
+ 1116 00c6 3F       		.uleb128 0x3f
+ 1117 00c7 19       		.uleb128 0x19
+ 1118 00c8 3C       		.uleb128 0x3c
+ 1119 00c9 19       		.uleb128 0x19
+ 1120 00ca 00       		.byte	0
+ 1121 00cb 00       		.byte	0
+ 1122 00cc 0F       		.uleb128 0xf
+ 1123 00cd 34       		.uleb128 0x34
+ 1124 00ce 00       		.byte	0
+ 1125 00cf 03       		.uleb128 0x3
+ 1126 00d0 0E       		.uleb128 0xe
+ 1127 00d1 3A       		.uleb128 0x3a
+ 1128 00d2 0B       		.uleb128 0xb
+ 1129 00d3 3B       		.uleb128 0x3b
+ 1130 00d4 0B       		.uleb128 0xb
+ 1131 00d5 49       		.uleb128 0x49
+ 1132 00d6 13       		.uleb128 0x13
+ 1133 00d7 3F       		.uleb128 0x3f
+ 1134 00d8 19       		.uleb128 0x19
+ 1135 00d9 3C       		.uleb128 0x3c
+ 1136 00da 19       		.uleb128 0x19
+ 1137 00db 00       		.byte	0
+ 1138 00dc 00       		.byte	0
+ 1139 00dd 00       		.byte	0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 26
+
+
+ 1140              		.section	.debug_aranges,"",%progbits
+ 1141 0000 24000000 		.4byte	0x24
+ 1142 0004 0200     		.2byte	0x2
+ 1143 0006 00000000 		.4byte	.Ldebug_info0
+ 1144 000a 04       		.byte	0x4
+ 1145 000b 00       		.byte	0
+ 1146 000c 0000     		.2byte	0
+ 1147 000e 0000     		.2byte	0
+ 1148 0010 00000000 		.4byte	.LFB37
+ 1149 0014 E4000000 		.4byte	.LFE37-.LFB37
+ 1150 0018 00000000 		.4byte	.LFB38
+ 1151 001c 24010000 		.4byte	.LFE38-.LFB38
+ 1152 0020 00000000 		.4byte	0
+ 1153 0024 00000000 		.4byte	0
+ 1154              		.section	.debug_ranges,"",%progbits
+ 1155              	.Ldebug_ranges0:
+ 1156 0000 00000000 		.4byte	.LFB37
+ 1157 0004 E4000000 		.4byte	.LFE37
+ 1158 0008 00000000 		.4byte	.LFB38
+ 1159 000c 24010000 		.4byte	.LFE38
+ 1160 0010 00000000 		.4byte	0
+ 1161 0014 00000000 		.4byte	0
+ 1162              		.section	.debug_line,"",%progbits
+ 1163              	.Ldebug_line0:
+ 1164 0000 10010000 		.section	.debug_str,"MS",%progbits,1
+ 1164      02007300 
+ 1164      00000201 
+ 1164      FB0E0D00 
+ 1164      01010101 
+ 1165              	.LASF66:
+ 1166 0000 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_RX_CREDIT_IND\000"
+ 1166      455F4556 
+ 1166      545F4C32 
+ 1166      4341505F 
+ 1166      43424643 
+ 1167              	.LASF20:
+ 1168 0023 4359424C 		.ascii	"CYBLE_EVT_STACK_BUSY_STATUS\000"
+ 1168      455F4556 
+ 1168      545F5354 
+ 1168      41434B5F 
+ 1168      42555359 
+ 1169              	.LASF115:
+ 1170 003f 4359424C 		.ascii	"CYBLE_STATE_STOPPED\000"
+ 1170      455F5354 
+ 1170      4154455F 
+ 1170      53544F50 
+ 1170      50454400 
+ 1171              	.LASF65:
+ 1172 0053 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DATA_READ\000"
+ 1172      455F4556 
+ 1172      545F4C32 
+ 1172      4341505F 
+ 1172      43424643 
+ 1173              	.LASF75:
+ 1174 0072 4359424C 		.ascii	"CYBLE_ERROR_MEMORY_ALLOCATION_FAILED\000"
+ 1174      455F4552 
+ 1174      524F525F 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 27
+
+
+ 1174      4D454D4F 
+ 1174      52595F41 
+ 1175              	.LASF31:
+ 1176 0097 4359424C 		.ascii	"CYBLE_EVT_GAP_CONNECTION_UPDATE_COMPLETE\000"
+ 1176      455F4556 
+ 1176      545F4741 
+ 1176      505F434F 
+ 1176      4E4E4543 
+ 1177              	.LASF64:
+ 1178 00c0 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DISCONN_CNF\000"
+ 1178      455F4556 
+ 1178      545F4C32 
+ 1178      4341505F 
+ 1178      43424643 
+ 1179              	.LASF45:
+ 1180 00e1 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_MULTI_RSP\000"
+ 1180      455F4556 
+ 1180      545F4741 
+ 1180      5454435F 
+ 1180      52454144 
+ 1181              	.LASF50:
+ 1182 0100 4359424C 		.ascii	"CYBLE_EVT_GATTS_EXEC_WRITE_REQ\000"
+ 1182      455F4556 
+ 1182      545F4741 
+ 1182      5454535F 
+ 1182      45584543 
+ 1183              	.LASF126:
+ 1184 011f 746F6767 		.ascii	"toggleTimeout\000"
+ 1184      6C655469 
+ 1184      6D656F75 
+ 1184      7400
+ 1185              	.LASF17:
+ 1186 012d 4359424C 		.ascii	"CYBLE_EVT_TIMEOUT\000"
+ 1186      455F4556 
+ 1186      545F5449 
+ 1186      4D454F55 
+ 1186      5400
+ 1187              	.LASF4:
+ 1188 013f 6C6F6E67 		.ascii	"long int\000"
+ 1188      20696E74 
+ 1188      00
+ 1189              	.LASF85:
+ 1190 0148 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_PSM_WRONG_ENCODING\000"
+ 1190      455F4552 
+ 1190      524F525F 
+ 1190      4C324341 
+ 1190      505F5053 
+ 1191              	.LASF76:
+ 1192 016d 4359424C 		.ascii	"CYBLE_ERROR_INSUFFICIENT_RESOURCES\000"
+ 1192      455F4552 
+ 1192      524F525F 
+ 1192      494E5355 
+ 1192      46464943 
+ 1193              	.LASF19:
+ 1194 0190 4359424C 		.ascii	"CYBLE_EVT_HCI_STATUS\000"
+ 1194      455F4556 
+ 1194      545F4843 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 28
+
+
+ 1194      495F5354 
+ 1194      41545553 
+ 1195              	.LASF32:
+ 1196 01a5 4359424C 		.ascii	"CYBLE_EVT_GAPC_SCAN_START_STOP\000"
+ 1196      455F4556 
+ 1196      545F4741 
+ 1196      50435F53 
+ 1196      43414E5F 
+ 1197              	.LASF69:
+ 1198 01c4 4359424C 		.ascii	"CYBLE_EVT_PENDING_FLASH_WRITE\000"
+ 1198      455F4556 
+ 1198      545F5045 
+ 1198      4E44494E 
+ 1198      475F464C 
+ 1199              	.LASF106:
+ 1200 01e2 4359424C 		.ascii	"CYBLE_BLESS_STATE_ACTIVE\000"
+ 1200      455F424C 
+ 1200      4553535F 
+ 1200      53544154 
+ 1200      455F4143 
+ 1201              	.LASF30:
+ 1202 01fb 4359424C 		.ascii	"CYBLE_EVT_GAP_ENCRYPT_CHANGE\000"
+ 1202      455F4556 
+ 1202      545F4741 
+ 1202      505F454E 
+ 1202      43525950 
+ 1203              	.LASF118:
+ 1204 0218 4359424C 		.ascii	"CYBLE_STATE_ADVERTISING\000"
+ 1204      455F5354 
+ 1204      4154455F 
+ 1204      41445645 
+ 1204      52544953 
+ 1205              	.LASF6:
+ 1206 0230 6C6F6E67 		.ascii	"long long int\000"
+ 1206      206C6F6E 
+ 1206      6720696E 
+ 1206      7400
+ 1207              	.LASF0:
+ 1208 023e 7369676E 		.ascii	"signed char\000"
+ 1208      65642063 
+ 1208      68617200 
+ 1209              	.LASF16:
+ 1210 024a 4359424C 		.ascii	"CYBLE_EVT_STACK_ON\000"
+ 1210      455F4556 
+ 1210      545F5354 
+ 1210      41434B5F 
+ 1210      4F4E00
+ 1211              	.LASF92:
+ 1212 025d 4359424C 		.ascii	"CYBLE_ERROR_DEVICE_ALREADY_EXISTS\000"
+ 1212      455F4552 
+ 1212      524F525F 
+ 1212      44455649 
+ 1212      43455F41 
+ 1213              	.LASF79:
+ 1214 027f 4359424C 		.ascii	"CYBLE_ERROR_NO_DEVICE_ENTITY\000"
+ 1214      455F4552 
+ 1214      524F525F 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 29
+
+
+ 1214      4E4F5F44 
+ 1214      45564943 
+ 1215              	.LASF22:
+ 1216 029c 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_REQ\000"
+ 1216      455F4556 
+ 1216      545F4741 
+ 1216      505F4155 
+ 1216      54485F52 
+ 1217              	.LASF43:
+ 1218 02b3 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_RSP\000"
+ 1218      455F4556 
+ 1218      545F4741 
+ 1218      5454435F 
+ 1218      52454144 
+ 1219              	.LASF99:
+ 1220 02cc 4359424C 		.ascii	"CYBLE_ERROR_INVALID_STATE\000"
+ 1220      455F4552 
+ 1220      524F525F 
+ 1220      494E5641 
+ 1220      4C49445F 
+ 1221              	.LASF48:
+ 1222 02e6 4359424C 		.ascii	"CYBLE_EVT_GATTS_WRITE_CMD_REQ\000"
+ 1222      455F4556 
+ 1222      545F4741 
+ 1222      5454535F 
+ 1222      57524954 
+ 1223              	.LASF60:
+ 1224 0304 4359424C 		.ascii	"CYBLE_EVT_L2CAP_COMMAND_REJ\000"
+ 1224      455F4556 
+ 1224      545F4C32 
+ 1224      4341505F 
+ 1224      434F4D4D 
+ 1225              	.LASF119:
+ 1226 0320 4359424C 		.ascii	"CYBLE_STATE_DISCONNECTED\000"
+ 1226      455F5354 
+ 1226      4154455F 
+ 1226      44495343 
+ 1226      4F4E4E45 
+ 1227              	.LASF27:
+ 1228 0339 4359424C 		.ascii	"CYBLE_EVT_GAPP_ADVERTISEMENT_START_STOP\000"
+ 1228      455F4556 
+ 1228      545F4741 
+ 1228      50505F41 
+ 1228      44564552 
+ 1229              	.LASF90:
+ 1230 0361 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_PSM_NOT_IN_RANGE\000"
+ 1230      455F4552 
+ 1230      524F525F 
+ 1230      4C324341 
+ 1230      505F5053 
+ 1231              	.LASF9:
+ 1232 0384 75696E74 		.ascii	"uint8\000"
+ 1232      3800
+ 1233              	.LASF84:
+ 1234 038a 4359424C 		.ascii	"CYBLE_ERROR_SEC_FAILED\000"
+ 1234      455F4552 
+ 1234      524F525F 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 30
+
+
+ 1234      5345435F 
+ 1234      4641494C 
+ 1235              	.LASF51:
+ 1236 03a1 4359424C 		.ascii	"CYBLE_EVT_GATTC_EXEC_WRITE_RSP\000"
+ 1236      455F4556 
+ 1236      545F4741 
+ 1236      5454435F 
+ 1236      45584543 
+ 1237              	.LASF12:
+ 1238 03c0 646F7562 		.ascii	"double\000"
+ 1238      6C6500
+ 1239              	.LASF73:
+ 1240 03c7 4359424C 		.ascii	"CYBLE_ERROR_INVALID_PARAMETER\000"
+ 1240      455F4552 
+ 1240      524F525F 
+ 1240      494E5641 
+ 1240      4C49445F 
+ 1241              	.LASF10:
+ 1242 03e5 75696E74 		.ascii	"uint32\000"
+ 1242      333200
+ 1243              	.LASF130:
+ 1244 03ec 616C6572 		.ascii	"alertLevel\000"
+ 1244      744C6576 
+ 1244      656C00
+ 1245              	.LASF71:
+ 1246 03f7 4359424C 		.ascii	"CYBLE_EVT_MAX\000"
+ 1246      455F4556 
+ 1246      545F4D41 
+ 1246      5800
+ 1247              	.LASF72:
+ 1248 0405 4359424C 		.ascii	"CYBLE_ERROR_OK\000"
+ 1248      455F4552 
+ 1248      524F525F 
+ 1248      4F4B00
+ 1249              	.LASF34:
+ 1250 0414 4359424C 		.ascii	"CYBLE_EVT_GATTC_ERROR_RSP\000"
+ 1250      455F4556 
+ 1250      545F4741 
+ 1250      5454435F 
+ 1250      4552524F 
+ 1251              	.LASF58:
+ 1252 042e 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CONN_PARAM_UPDATE_REQ\000"
+ 1252      455F4556 
+ 1252      545F4C32 
+ 1252      4341505F 
+ 1252      434F4E4E 
+ 1253              	.LASF68:
+ 1254 0454 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DATA_WRITE_IND\000"
+ 1254      455F4556 
+ 1254      545F4C32 
+ 1254      4341505F 
+ 1254      43424643 
+ 1255              	.LASF7:
+ 1256 0478 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1256      206C6F6E 
+ 1256      6720756E 
+ 1256      7369676E 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 31
+
+
+ 1256      65642069 
+ 1257              	.LASF56:
+ 1258 048f 4359424C 		.ascii	"CYBLE_EVT_GATTC_STOP_CMD_COMPLETE\000"
+ 1258      455F4556 
+ 1258      545F4741 
+ 1258      5454435F 
+ 1258      53544F50 
+ 1259              	.LASF77:
+ 1260 04b1 4359424C 		.ascii	"CYBLE_ERROR_OOB_NOT_AVAILABLE\000"
+ 1260      455F4552 
+ 1260      524F525F 
+ 1260      4F4F425F 
+ 1260      4E4F545F 
+ 1261              	.LASF127:
+ 1262 04cf 626C6573 		.ascii	"blessState\000"
+ 1262      73537461 
+ 1262      746500
+ 1263              	.LASF70:
+ 1264 04da 4359424C 		.ascii	"CYBLE_EVT_LE_PING_AUTH_TIMEOUT\000"
+ 1264      455F4556 
+ 1264      545F4C45 
+ 1264      5F50494E 
+ 1264      475F4155 
+ 1265              	.LASF86:
+ 1266 04f9 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_PSM_ALREADY_REGISTERED\000"
+ 1266      455F4552 
+ 1266      524F525F 
+ 1266      4C324341 
+ 1266      505F5053 
+ 1267              	.LASF111:
+ 1268 0522 4359424C 		.ascii	"CYBLE_BLESS_STATE_DEEPSLEEP\000"
+ 1268      455F424C 
+ 1268      4553535F 
+ 1268      53544154 
+ 1268      455F4445 
+ 1269              	.LASF5:
+ 1270 053e 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1270      20756E73 
+ 1270      69676E65 
+ 1270      6420696E 
+ 1270      7400
+ 1271              	.LASF105:
+ 1272 0550 4359424C 		.ascii	"CYBLE_BLESS_INVALID\000"
+ 1272      455F424C 
+ 1272      4553535F 
+ 1272      494E5641 
+ 1272      4C494400 
+ 1273              	.LASF38:
+ 1274 0564 4359424C 		.ascii	"CYBLE_EVT_GATTC_XCHNG_MTU_RSP\000"
+ 1274      455F4556 
+ 1274      545F4741 
+ 1274      5454435F 
+ 1274      5843484E 
+ 1275              	.LASF55:
+ 1276 0582 4359424C 		.ascii	"CYBLE_EVT_GATTS_DATA_SIGNED_CMD_REQ\000"
+ 1276      455F4556 
+ 1276      545F4741 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 32
+
+
+ 1276      5454535F 
+ 1276      44415441 
+ 1277              	.LASF89:
+ 1278 05a6 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_CHANNEL_NOT_FOUND\000"
+ 1278      455F4552 
+ 1278      524F525F 
+ 1278      4C324341 
+ 1278      505F4348 
+ 1279              	.LASF121:
+ 1280 05ca 6576656E 		.ascii	"event\000"
+ 1280      7400
+ 1281              	.LASF128:
+ 1282 05d0 696E7472 		.ascii	"intrStatus\000"
+ 1282      53746174 
+ 1282      757300
+ 1283              	.LASF96:
+ 1284 05db 4359424C 		.ascii	"CYBLE_ERROR_NTF_DISABLED\000"
+ 1284      455F4552 
+ 1284      524F525F 
+ 1284      4E54465F 
+ 1284      44495341 
+ 1285              	.LASF15:
+ 1286 05f4 4359424C 		.ascii	"CYBLE_EVT_HOST_INVALID\000"
+ 1286      455F4556 
+ 1286      545F484F 
+ 1286      53545F49 
+ 1286      4E56414C 
+ 1287              	.LASF41:
+ 1288 060b 4359424C 		.ascii	"CYBLE_EVT_GATTC_FIND_INFO_RSP\000"
+ 1288      455F4556 
+ 1288      545F4741 
+ 1288      5454435F 
+ 1288      46494E44 
+ 1289              	.LASF23:
+ 1290 0629 4359424C 		.ascii	"CYBLE_EVT_GAP_PASSKEY_ENTRY_REQUEST\000"
+ 1290      455F4556 
+ 1290      545F4741 
+ 1290      505F5041 
+ 1290      53534B45 
+ 1291              	.LASF28:
+ 1292 064d 4359424C 		.ascii	"CYBLE_EVT_GAP_DEVICE_CONNECTED\000"
+ 1292      455F4556 
+ 1292      545F4741 
+ 1292      505F4445 
+ 1292      56494345 
+ 1293              	.LASF46:
+ 1294 066c 4359424C 		.ascii	"CYBLE_EVT_GATTS_WRITE_REQ\000"
+ 1294      455F4556 
+ 1294      545F4741 
+ 1294      5454535F 
+ 1294      57524954 
+ 1295              	.LASF129:
+ 1296 0686 6379426C 		.ascii	"cyBle_state\000"
+ 1296      655F7374 
+ 1296      61746500 
+ 1297              	.LASF24:
+ 1298 0692 4359424C 		.ascii	"CYBLE_EVT_GAP_PASSKEY_DISPLAY_REQUEST\000"
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 33
+
+
+ 1298      455F4556 
+ 1298      545F4741 
+ 1298      505F5041 
+ 1298      53534B45 
+ 1299              	.LASF35:
+ 1300 06b8 4359424C 		.ascii	"CYBLE_EVT_GATT_CONNECT_IND\000"
+ 1300      455F4556 
+ 1300      545F4741 
+ 1300      54545F43 
+ 1300      4F4E4E45 
+ 1301              	.LASF112:
+ 1302 06d3 4359424C 		.ascii	"CYBLE_BLESS_STATE_HIBERNATE\000"
+ 1302      455F424C 
+ 1302      4553535F 
+ 1302      53544154 
+ 1302      455F4849 
+ 1303              	.LASF21:
+ 1304 06ef 4359424C 		.ascii	"CYBLE_EVT_GAPC_SCAN_PROGRESS_RESULT\000"
+ 1304      455F4556 
+ 1304      545F4741 
+ 1304      50435F53 
+ 1304      43414E5F 
+ 1305              	.LASF95:
+ 1306 0713 4359424C 		.ascii	"CYBLE_ERROR_MAX\000"
+ 1306      455F4552 
+ 1306      524F525F 
+ 1306      4D415800 
+ 1307              	.LASF61:
+ 1308 0723 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_CONN_IND\000"
+ 1308      455F4556 
+ 1308      545F4C32 
+ 1308      4341505F 
+ 1308      43424643 
+ 1309              	.LASF40:
+ 1310 0741 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BY_TYPE_RSP\000"
+ 1310      455F4556 
+ 1310      545F4741 
+ 1310      5454435F 
+ 1310      52454144 
+ 1311              	.LASF14:
+ 1312 0762 73697A65 		.ascii	"sizetype\000"
+ 1312      74797065 
+ 1312      00
+ 1313              	.LASF116:
+ 1314 076b 4359424C 		.ascii	"CYBLE_STATE_INITIALIZING\000"
+ 1314      455F5354 
+ 1314      4154455F 
+ 1314      494E4954 
+ 1314      49414C49 
+ 1315              	.LASF26:
+ 1316 0784 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_FAILED\000"
+ 1316      455F4556 
+ 1316      545F4741 
+ 1316      505F4155 
+ 1316      54485F46 
+ 1317              	.LASF47:
+ 1318 079e 4359424C 		.ascii	"CYBLE_EVT_GATTC_WRITE_RSP\000"
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 34
+
+
+ 1318      455F4556 
+ 1318      545F4741 
+ 1318      5454435F 
+ 1318      57524954 
+ 1319              	.LASF104:
+ 1320 07b8 4359424C 		.ascii	"CYBLE_BLESS_HIBERNATE\000"
+ 1320      455F424C 
+ 1320      4553535F 
+ 1320      48494245 
+ 1320      524E4154 
+ 1321              	.LASF25:
+ 1322 07ce 4359424C 		.ascii	"CYBLE_EVT_GAP_AUTH_COMPLETE\000"
+ 1322      455F4556 
+ 1322      545F4741 
+ 1322      505F4155 
+ 1322      54485F43 
+ 1323              	.LASF125:
+ 1324 07ea 61706952 		.ascii	"apiResult\000"
+ 1324      6573756C 
+ 1324      7400
+ 1325              	.LASF100:
+ 1326 07f4 4359424C 		.ascii	"CYBLE_API_RESULT_T\000"
+ 1326      455F4150 
+ 1326      495F5245 
+ 1326      53554C54 
+ 1326      5F5400
+ 1327              	.LASF52:
+ 1328 0807 4359424C 		.ascii	"CYBLE_EVT_GATTC_HANDLE_VALUE_NTF\000"
+ 1328      455F4556 
+ 1328      545F4741 
+ 1328      5454435F 
+ 1328      48414E44 
+ 1329              	.LASF97:
+ 1330 0828 4359424C 		.ascii	"CYBLE_ERROR_IND_DISABLED\000"
+ 1330      455F4552 
+ 1330      524F525F 
+ 1330      494E445F 
+ 1330      44495341 
+ 1331              	.LASF62:
+ 1332 0841 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_CONN_CNF\000"
+ 1332      455F4556 
+ 1332      545F4C32 
+ 1332      4341505F 
+ 1332      43424643 
+ 1333              	.LASF39:
+ 1334 085f 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BY_GROUP_TYPE_RSP\000"
+ 1334      455F4556 
+ 1334      545F4741 
+ 1334      5454435F 
+ 1334      52454144 
+ 1335              	.LASF11:
+ 1336 0886 666C6F61 		.ascii	"float\000"
+ 1336      7400
+ 1337              	.LASF108:
+ 1338 088c 4359424C 		.ascii	"CYBLE_BLESS_STATE_SLEEP\000"
+ 1338      455F424C 
+ 1338      4553535F 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 35
+
+
+ 1338      53544154 
+ 1338      455F534C 
+ 1339              	.LASF82:
+ 1340 08a4 4359424C 		.ascii	"CYBLE_ERROR_TX_POWER_READ\000"
+ 1340      455F4552 
+ 1340      524F525F 
+ 1340      54585F50 
+ 1340      4F574552 
+ 1341              	.LASF98:
+ 1342 08be 4359424C 		.ascii	"CYBLE_ERROR_CHAR_IS_NOT_DISCOVERED\000"
+ 1342      455F4552 
+ 1342      524F525F 
+ 1342      43484152 
+ 1342      5F49535F 
+ 1343              	.LASF1:
+ 1344 08e1 756E7369 		.ascii	"unsigned char\000"
+ 1344      676E6564 
+ 1344      20636861 
+ 1344      7200
+ 1345              	.LASF2:
+ 1346 08ef 73686F72 		.ascii	"short int\000"
+ 1346      7420696E 
+ 1346      7400
+ 1347              	.LASF53:
+ 1348 08f9 4359424C 		.ascii	"CYBLE_EVT_GATTC_HANDLE_VALUE_IND\000"
+ 1348      455F4556 
+ 1348      545F4741 
+ 1348      5454435F 
+ 1348      48414E44 
+ 1349              	.LASF78:
+ 1350 091a 4359424C 		.ascii	"CYBLE_ERROR_NO_CONNECTION\000"
+ 1350      455F4552 
+ 1350      524F525F 
+ 1350      4E4F5F43 
+ 1350      4F4E4E45 
+ 1351              	.LASF49:
+ 1352 0934 4359424C 		.ascii	"CYBLE_EVT_GATTS_PREP_WRITE_REQ\000"
+ 1352      455F4556 
+ 1352      545F4741 
+ 1352      5454535F 
+ 1352      50524550 
+ 1353              	.LASF113:
+ 1354 0953 4359424C 		.ascii	"CYBLE_BLESS_STATE_INVALID\000"
+ 1354      455F424C 
+ 1354      4553535F 
+ 1354      53544154 
+ 1354      455F494E 
+ 1355              	.LASF54:
+ 1356 096d 4359424C 		.ascii	"CYBLE_EVT_GATTS_HANDLE_VALUE_CNF\000"
+ 1356      455F4556 
+ 1356      545F4741 
+ 1356      5454535F 
+ 1356      48414E44 
+ 1357              	.LASF80:
+ 1358 098e 4359424C 		.ascii	"CYBLE_ERROR_REPEATED_ATTEMPTS\000"
+ 1358      455F4552 
+ 1358      524F525F 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 36
+
+
+ 1358      52455045 
+ 1358      41544544 
+ 1359              	.LASF132:
+ 1360 09ac 2E5C6D61 		.ascii	".\\main.c\000"
+ 1360      696E2E63 
+ 1360      00
+ 1361              	.LASF114:
+ 1362 09b5 4359424C 		.ascii	"CYBLE_BLESS_STATE_T\000"
+ 1362      455F424C 
+ 1362      4553535F 
+ 1362      53544154 
+ 1362      455F5400 
+ 1363              	.LASF13:
+ 1364 09c9 63686172 		.ascii	"char\000"
+ 1364      00
+ 1365              	.LASF102:
+ 1366 09ce 4359424C 		.ascii	"CYBLE_BLESS_SLEEP\000"
+ 1366      455F424C 
+ 1366      4553535F 
+ 1366      534C4545 
+ 1366      5000
+ 1367              	.LASF83:
+ 1368 09e0 4359424C 		.ascii	"CYBLE_ERROR_BT_ON_NOT_COMPLETED\000"
+ 1368      455F4552 
+ 1368      524F525F 
+ 1368      42545F4F 
+ 1368      4E5F4E4F 
+ 1369              	.LASF29:
+ 1370 0a00 4359424C 		.ascii	"CYBLE_EVT_GAP_DEVICE_DISCONNECTED\000"
+ 1370      455F4556 
+ 1370      545F4741 
+ 1370      505F4445 
+ 1370      56494345 
+ 1371              	.LASF8:
+ 1372 0a22 756E7369 		.ascii	"unsigned int\000"
+ 1372      676E6564 
+ 1372      20696E74 
+ 1372      00
+ 1373              	.LASF57:
+ 1374 0a2f 4359424C 		.ascii	"CYBLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ\000"
+ 1374      455F4556 
+ 1374      545F4741 
+ 1374      5454535F 
+ 1374      52454144 
+ 1375              	.LASF133:
+ 1376 0a58 433A5C55 		.ascii	"C:\\Users\\merlin\\Documents\\PSoC Creator\\BLE_Hol"
+ 1376      73657273 
+ 1376      5C6D6572 
+ 1376      6C696E5C 
+ 1376      446F6375 
+ 1377 0a86 6F436C6F 		.ascii	"oClock\\BLE_HoloClock.cydsn\000"
+ 1377      636B5C42 
+ 1377      4C455F48 
+ 1377      6F6C6F43 
+ 1377      6C6F636B 
+ 1378              	.LASF67:
+ 1379 0aa1 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_TX_CREDIT_IND\000"
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 37
+
+
+ 1379      455F4556 
+ 1379      545F4C32 
+ 1379      4341505F 
+ 1379      43424643 
+ 1380              	.LASF93:
+ 1381 0ac4 4359424C 		.ascii	"CYBLE_ERROR_FLASH_WRITE_NOT_PERMITED\000"
+ 1381      455F4552 
+ 1381      524F525F 
+ 1381      464C4153 
+ 1381      485F5752 
+ 1382              	.LASF88:
+ 1383 0ae9 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_CONNECTION_ENTITY_NOT_FOUND\000"
+ 1383      455F4552 
+ 1383      524F525F 
+ 1383      4C324341 
+ 1383      505F434F 
+ 1384              	.LASF18:
+ 1385 0b17 4359424C 		.ascii	"CYBLE_EVT_HARDWARE_ERROR\000"
+ 1385      455F4556 
+ 1385      545F4841 
+ 1385      52445741 
+ 1385      52455F45 
+ 1386              	.LASF3:
+ 1387 0b30 73686F72 		.ascii	"short unsigned int\000"
+ 1387      7420756E 
+ 1387      7369676E 
+ 1387      65642069 
+ 1387      6E7400
+ 1388              	.LASF107:
+ 1389 0b43 4359424C 		.ascii	"CYBLE_BLESS_STATE_EVENT_CLOSE\000"
+ 1389      455F424C 
+ 1389      4553535F 
+ 1389      53544154 
+ 1389      455F4556 
+ 1390              	.LASF74:
+ 1391 0b61 4359424C 		.ascii	"CYBLE_ERROR_INVALID_OPERATION\000"
+ 1391      455F4552 
+ 1391      524F525F 
+ 1391      494E5641 
+ 1391      4C49445F 
+ 1392              	.LASF37:
+ 1393 0b7f 4359424C 		.ascii	"CYBLE_EVT_GATTS_XCNHG_MTU_REQ\000"
+ 1393      455F4556 
+ 1393      545F4741 
+ 1393      5454535F 
+ 1393      58434E48 
+ 1394              	.LASF122:
+ 1395 0b9d 6576656E 		.ascii	"eventParam\000"
+ 1395      74506172 
+ 1395      616D00
+ 1396              	.LASF109:
+ 1397 0ba8 4359424C 		.ascii	"CYBLE_BLESS_STATE_ECO_ON\000"
+ 1397      455F424C 
+ 1397      4553535F 
+ 1397      53544154 
+ 1397      455F4543 
+ 1398              	.LASF120:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 38
+
+
+ 1399 0bc1 4359424C 		.ascii	"CYBLE_STATE_T\000"
+ 1399      455F5354 
+ 1399      4154455F 
+ 1399      5400
+ 1400              	.LASF44:
+ 1401 0bcf 4359424C 		.ascii	"CYBLE_EVT_GATTC_READ_BLOB_RSP\000"
+ 1401      455F4556 
+ 1401      545F4741 
+ 1401      5454435F 
+ 1401      52454144 
+ 1402              	.LASF123:
+ 1403 0bed 53746163 		.ascii	"StackEventHandler\000"
+ 1403      6B457665 
+ 1403      6E744861 
+ 1403      6E646C65 
+ 1403      7200
+ 1404              	.LASF110:
+ 1405 0bff 4359424C 		.ascii	"CYBLE_BLESS_STATE_ECO_STABLE\000"
+ 1405      455F424C 
+ 1405      4553535F 
+ 1405      53544154 
+ 1405      455F4543 
+ 1406              	.LASF94:
+ 1407 0c1c 4359424C 		.ascii	"CYBLE_ERROR_MIC_AUTH_FAILED\000"
+ 1407      455F4552 
+ 1407      524F525F 
+ 1407      4D49435F 
+ 1407      41555448 
+ 1408              	.LASF87:
+ 1409 0c38 4359424C 		.ascii	"CYBLE_ERROR_L2CAP_PSM_NOT_REGISTERED\000"
+ 1409      455F4552 
+ 1409      524F525F 
+ 1409      4C324341 
+ 1409      505F5053 
+ 1410              	.LASF117:
+ 1411 0c5d 4359424C 		.ascii	"CYBLE_STATE_CONNECTED\000"
+ 1411      455F5354 
+ 1411      4154455F 
+ 1411      434F4E4E 
+ 1411      45435445 
+ 1412              	.LASF103:
+ 1413 0c73 4359424C 		.ascii	"CYBLE_BLESS_DEEPSLEEP\000"
+ 1413      455F424C 
+ 1413      4553535F 
+ 1413      44454550 
+ 1413      534C4545 
+ 1414              	.LASF131:
+ 1415 0c89 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1415      4320342E 
+ 1415      392E3320 
+ 1415      32303135 
+ 1415      30333033 
+ 1416 0cbc 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 1416      20726576 
+ 1416      6973696F 
+ 1416      6E203232 
+ 1416      31323230 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 39
+
+
+ 1417 0cef 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1417      66756E63 
+ 1417      74696F6E 
+ 1417      2D736563 
+ 1417      74696F6E 
+ 1418              	.LASF42:
+ 1419 0d17 4359424C 		.ascii	"CYBLE_EVT_GATTC_FIND_BY_TYPE_VALUE_RSP\000"
+ 1419      455F4556 
+ 1419      545F4741 
+ 1419      5454435F 
+ 1419      46494E44 
+ 1420              	.LASF81:
+ 1421 0d3e 4359424C 		.ascii	"CYBLE_ERROR_GAP_ROLE\000"
+ 1421      455F4552 
+ 1421      524F525F 
+ 1421      4741505F 
+ 1421      524F4C45 
+ 1422              	.LASF33:
+ 1423 0d53 4359424C 		.ascii	"CYBLE_EVT_GAP_KEYINFO_EXCHNGE_CMPLT\000"
+ 1423      455F4556 
+ 1423      545F4741 
+ 1423      505F4B45 
+ 1423      59494E46 
+ 1424              	.LASF63:
+ 1425 0d77 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CBFC_DISCONN_IND\000"
+ 1425      455F4556 
+ 1425      545F4C32 
+ 1425      4341505F 
+ 1425      43424643 
+ 1426              	.LASF59:
+ 1427 0d98 4359424C 		.ascii	"CYBLE_EVT_L2CAP_CONN_PARAM_UPDATE_RSP\000"
+ 1427      455F4556 
+ 1427      545F4C32 
+ 1427      4341505F 
+ 1427      434F4E4E 
+ 1428              	.LASF124:
+ 1429 0dbe 6D61696E 		.ascii	"main\000"
+ 1429      00
+ 1430              	.LASF101:
+ 1431 0dc3 4359424C 		.ascii	"CYBLE_BLESS_ACTIVE\000"
+ 1431      455F424C 
+ 1431      4553535F 
+ 1431      41435449 
+ 1431      564500
+ 1432              	.LASF36:
+ 1433 0dd6 4359424C 		.ascii	"CYBLE_EVT_GATT_DISCONNECT_IND\000"
+ 1433      455F4556 
+ 1433      545F4741 
+ 1433      54545F44 
+ 1433      4953434F 
+ 1434              	.LASF91:
+ 1435 0df4 4359424C 		.ascii	"CYBLE_ERROR_GATT_DB_INVALID_ATTR_HANDLE\000"
+ 1435      455F4552 
+ 1435      524F525F 
+ 1435      47415454 
+ 1435      5F44425F 
+ 1436              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccDtQv4x.s 			page 40
+
+

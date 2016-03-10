@@ -1,0 +1,3216 @@
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 1
+
+
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.EnterDeepSleepLowPowerMode,"ax",%progbits
+  18              		.align	2
+  19              		.global	EnterDeepSleepLowPowerMode
+  20              		.code	16
+  21              		.thumb_func
+  22              		.type	EnterDeepSleepLowPowerMode, %function
+  23              	EnterDeepSleepLowPowerMode:
+  24              	.LFB35:
+  25              		.file 1 ".\\main.c"
+   1:.\main.c      **** /******************************************************************************
+   2:.\main.c      **** * Project Name		: CY8CKIT_044_CapSense_Proximity
+   3:.\main.c      **** * Version			: 1.0
+   4:.\main.c      **** * Device Used		: CY8C4247AZI-M485     
+   5:.\main.c      **** * Software Used		: PSoC Creator 3.2
+   6:.\main.c      **** * Compiler Used		: ARM GCC 4.8.4 
+   7:.\main.c      **** * Related Hardware	: CY8CKIT-044 PSoC 4 M-Series Pioneer Kit 
+   8:.\main.c      **** *******************************************************************************
+   9:.\main.c      **** * Copyright (2015), Cypress Semiconductor Corporation.
+  10:.\main.c      **** *******************************************************************************
+  11:.\main.c      **** * This software, including source code, documentation and related materials
+  12:.\main.c      **** * ("Software") is owned by Cypress Semiconductor Corporation (Cypress) and is
+  13:.\main.c      **** * protected by and subject to worldwide patent protection (United States and 
+  14:.\main.c      **** * foreign), United States copyright laws and international treaty provisions. 
+  15:.\main.c      **** * Cypress hereby grants to licensee a personal, non-exclusive, non-transferable
+  16:.\main.c      **** * license to copy, use, modify, create derivative works of, and compile the 
+  17:.\main.c      **** * Cypress source code and derivative works for the sole purpose of creating 
+  18:.\main.c      **** * custom software in support of licensee product, such licensee product to be
+  19:.\main.c      **** * used only in conjunction with Cypress's integrated circuit as specified in the
+  20:.\main.c      **** * applicable agreement. Any reproduction, modification, translation, compilation,
+  21:.\main.c      **** * or representation of this Software except as specified above is prohibited 
+  22:.\main.c      **** * without the express written permission of Cypress.
+  23:.\main.c      **** * 
+  24:.\main.c      **** * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY KIND, 
+  25:.\main.c      **** * EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT, IMPLIED 
+  26:.\main.c      **** * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  27:.\main.c      **** * Cypress reserves the right to make changes to the Software without notice. 
+  28:.\main.c      **** * Cypress does not assume any liability arising out of the application or use
+  29:.\main.c      **** * of Software or any product or circuit described in the Software. Cypress does
+  30:.\main.c      **** * not authorize its products for use as critical components in any products 
+  31:.\main.c      **** * where a malfunction or failure may reasonably be expected to result in 
+  32:.\main.c      **** * significant injury or death ("ACTIVE Risk Product"). By including Cypress's 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 2
+
+
+  33:.\main.c      **** * product in a ACTIVE Risk Product, the manufacturer of such system or application
+  34:.\main.c      **** * assumes all risk of such use and in doing so indemnifies Cypress against all
+  35:.\main.c      **** * liability. Use of this Software may be limited by and subject to the applicable
+  36:.\main.c      **** * Cypress software license agreement.
+  37:.\main.c      **** *******************************************************************************/
+  38:.\main.c      **** /*******************************************************************************
+  39:.\main.c      **** * Theory of Operation: This project demonstrates the proximity sensing capability
+  40:.\main.c      **** * of PSoC 4200M device. Note that a proximity sensor wire must be connected to 
+  41:.\main.c      **** * P3[7] of the CY8CKIT-044 PSoC 4 M-Series Pioneer Kit for this project. Refer to the
+  42:.\main.c      **** * PSoC 4 M-Series Pioneer Kit User Guide for more details on hardware connection and 
+  43:.\main.c      **** * testing of this project. 
+  44:.\main.c      **** *
+  45:.\main.c      **** * The PSoC 4200M detects an approaching hand using the proximity sensor. If the
+  46:.\main.c      **** * signal level detected by the proximity sensor is greater than a threshold value,
+  47:.\main.c      **** * the PSoC 4200M switches on the Green LED on the PSoC 4 M-Series Pioneer Kit. The 
+  48:.\main.c      **** * brightness of the LED is increased as the hand approaches the proximity sensor.
+  49:.\main.c      **** * To achieve lower average power consumption, the PSoC 4200M scans the proximity
+  50:.\main.c      **** * sensor every 100ms when proximity is not detected. If proximity is detected 
+  51:.\main.c      **** * during sensor scan, PSoC 4200M starts scanning the sensor every 30ms. If the
+  52:.\main.c      **** * proximity is absent for a period more than 3 seconds, PSoC 4200M increases the
+  53:.\main.c      **** * interval between sensor scans and sensor scan is repeated every 100ms. 
+  54:.\main.c      **** *
+  55:.\main.c      **** * Note: The time periods of 30ms and 100ms are dependent on the LFCLK accuracy. 
+  56:.\main.c      **** * These time periods can be inaccurate up to 60% when ILO is used as the clock 
+  57:.\main.c      **** * source for LFCLK. Use the ILO Trim Component as demonstrated in the 
+  58:.\main.c      **** * CY8CKIT_044_Deep_Sleep_Blinky project to achieve higher accuracy with ILO.
+  59:.\main.c      **** *******************************************************************************/
+  60:.\main.c      **** 
+  61:.\main.c      **** #include "project.h"
+  62:.\main.c      **** #include "main.h"
+  63:.\main.c      **** #include "accelerometer.h"
+  64:.\main.c      **** 
+  65:.\main.c      **** /* Change this define to TRUE if you are using uC/Probe with this project. */
+  66:.\main.c      **** #define uCProbeEnabled 		FALSE
+  67:.\main.c      **** 
+  68:.\main.c      **** /* Proximity status for uC/Probe. */
+  69:.\main.c      **** uint32 uC_Probe_Prox_Indicator = ZERO;
+  70:.\main.c      **** 
+  71:.\main.c      **** /* Variables to store the acceleration data in 3 dimensions. */
+  72:.\main.c      **** int16 uC_Probe_x_dirMovement = ACC_NO_MOVEMENT;
+  73:.\main.c      **** int16 uC_Probe_y_dirMovement = ACC_NO_MOVEMENT;
+  74:.\main.c      **** int16 uC_Probe_z_dirMovement = ACC_NO_MOVEMENT;
+  75:.\main.c      **** 
+  76:.\main.c      **** /* If the accelerometer is configured, this variable is set to TRUE. */
+  77:.\main.c      **** uint8 acclerometer_configured = FALSE;
+  78:.\main.c      **** 
+  79:.\main.c      **** int main()
+  80:.\main.c      **** {	
+  81:.\main.c      ****     /* Start all the Components and enable the global interrupt. */
+  82:.\main.c      **** 	Initialize_Project();
+  83:.\main.c      ****     
+  84:.\main.c      ****     /* Initialize the accelerometer after a self-test. */
+  85:.\main.c      **** 	InitializeAccelerometer();
+  86:.\main.c      ****     
+  87:.\main.c      **** 	/* Proximity sensor state. */
+  88:.\main.c      **** 	uint8 proximity  = INACTIVE;
+  89:.\main.c      **** 	
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 3
+
+
+  90:.\main.c      **** 	/* This variable is used to implement a software counter. If the value 
+  91:.\main.c      **** 	 * of this counter is greater than 100, the proximity sensor was inactive
+  92:.\main.c      **** 	 * for more than 3s. */
+  93:.\main.c      **** 	uint8 softCounter = RESET;
+  94:.\main.c      **** 	
+  95:.\main.c      **** 	/* Variable to store the WDT match value. */
+  96:.\main.c      **** 	uint16 currentCountVal = ZERO;
+  97:.\main.c      **** 	
+  98:.\main.c      **** 	/* Variable to determine whether to update the WDT match value. */
+  99:.\main.c      **** 	uint8 updateMatch = UPDATE_100MS;
+ 100:.\main.c      **** 	
+ 101:.\main.c      **** 	/* Enable global interrupt. */
+ 102:.\main.c      **** 	CyGlobalIntEnable; 
+ 103:.\main.c      **** 
+ 104:.\main.c      **** 	/* Enable and start the CapSense block. */	
+ 105:.\main.c      **** 	CapSense_Start();
+ 106:.\main.c      **** 	
+ 107:.\main.c      **** 	/* Initialize the baselines of all CapSense widgets. */ 
+ 108:.\main.c      **** 	CapSense_InitializeSensorBaseline(CapSense_PROXIMITYSENSOR__PROX);
+ 109:.\main.c      **** 	
+ 110:.\main.c      **** 	/* Enable and start PWM block. */	
+ 111:.\main.c      **** 	PWM_Green_Start();
+ 112:.\main.c      **** 	
+ 113:.\main.c      **** 	/* Switch off the Green LED. */
+ 114:.\main.c      **** 	LED_SetBrightness(ZERO);
+ 115:.\main.c      **** 	
+ 116:.\main.c      **** 	for(;;)
+ 117:.\main.c      ****     {	
+ 118:.\main.c      **** 		/* Update the baseline of the proximity sensor. */
+ 119:.\main.c      **** 		CapSense_UpdateSensorBaseline(CapSense_PROXIMITYSENSOR__PROX);
+ 120:.\main.c      **** 		
+ 121:.\main.c      **** 		/* Scan the proximity sensor. */						
+ 122:.\main.c      **** 		CapSense_ScanSensor(CapSense_PROXIMITYSENSOR__PROX);
+ 123:.\main.c      **** 		
+ 124:.\main.c      **** 		/* Wait till the scan is complete*/
+ 125:.\main.c      **** 		while(CapSense_IsBusy())
+ 126:.\main.c      **** 		{
+ 127:.\main.c      **** 			/* Put the PSoC 4200M in Sleep power mode while the CapSense is scanning. 
+ 128:.\main.c      **** 			 * The device wakes up using the interrupt generated by CapSense CSD Component 
+ 129:.\main.c      **** 			 * after scanning. */
+ 130:.\main.c      **** 			CySysPmSleep();
+ 131:.\main.c      **** 		}
+ 132:.\main.c      **** 	
+ 133:.\main.c      **** 		/* Check if proximity sensor is active. */
+ 134:.\main.c      **** 		proximity = CapSense_CheckIsSensorActive(CapSense_PROXIMITYSENSOR__PROX);
+ 135:.\main.c      **** 
+ 136:.\main.c      **** 		if(proximity == ACTIVE)
+ 137:.\main.c      **** 		{
+ 138:.\main.c      **** 			/* Set the LED at a brightness level corresponding 
+ 139:.\main.c      **** 			 * to the proximity distance. And check accel */
+ 140:.\main.c      **** 			LED_SetBrightness(ON);
+ 141:.\main.c      ****             UpdateLEDColor();
+ 142:.\main.c      **** 			
+ 143:.\main.c      **** 			/* Update the WDT if required. */
+ 144:.\main.c      **** 			if(updateMatch == UPDATE_30MS)
+ 145:.\main.c      **** 			{
+ 146:.\main.c      **** 				/* Configure the wake up period to 30ms and update WDT match value. */
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 4
+
+
+ 147:.\main.c      **** 		    	CySysWdtWriteMatch(CY_SYS_WDT_COUNTER0, WDT_MATCH_VALUE_30MS);
+ 148:.\main.c      **** 				
+ 149:.\main.c      **** 				/* Read the current count value of the WDT. */
+ 150:.\main.c      **** 			    currentCountVal = CySysWdtReadCount(CY_SYS_WDT_COUNTER0);
+ 151:.\main.c      **** 				
+ 152:.\main.c      **** 				/* Reset the counter if the count value is greater than
+ 153:.\main.c      **** 				 * the match value */
+ 154:.\main.c      **** 			    if (currentCountVal > WDT_MATCH_VALUE_30MS)
+ 155:.\main.c      **** 			    {
+ 156:.\main.c      **** 			        CySysWdtResetCounters(CY_SYS_WDT_COUNTER0_RESET);
+ 157:.\main.c      **** 				}
+ 158:.\main.c      **** 				
+ 159:.\main.c      **** 				/* Provide a delay to allow the changes on WDT register to take 
+ 160:.\main.c      **** 				 * effect. This is approximately 4 LFCLK cycles. */
+ 161:.\main.c      **** 				CyDelayUs(ILOX4);
+ 162:.\main.c      **** 				
+ 163:.\main.c      **** 				/* Next update to the WDT match value is required only when
+ 164:.\main.c      **** 				 * switching to 100ms scan interval. */
+ 165:.\main.c      **** 				updateMatch = UPDATE_100MS;
+ 166:.\main.c      **** 			}
+ 167:.\main.c      **** 			
+ 168:.\main.c      **** 			/* Reset the software counter if proximity is detected. */
+ 169:.\main.c      **** 			softCounter = RESET;
+ 170:.\main.c      ****             
+ 171:.\main.c      ****             if(acclerometer_configured == TRUE)
+ 172:.\main.c      **** 		    {
+ 173:.\main.c      **** 			
+ 174:.\main.c      **** 			/* Read the accelerometer data. */
+ 175:.\main.c      **** 			ReadAccelerometer(&uC_Probe_x_dirMovement, &uC_Probe_y_dirMovement, &uC_Probe_z_dirMovement);
+ 176:.\main.c      **** 			
+ 177:.\main.c      **** 			/* Update the LED color based on the acceleration data. */
+ 178:.\main.c      **** 			UpdateLEDColor();
+ 179:.\main.c      **** 		    }
+ 180:.\main.c      **** 			
+ 181:.\main.c      **** 			/* Put CPU in sleep mode after displaying output on LED. 
+ 182:.\main.c      **** 			CySysPmSleep(); */
+ 183:.\main.c      ****             
+ 184:.\main.c      **** 		}
+ 185:.\main.c      **** 		else /* Proximity sensor is inactive. */
+ 186:.\main.c      **** 		{
+ 187:.\main.c      **** 			/* Switch off the LED if proximity is not detected. */
+ 188:.\main.c      **** 			LED_SetBrightness(OFF);
+ 189:.\main.c      **** 			
+ 190:.\main.c      **** 			/* Increment the software counter every 30ms if proximity is not detected. */
+ 191:.\main.c      **** 			softCounter++;
+ 192:.\main.c      **** 			
+ 193:.\main.c      **** 			/* Set the maximum limit for the soft counter. */
+ 194:.\main.c      **** 			if(softCounter >= MAX_VALUE)
+ 195:.\main.c      **** 			{
+ 196:.\main.c      **** 				/* Set the maximum limit for the softCounter. */
+ 197:.\main.c      **** 				softCounter = MAX_VALUE;
+ 198:.\main.c      **** 				
+ 199:.\main.c      **** 				/* Update the WDT if required. */
+ 200:.\main.c      **** 				if(updateMatch == UPDATE_100MS)
+ 201:.\main.c      **** 				{
+ 202:.\main.c      **** 					/* Proximity sensor is inactive for more than 3s. 
+ 203:.\main.c      **** 					 * Increase Deep-Sleep duration to 100ms and update WDT match value. */
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 5
+
+
+ 204:.\main.c      **** 			    	CySysWdtWriteMatch(CY_SYS_WDT_COUNTER0, WDT_MATCH_VALUE_100MS);
+ 205:.\main.c      **** 					
+ 206:.\main.c      **** 					/* Read the current count value of the WDT. */
+ 207:.\main.c      **** 				    currentCountVal = CySysWdtReadCount(CY_SYS_WDT_COUNTER0);
+ 208:.\main.c      **** 					
+ 209:.\main.c      **** 					/* Reset the counter if the count value is greater than
+ 210:.\main.c      **** 					 * the match value */
+ 211:.\main.c      **** 				    if (currentCountVal > WDT_MATCH_VALUE_100MS)
+ 212:.\main.c      **** 				    {
+ 213:.\main.c      **** 				        CySysWdtResetCounters(CY_SYS_WDT_COUNTER0_RESET);
+ 214:.\main.c      **** 					}
+ 215:.\main.c      **** 					
+ 216:.\main.c      **** 					/* Provide a delay to allow the changes on WDT register to take 
+ 217:.\main.c      **** 					 * effect. This is approximately 4 LFCLK cycles. */
+ 218:.\main.c      **** 					CyDelayUs(ILOX4);
+ 219:.\main.c      **** 					
+ 220:.\main.c      **** 					/* Next update to the WDT match value is required only when
+ 221:.\main.c      **** 					 * switching to 30ms scan interval. */
+ 222:.\main.c      **** 					updateMatch = UPDATE_30MS;
+ 223:.\main.c      **** 				}
+ 224:.\main.c      **** 			}
+ 225:.\main.c      **** 
+ 226:.\main.c      **** 			/* Deep-Sleep low power mode is not available when the uC/Probe tool is active. 
+ 227:.\main.c      **** 			 *  We use the Sleep low power mode if the macro uCProbeEnabled is set to TRUE. */
+ 228:.\main.c      **** 			#if(uCProbeEnabled)
+ 229:.\main.c      **** 				CySysPmSleep();
+ 230:.\main.c      **** 			#else
+ 231:.\main.c      **** 				EnterDeepSleepLowPowerMode();
+ 232:.\main.c      **** 			#endif
+ 233:.\main.c      **** 		}
+ 234:.\main.c      **** 	} 	
+ 235:.\main.c      **** }
+ 236:.\main.c      **** 
+ 237:.\main.c      **** /*******************************************************************************
+ 238:.\main.c      **** * Function Name: EnterDeepSleepLowPowerMode
+ 239:.\main.c      **** ********************************************************************************
+ 240:.\main.c      **** * Summary:
+ 241:.\main.c      **** *  Puts the device in Deep-Sleep power mode. Reconfigures the Components for 
+ 242:.\main.c      **** *  normal operation after wake-up. 
+ 243:.\main.c      **** *
+ 244:.\main.c      **** * Parameters:
+ 245:.\main.c      **** *  void
+ 246:.\main.c      **** *
+ 247:.\main.c      **** * Return:
+ 248:.\main.c      **** *  void
+ 249:.\main.c      **** *
+ 250:.\main.c      **** *******************************************************************************/
+ 251:.\main.c      **** void EnterDeepSleepLowPowerMode(void)
+ 252:.\main.c      **** {
+  26              		.loc 1 252 0
+  27              		.cfi_startproc
+  28 0000 08B5     		push	{r3, lr}
+  29              		.cfi_def_cfa_offset 8
+  30              		.cfi_offset 3, -8
+  31              		.cfi_offset 14, -4
+ 253:.\main.c      **** 	/* Prepare CapSense CSD Component for Deep-Sleep power mode entry. */
+ 254:.\main.c      **** 	CapSense_Sleep();
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 6
+
+
+  32              		.loc 1 254 0
+  33 0002 FFF7FEFF 		bl	CapSense_Sleep
+  34              	.LVL0:
+ 255:.\main.c      **** 	
+ 256:.\main.c      **** 	/* Make the pin connected to Green LED high impedance to save power. 
+ 257:.\main.c      **** 	 * This is also required to prevent a glitch on the PWM output which 
+ 258:.\main.c      **** 	 * causes the LED to flash each time the device wakes up from the 
+ 259:.\main.c      **** 	 * Deep-Sleep low power mode. */
+ 260:.\main.c      **** 	Pin_GreenLED_SetDriveMode(Pin_GreenLED_DM_ALG_HIZ);
+  35              		.loc 1 260 0
+  36 0006 0020     		mov	r0, #0
+  37 0008 FFF7FEFF 		bl	Pin_GreenLED_SetDriveMode
+  38              	.LVL1:
+ 261:.\main.c      **** 	
+ 262:.\main.c      **** 	/* Prepare the PWM component for Deep-Sleep power mode entry. */
+ 263:.\main.c      **** 	PWM_Green_Sleep();
+  39              		.loc 1 263 0
+  40 000c FFF7FEFF 		bl	PWM_Green_Sleep
+  41              	.LVL2:
+ 264:.\main.c      **** 	
+ 265:.\main.c      **** 	/* Enter Deep-Sleep. */
+ 266:.\main.c      **** 	CySysPmDeepSleep();	
+  42              		.loc 1 266 0
+  43 0010 FFF7FEFF 		bl	CySysPmDeepSleep
+  44              	.LVL3:
+ 267:.\main.c      **** 	
+ 268:.\main.c      **** 	/* The device has woken up from Deep-Sleep power mode. 
+ 269:.\main.c      **** 	 * Reconfigure PWM component. */
+ 270:.\main.c      **** 	PWM_Green_Wakeup();
+  45              		.loc 1 270 0
+  46 0014 FFF7FEFF 		bl	PWM_Green_Wakeup
+  47              	.LVL4:
+ 271:.\main.c      **** 	
+ 272:.\main.c      **** 	/* Set the pin connected to Green LED to be in strong drive
+ 273:.\main.c      **** 	 * mode for normal operation. */
+ 274:.\main.c      **** 	Pin_GreenLED_SetDriveMode(Pin_GreenLED_DM_STRONG);
+  48              		.loc 1 274 0
+  49 0018 0620     		mov	r0, #6
+  50 001a FFF7FEFF 		bl	Pin_GreenLED_SetDriveMode
+  51              	.LVL5:
+ 275:.\main.c      **** 	
+ 276:.\main.c      **** 	/* Reconfigure CapSense CSD Component after Deep-Sleep */
+ 277:.\main.c      **** 	CapSense_Wakeup();
+  52              		.loc 1 277 0
+  53 001e FFF7FEFF 		bl	CapSense_Wakeup
+  54              	.LVL6:
+ 278:.\main.c      **** }
+  55              		.loc 1 278 0
+  56              		@ sp needed
+  57 0022 08BD     		pop	{r3, pc}
+  58              		.cfi_endproc
+  59              	.LFE35:
+  60              		.size	EnterDeepSleepLowPowerMode, .-EnterDeepSleepLowPowerMode
+  61              		.section	.text.Neutral,"ax",%progbits
+  62              		.align	2
+  63              		.global	Neutral
+  64              		.code	16
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 7
+
+
+  65              		.thumb_func
+  66              		.type	Neutral, %function
+  67              	Neutral:
+  68              	.LFB37:
+ 279:.\main.c      **** 
+ 280:.\main.c      **** /*******************************************************************************
+ 281:.\main.c      **** * Function Name: LED_SetBrightness
+ 282:.\main.c      **** ********************************************************************************
+ 283:.\main.c      **** * Summary:
+ 284:.\main.c      **** *  Sets the Green LED on PSoC 4 M-Series Pioneer Kit at a brightness level 
+ 285:.\main.c      **** *  corresponding value passed to this function.
+ 286:.\main.c      **** *
+ 287:.\main.c      **** * Parameters:
+ 288:.\main.c      **** *  signal: The proximity signal value corresponding to which the LED brightness
+ 289:.\main.c      ****            has to be changed.
+ 290:.\main.c      **** *
+ 291:.\main.c      **** * Return:
+ 292:.\main.c      **** *  void
+ 293:.\main.c      **** *
+ 294:.\main.c      **** *******************************************************************************/
+ 295:.\main.c      **** void LED_SetBrightness(uint8 mode)
+ 296:.\main.c      **** {
+ 297:.\main.c      **** 	uint16 ledBrighness = ZERO;
+ 298:.\main.c      **** 	
+ 299:.\main.c      **** 	/* The variable signal holds a value between 0 and 255.
+ 300:.\main.c      **** 	 * Scale the value for a visible brightness change. */
+ 301:.\main.c      **** 	if(mode != OFF)
+ 302:.\main.c      **** 	{
+ 303:.\main.c      ****         Happy();
+ 304:.\main.c      **** 		if(CapSense_SensorRaw[0] < PROX_UPPER_LIMIT)
+ 305:.\main.c      **** 		{
+ 306:.\main.c      **** 			ledBrighness = ((PWM_Green_PWM_PERIOD_VALUE * (CapSense_SensorRaw[0] - PROX_LOWER_LIMIT))/(PROX_
+ 307:.\main.c      **** 		}
+ 308:.\main.c      **** 		else
+ 309:.\main.c      **** 		{
+ 310:.\main.c      **** 			ledBrighness = PWM_Green_PWM_PERIOD_VALUE;
+ 311:.\main.c      **** 		}
+ 312:.\main.c      **** 	}
+ 313:.\main.c      **** 	else
+ 314:.\main.c      **** 	{
+ 315:.\main.c      **** 		ledBrighness = OFF;
+ 316:.\main.c      ****         Neutral();
+ 317:.\main.c      **** 	}
+ 318:.\main.c      **** 	
+ 319:.\main.c      **** 	/* Update the PWM compare value to change the LED brightness. */
+ 320:.\main.c      **** 	PWM_Green_WriteCompare(ledBrighness);
+ 321:.\main.c      **** 	
+ 322:.\main.c      **** 	/* This section of code is used to update the LED brightness on the
+ 323:.\main.c      **** 	 * uC/Probe GUI corresponding to the proximity distance. */
+ 324:.\main.c      **** 	#if(uCProbeEnabled)
+ 325:.\main.c      **** 		/* Variable to update the uC/Probe. */
+ 326:.\main.c      **** 		uC_Probe_Prox_Indicator = ledBrighness;
+ 327:.\main.c      **** 	#endif
+ 328:.\main.c      **** }
+ 329:.\main.c      **** 
+ 330:.\main.c      **** void Neutral(void){
+  69              		.loc 1 330 0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 8
+
+
+  70              		.cfi_startproc
+  71 0000 08B5     		push	{r3, lr}
+  72              		.cfi_def_cfa_offset 8
+  73              		.cfi_offset 3, -8
+  74              		.cfi_offset 14, -4
+ 331:.\main.c      ****     Pin_Vibe_Write( ROFF );
+  75              		.loc 1 331 0
+  76 0002 0020     		mov	r0, #0
+  77 0004 FFF7FEFF 		bl	Pin_Vibe_Write
+  78              	.LVL7:
+ 332:.\main.c      ****     Pin_EMiddle_Write( RON );
+  79              		.loc 1 332 0
+  80 0008 0F20     		mov	r0, #15
+  81 000a FFF7FEFF 		bl	Pin_EMiddle_Write
+  82              	.LVL8:
+ 333:.\main.c      ****     Pin_EBottom_Write( ROFF );
+  83              		.loc 1 333 0
+  84 000e 0020     		mov	r0, #0
+  85 0010 FFF7FEFF 		bl	Pin_EBottom_Write
+  86              	.LVL9:
+ 334:.\main.c      ****     Pin_ETop_Write( ROFF );
+  87              		.loc 1 334 0
+  88 0014 0020     		mov	r0, #0
+  89 0016 FFF7FEFF 		bl	Pin_ETop_Write
+  90              	.LVL10:
+ 335:.\main.c      **** }
+  91              		.loc 1 335 0
+  92              		@ sp needed
+  93 001a 08BD     		pop	{r3, pc}
+  94              		.cfi_endproc
+  95              	.LFE37:
+  96              		.size	Neutral, .-Neutral
+  97              		.section	.text.Happy,"ax",%progbits
+  98              		.align	2
+  99              		.global	Happy
+ 100              		.code	16
+ 101              		.thumb_func
+ 102              		.type	Happy, %function
+ 103              	Happy:
+ 104              	.LFB38:
+ 336:.\main.c      **** 
+ 337:.\main.c      **** void Happy(void) {
+ 105              		.loc 1 337 0
+ 106              		.cfi_startproc
+ 107 0000 08B5     		push	{r3, lr}
+ 108              		.cfi_def_cfa_offset 8
+ 109              		.cfi_offset 3, -8
+ 110              		.cfi_offset 14, -4
+ 338:.\main.c      ****     Pin_ETop_Write( RON );
+ 111              		.loc 1 338 0
+ 112 0002 0F20     		mov	r0, #15
+ 113 0004 FFF7FEFF 		bl	Pin_ETop_Write
+ 114              	.LVL11:
+ 339:.\main.c      ****     Pin_Vibe_Write( ROFF );
+ 115              		.loc 1 339 0
+ 116 0008 0020     		mov	r0, #0
+ 117 000a FFF7FEFF 		bl	Pin_Vibe_Write
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 9
+
+
+ 118              	.LVL12:
+ 340:.\main.c      ****     Pin_EMiddle_Write( ROFF );
+ 119              		.loc 1 340 0
+ 120 000e 0020     		mov	r0, #0
+ 121 0010 FFF7FEFF 		bl	Pin_EMiddle_Write
+ 122              	.LVL13:
+ 341:.\main.c      ****     Pin_EBottom_Write( ROFF );
+ 123              		.loc 1 341 0
+ 124 0014 0020     		mov	r0, #0
+ 125 0016 FFF7FEFF 		bl	Pin_EBottom_Write
+ 126              	.LVL14:
+ 342:.\main.c      **** }
+ 127              		.loc 1 342 0
+ 128              		@ sp needed
+ 129 001a 08BD     		pop	{r3, pc}
+ 130              		.cfi_endproc
+ 131              	.LFE38:
+ 132              		.size	Happy, .-Happy
+ 133              		.global	__aeabi_uidiv
+ 134              		.section	.text.LED_SetBrightness,"ax",%progbits
+ 135              		.align	2
+ 136              		.global	LED_SetBrightness
+ 137              		.code	16
+ 138              		.thumb_func
+ 139              		.type	LED_SetBrightness, %function
+ 140              	LED_SetBrightness:
+ 141              	.LFB36:
+ 296:.\main.c      **** 	uint16 ledBrighness = ZERO;
+ 142              		.loc 1 296 0
+ 143              		.cfi_startproc
+ 144              	.LVL15:
+ 145 0000 08B5     		push	{r3, lr}
+ 146              		.cfi_def_cfa_offset 8
+ 147              		.cfi_offset 3, -8
+ 148              		.cfi_offset 14, -4
+ 149              	.LVL16:
+ 301:.\main.c      **** 	{
+ 150              		.loc 1 301 0
+ 151 0002 0028     		cmp	r0, #0
+ 152 0004 11D0     		beq	.L5
+ 303:.\main.c      **** 		if(CapSense_SensorRaw[0] < PROX_UPPER_LIMIT)
+ 153              		.loc 1 303 0
+ 154 0006 FFF7FEFF 		bl	Happy
+ 155              	.LVL17:
+ 304:.\main.c      **** 		{
+ 156              		.loc 1 304 0
+ 157 000a 0C4B     		ldr	r3, .L8
+ 158 000c 1888     		ldrh	r0, [r3]
+ 159 000e 0C4B     		ldr	r3, .L8+4
+ 160 0010 9842     		cmp	r0, r3
+ 161 0012 0ED8     		bhi	.L7
+ 306:.\main.c      **** 		}
+ 162              		.loc 1 306 0
+ 163 0014 0B4B     		ldr	r3, .L8+8
+ 164 0016 1988     		ldrh	r1, [r3]
+ 165 0018 401A     		sub	r0, r0, r1
+ 166 001a 0304     		lsl	r3, r0, #16
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 10
+
+
+ 167 001c 181A     		sub	r0, r3, r0
+ 168 001e 0A4B     		ldr	r3, .L8+12
+ 169 0020 591A     		sub	r1, r3, r1
+ 170 0022 FFF7FEFF 		bl	__aeabi_uidiv
+ 171              	.LVL18:
+ 172 0026 80B2     		uxth	r0, r0
+ 173              	.LVL19:
+ 174 0028 04E0     		b	.L6
+ 175              	.LVL20:
+ 176              	.L5:
+ 316:.\main.c      **** 	}
+ 177              		.loc 1 316 0
+ 178 002a FFF7FEFF 		bl	Neutral
+ 179              	.LVL21:
+ 315:.\main.c      ****         Neutral();
+ 180              		.loc 1 315 0
+ 181 002e 0020     		mov	r0, #0
+ 182 0030 00E0     		b	.L6
+ 183              	.L7:
+ 310:.\main.c      **** 		}
+ 184              		.loc 1 310 0
+ 185 0032 0648     		ldr	r0, .L8+16
+ 186              	.LVL22:
+ 187              	.L6:
+ 320:.\main.c      **** 	
+ 188              		.loc 1 320 0
+ 189 0034 FFF7FEFF 		bl	PWM_Green_WriteCompare
+ 190              	.LVL23:
+ 328:.\main.c      **** 
+ 191              		.loc 1 328 0
+ 192              		@ sp needed
+ 193 0038 08BD     		pop	{r3, pc}
+ 194              	.L9:
+ 195 003a C046     		.align	2
+ 196              	.L8:
+ 197 003c 00000000 		.word	CapSense_sensorRaw
+ 198 0040 D7D60000 		.word	54999
+ 199 0044 00000000 		.word	CapSense_sensorBaseline
+ 200 0048 D8D60000 		.word	55000
+ 201 004c FFFF0000 		.word	65535
+ 202              		.cfi_endproc
+ 203              	.LFE36:
+ 204              		.size	LED_SetBrightness, .-LED_SetBrightness
+ 205              		.section	.text.Alarm,"ax",%progbits
+ 206              		.align	2
+ 207              		.global	Alarm
+ 208              		.code	16
+ 209              		.thumb_func
+ 210              		.type	Alarm, %function
+ 211              	Alarm:
+ 212              	.LFB39:
+ 343:.\main.c      **** 
+ 344:.\main.c      **** void Alarm(void) {
+ 213              		.loc 1 344 0
+ 214              		.cfi_startproc
+ 215 0000 08B5     		push	{r3, lr}
+ 216              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 11
+
+
+ 217              		.cfi_offset 3, -8
+ 218              		.cfi_offset 14, -4
+ 345:.\main.c      ****     Pin_ETop_Write( RON );
+ 219              		.loc 1 345 0
+ 220 0002 0F20     		mov	r0, #15
+ 221 0004 FFF7FEFF 		bl	Pin_ETop_Write
+ 222              	.LVL24:
+ 346:.\main.c      ****     Pin_EMiddle_Write( ROFF );
+ 223              		.loc 1 346 0
+ 224 0008 0020     		mov	r0, #0
+ 225 000a FFF7FEFF 		bl	Pin_EMiddle_Write
+ 226              	.LVL25:
+ 347:.\main.c      ****     Pin_EBottom_Write( RON );
+ 227              		.loc 1 347 0
+ 228 000e 0F20     		mov	r0, #15
+ 229 0010 FFF7FEFF 		bl	Pin_EBottom_Write
+ 230              	.LVL26:
+ 348:.\main.c      ****     Pin_Vibe_Write( RON );
+ 231              		.loc 1 348 0
+ 232 0014 0F20     		mov	r0, #15
+ 233 0016 FFF7FEFF 		bl	Pin_Vibe_Write
+ 234              	.LVL27:
+ 349:.\main.c      ****     CyDelay(100);
+ 235              		.loc 1 349 0
+ 236 001a 6420     		mov	r0, #100
+ 237 001c FFF7FEFF 		bl	CyDelay
+ 238              	.LVL28:
+ 350:.\main.c      **** }
+ 239              		.loc 1 350 0
+ 240              		@ sp needed
+ 241 0020 08BD     		pop	{r3, pc}
+ 242              		.cfi_endproc
+ 243              	.LFE39:
+ 244              		.size	Alarm, .-Alarm
+ 245 0022 C046     		.section	.text.Initialize_Project,"ax",%progbits
+ 246              		.align	2
+ 247              		.global	Initialize_Project
+ 248              		.code	16
+ 249              		.thumb_func
+ 250              		.type	Initialize_Project, %function
+ 251              	Initialize_Project:
+ 252              	.LFB40:
+ 351:.\main.c      **** 
+ 352:.\main.c      **** 
+ 353:.\main.c      **** /*******************************************************************************
+ 354:.\main.c      **** * Function Name: Initialize_Project
+ 355:.\main.c      **** ********************************************************************************
+ 356:.\main.c      **** * Summary:
+ 357:.\main.c      **** *  Starts and initializes all the Components for the accelerometer.
+ 358:.\main.c      **** *
+ 359:.\main.c      **** * Parameters:
+ 360:.\main.c      **** *  void
+ 361:.\main.c      **** *
+ 362:.\main.c      **** * Return:
+ 363:.\main.c      **** *  void
+ 364:.\main.c      **** *
+ 365:.\main.c      **** *******************************************************************************/
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 12
+
+
+ 366:.\main.c      **** void Initialize_Project(void)
+ 367:.\main.c      **** {
+ 253              		.loc 1 367 0
+ 254              		.cfi_startproc
+ 255 0000 08B5     		push	{r3, lr}
+ 256              		.cfi_def_cfa_offset 8
+ 257              		.cfi_offset 3, -8
+ 258              		.cfi_offset 14, -4
+ 368:.\main.c      **** 	/* Enable and start accelerometer I2C block. */	
+ 369:.\main.c      **** 	I2C_Start();
+ 259              		.loc 1 369 0
+ 260 0002 FFF7FEFF 		bl	I2C_Start
+ 261              	.LVL29:
+ 370:.\main.c      **** 	
+ 371:.\main.c      **** 	/* Wait for 700ms for the accelerometer to start up. */
+ 372:.\main.c      **** 	CyDelay(ACC_STARTUP_TIME);
+ 262              		.loc 1 372 0
+ 263 0006 AF20     		mov	r0, #175
+ 264 0008 8000     		lsl	r0, r0, #2
+ 265 000a FFF7FEFF 		bl	CyDelay
+ 266              	.LVL30:
+ 373:.\main.c      **** }
+ 267              		.loc 1 373 0
+ 268              		@ sp needed
+ 269 000e 08BD     		pop	{r3, pc}
+ 270              		.cfi_endproc
+ 271              	.LFE40:
+ 272              		.size	Initialize_Project, .-Initialize_Project
+ 273              		.section	.text.UpdateLEDColor,"ax",%progbits
+ 274              		.align	2
+ 275              		.global	UpdateLEDColor
+ 276              		.code	16
+ 277              		.thumb_func
+ 278              		.type	UpdateLEDColor, %function
+ 279              	UpdateLEDColor:
+ 280              	.LFB41:
+ 374:.\main.c      **** 
+ 375:.\main.c      **** /*******************************************************************************
+ 376:.\main.c      **** * Function Name: UpdateLEDColor
+ 377:.\main.c      **** ********************************************************************************
+ 378:.\main.c      **** * Summary:
+ 379:.\main.c      **** * 	Updates the LED color based on the accelerometer value.
+ 380:.\main.c      **** *
+ 381:.\main.c      **** * Parameters:
+ 382:.\main.c      **** *  void
+ 383:.\main.c      **** *
+ 384:.\main.c      **** * Return:
+ 385:.\main.c      **** *  void
+ 386:.\main.c      **** *
+ 387:.\main.c      **** *******************************************************************************/
+ 388:.\main.c      **** void UpdateLEDColor(void)
+ 389:.\main.c      **** {
+ 281              		.loc 1 389 0
+ 282              		.cfi_startproc
+ 283 0000 10B5     		push	{r4, lr}
+ 284              		.cfi_def_cfa_offset 8
+ 285              		.cfi_offset 4, -8
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 13
+
+
+ 286              		.cfi_offset 14, -4
+ 287              	.LVL31:
+ 390:.\main.c      **** 	/* Variables to store previous state between function calls. */
+ 391:.\main.c      **** 	static int16 prev_x_value = ZERO;
+ 392:.\main.c      **** 	static int16 prev_y_value = ZERO;
+ 393:.\main.c      **** 	
+ 394:.\main.c      **** 	/* Variables to calculate the absolute acceleration difference. */
+ 395:.\main.c      **** 	int16 diffVal1 = ZERO;
+ 396:.\main.c      **** 	int16 diffVal2 = ZERO;
+ 397:.\main.c      **** 	uint16 positiveDiffVal = ZERO;
+ 398:.\main.c      **** 	
+ 399:.\main.c      **** 	/* Determine the acceleration difference and store the current 
+ 400:.\main.c      **** 	 * acceleration data in the static variable. */
+ 401:.\main.c      **** 	diffVal1 = uC_Probe_x_dirMovement - prev_x_value;
+ 288              		.loc 1 401 0
+ 289 0002 1249     		ldr	r1, .L17
+ 290 0004 0888     		ldrh	r0, [r1]
+ 291 0006 84B2     		uxth	r4, r0
+ 292 0008 4B88     		ldrh	r3, [r1, #2]
+ 293 000a E21A     		sub	r2, r4, r3
+ 294 000c 92B2     		uxth	r2, r2
+ 295              	.LVL32:
+ 402:.\main.c      **** 	diffVal2 = prev_x_value - uC_Probe_x_dirMovement;
+ 296              		.loc 1 402 0
+ 297 000e 1B1B     		sub	r3, r3, r4
+ 298 0010 9BB2     		uxth	r3, r3
+ 299              	.LVL33:
+ 403:.\main.c      **** 	prev_x_value = uC_Probe_x_dirMovement;
+ 300              		.loc 1 403 0
+ 301 0012 4880     		strh	r0, [r1, #2]
+ 404:.\main.c      **** 	
+ 405:.\main.c      **** 	/* Determine the absolute value. */
+ 406:.\main.c      **** 	if(diffVal1 > diffVal2)
+ 302              		.loc 1 406 0
+ 303 0014 10B2     		sxth	r0, r2
+ 304 0016 19B2     		sxth	r1, r3
+ 305 0018 8842     		cmp	r0, r1
+ 306 001a 00DD     		ble	.L13
+ 407:.\main.c      **** 	{
+ 408:.\main.c      **** 		positiveDiffVal = diffVal1;
+ 307              		.loc 1 408 0
+ 308 001c 131C     		mov	r3, r2
+ 309              	.LVL34:
+ 310              	.L13:
+ 409:.\main.c      **** 	}
+ 410:.\main.c      **** 	else
+ 411:.\main.c      **** 	{
+ 412:.\main.c      **** 		positiveDiffVal = diffVal2;
+ 413:.\main.c      **** 	}
+ 414:.\main.c      **** 	
+ 415:.\main.c      **** 	/* Modulate the PWM corresponding to the magnitude of acceleration data
+ 416:.\main.c      **** 	 if acceleration is greater than threshold value. */
+ 417:.\main.c      **** 	if(positiveDiffVal > ACC_THRESHOLD_VALUE)
+ 311              		.loc 1 417 0
+ 312 001e 102B     		cmp	r3, #16
+ 313 0020 01D9     		bls	.L14
+ 418:.\main.c      **** 	{
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 14
+
+
+ 419:.\main.c      **** 		Alarm();
+ 314              		.loc 1 419 0
+ 315 0022 FFF7FEFF 		bl	Alarm
+ 316              	.LVL35:
+ 317              	.L14:
+ 420:.\main.c      **** 	}
+ 421:.\main.c      **** 	else
+ 422:.\main.c      **** 	{
+ 423:.\main.c      **** 	}
+ 424:.\main.c      **** 	
+ 425:.\main.c      **** 	/* Determine the acceleration difference and store the current 
+ 426:.\main.c      **** 	 * acceleration data in the static variable. */
+ 427:.\main.c      **** 	diffVal1 = uC_Probe_y_dirMovement - prev_y_value;
+ 318              		.loc 1 427 0
+ 319 0026 0949     		ldr	r1, .L17
+ 320 0028 8888     		ldrh	r0, [r1, #4]
+ 321 002a 84B2     		uxth	r4, r0
+ 322 002c CB88     		ldrh	r3, [r1, #6]
+ 323 002e E21A     		sub	r2, r4, r3
+ 324 0030 92B2     		uxth	r2, r2
+ 325              	.LVL36:
+ 428:.\main.c      **** 	diffVal2 = prev_y_value - uC_Probe_y_dirMovement;
+ 326              		.loc 1 428 0
+ 327 0032 1B1B     		sub	r3, r3, r4
+ 328 0034 9BB2     		uxth	r3, r3
+ 329              	.LVL37:
+ 429:.\main.c      **** 	prev_y_value = uC_Probe_y_dirMovement;
+ 330              		.loc 1 429 0
+ 331 0036 C880     		strh	r0, [r1, #6]
+ 430:.\main.c      **** 	
+ 431:.\main.c      **** 	/* Determine the absolute value. */
+ 432:.\main.c      **** 	if(diffVal1 > diffVal2)
+ 332              		.loc 1 432 0
+ 333 0038 10B2     		sxth	r0, r2
+ 334 003a 19B2     		sxth	r1, r3
+ 335 003c 8842     		cmp	r0, r1
+ 336 003e 00DD     		ble	.L15
+ 433:.\main.c      **** 	{
+ 434:.\main.c      **** 		positiveDiffVal = diffVal1;
+ 337              		.loc 1 434 0
+ 338 0040 131C     		mov	r3, r2
+ 339              	.LVL38:
+ 340              	.L15:
+ 435:.\main.c      **** 	}
+ 436:.\main.c      **** 	else
+ 437:.\main.c      **** 	{
+ 438:.\main.c      **** 		positiveDiffVal = diffVal2;
+ 439:.\main.c      **** 	}
+ 440:.\main.c      **** 	
+ 441:.\main.c      **** 	/* Modulate the PWM corresponding to the magnitude of acceleration data
+ 442:.\main.c      **** 	 if acceleration is greater than threshold value. */
+ 443:.\main.c      **** 	if(positiveDiffVal > ACC_THRESHOLD_VALUE)
+ 341              		.loc 1 443 0
+ 342 0042 102B     		cmp	r3, #16
+ 343 0044 01D9     		bls	.L12
+ 444:.\main.c      **** 	{
+ 445:.\main.c      **** 		Alarm();
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 15
+
+
+ 344              		.loc 1 445 0
+ 345 0046 FFF7FEFF 		bl	Alarm
+ 346              	.LVL39:
+ 347              	.L12:
+ 446:.\main.c      **** 	}
+ 447:.\main.c      **** 	else
+ 448:.\main.c      **** 	{
+ 449:.\main.c      **** 	}
+ 450:.\main.c      ****     
+ 451:.\main.c      **** }
+ 348              		.loc 1 451 0
+ 349              		@ sp needed
+ 350 004a 10BD     		pop	{r4, pc}
+ 351              	.L18:
+ 352              		.align	2
+ 353              	.L17:
+ 354 004c 00000000 		.word	.LANCHOR0
+ 355              		.cfi_endproc
+ 356              	.LFE41:
+ 357              		.size	UpdateLEDColor, .-UpdateLEDColor
+ 358              		.section	.text.main,"ax",%progbits
+ 359              		.align	2
+ 360              		.global	main
+ 361              		.code	16
+ 362              		.thumb_func
+ 363              		.type	main, %function
+ 364              	main:
+ 365              	.LFB34:
+  80:.\main.c      ****     /* Start all the Components and enable the global interrupt. */
+ 366              		.loc 1 80 0
+ 367              		.cfi_startproc
+ 368 0000 38B5     		push	{r3, r4, r5, lr}
+ 369              		.cfi_def_cfa_offset 16
+ 370              		.cfi_offset 3, -16
+ 371              		.cfi_offset 4, -12
+ 372              		.cfi_offset 5, -8
+ 373              		.cfi_offset 14, -4
+  82:.\main.c      ****     
+ 374              		.loc 1 82 0
+ 375 0002 FFF7FEFF 		bl	Initialize_Project
+ 376              	.LVL40:
+  85:.\main.c      ****     
+ 377              		.loc 1 85 0
+ 378 0006 FFF7FEFF 		bl	InitializeAccelerometer
+ 379              	.LVL41:
+ 102:.\main.c      **** 
+ 380              		.loc 1 102 0
+ 381              	@ 102 ".\main.c" 1
+ 382 000a 62B6     		CPSIE   i
+ 383              	@ 0 "" 2
+ 105:.\main.c      **** 	
+ 384              		.loc 1 105 0
+ 385              		.code	16
+ 386 000c FFF7FEFF 		bl	CapSense_Start
+ 387              	.LVL42:
+ 108:.\main.c      **** 	
+ 388              		.loc 1 108 0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 16
+
+
+ 389 0010 0020     		mov	r0, #0
+ 390 0012 FFF7FEFF 		bl	CapSense_InitializeSensorBaseline
+ 391              	.LVL43:
+ 111:.\main.c      **** 	
+ 392              		.loc 1 111 0
+ 393 0016 FFF7FEFF 		bl	PWM_Green_Start
+ 394              	.LVL44:
+ 114:.\main.c      **** 	
+ 395              		.loc 1 114 0
+ 396 001a 0020     		mov	r0, #0
+ 397 001c FFF7FEFF 		bl	LED_SetBrightness
+ 398              	.LVL45:
+  99:.\main.c      **** 	
+ 399              		.loc 1 99 0
+ 400 0020 0225     		mov	r5, #2
+  93:.\main.c      **** 	
+ 401              		.loc 1 93 0
+ 402 0022 0024     		mov	r4, #0
+ 403 0024 00E0     		b	.L20
+ 404              	.LVL46:
+ 405              	.L29:
+ 169:.\main.c      ****             
+ 406              		.loc 1 169 0
+ 407 0026 0024     		mov	r4, #0
+ 408              	.LVL47:
+ 409              	.L20:
+ 119:.\main.c      **** 		
+ 410              		.loc 1 119 0
+ 411 0028 0020     		mov	r0, #0
+ 412 002a FFF7FEFF 		bl	CapSense_UpdateSensorBaseline
+ 413              	.LVL48:
+ 122:.\main.c      **** 		
+ 414              		.loc 1 122 0
+ 415 002e 0020     		mov	r0, #0
+ 416 0030 FFF7FEFF 		bl	CapSense_ScanSensor
+ 417              	.LVL49:
+ 125:.\main.c      **** 		{
+ 418              		.loc 1 125 0
+ 419 0034 01E0     		b	.L21
+ 420              	.L22:
+ 130:.\main.c      **** 		}
+ 421              		.loc 1 130 0
+ 422 0036 FFF7FEFF 		bl	CySysPmSleep
+ 423              	.LVL50:
+ 424              	.L21:
+ 125:.\main.c      **** 		{
+ 425              		.loc 1 125 0
+ 426 003a FFF7FEFF 		bl	CapSense_IsBusy
+ 427              	.LVL51:
+ 428 003e 0028     		cmp	r0, #0
+ 429 0040 F9D1     		bne	.L22
+ 134:.\main.c      **** 
+ 430              		.loc 1 134 0
+ 431 0042 FFF7FEFF 		bl	CapSense_CheckIsSensorActive
+ 432              	.LVL52:
+ 433 0046 C0B2     		uxtb	r0, r0
+ 434              	.LVL53:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 17
+
+
+ 136:.\main.c      **** 		{
+ 435              		.loc 1 136 0
+ 436 0048 0128     		cmp	r0, #1
+ 437 004a 26D1     		bne	.L23
+ 140:.\main.c      ****             UpdateLEDColor();
+ 438              		.loc 1 140 0
+ 439 004c FFF7FEFF 		bl	LED_SetBrightness
+ 440              	.LVL54:
+ 141:.\main.c      **** 			
+ 441              		.loc 1 141 0
+ 442 0050 FFF7FEFF 		bl	UpdateLEDColor
+ 443              	.LVL55:
+ 144:.\main.c      **** 			{
+ 444              		.loc 1 144 0
+ 445 0054 012D     		cmp	r5, #1
+ 446 0056 12D1     		bne	.L24
+ 147:.\main.c      **** 				
+ 447              		.loc 1 147 0
+ 448 0058 F024     		mov	r4, #240
+ 449              	.LVL56:
+ 450 005a A400     		lsl	r4, r4, #2
+ 451 005c 0020     		mov	r0, #0
+ 452 005e 211C     		mov	r1, r4
+ 453 0060 FFF7FEFF 		bl	CySysWdtSetMatch
+ 454              	.LVL57:
+ 150:.\main.c      **** 				
+ 455              		.loc 1 150 0
+ 456 0064 0020     		mov	r0, #0
+ 457 0066 FFF7FEFF 		bl	CySysWdtGetCount
+ 458              	.LVL58:
+ 459 006a 80B2     		uxth	r0, r0
+ 460              	.LVL59:
+ 154:.\main.c      **** 			    {
+ 461              		.loc 1 154 0
+ 462 006c A042     		cmp	r0, r4
+ 463 006e 02D9     		bls	.L25
+ 156:.\main.c      **** 				}
+ 464              		.loc 1 156 0
+ 465 0070 0820     		mov	r0, #8
+ 466              	.LVL60:
+ 467 0072 FFF7FEFF 		bl	CySysWdtResetCounters
+ 468              	.LVL61:
+ 469              	.L25:
+ 161:.\main.c      **** 				
+ 470              		.loc 1 161 0
+ 471 0076 7D20     		mov	r0, #125
+ 472 0078 FFF7FEFF 		bl	CyDelayUs
+ 473              	.LVL62:
+ 165:.\main.c      **** 			}
+ 474              		.loc 1 165 0
+ 475 007c 0225     		mov	r5, #2
+ 476              	.LVL63:
+ 477              	.L24:
+ 171:.\main.c      **** 		    {
+ 478              		.loc 1 171 0
+ 479 007e 184B     		ldr	r3, .L31
+ 480 0080 1B7A     		ldrb	r3, [r3, #8]
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 18
+
+
+ 481 0082 012B     		cmp	r3, #1
+ 482 0084 CFD1     		bne	.L29
+ 175:.\main.c      **** 			
+ 483              		.loc 1 175 0
+ 484 0086 1648     		ldr	r0, .L31
+ 485 0088 011D     		add	r1, r0, #4
+ 486 008a 021C     		mov	r2, r0
+ 487 008c 0A32     		add	r2, r2, #10
+ 488 008e FFF7FEFF 		bl	ReadAccelerometer
+ 489              	.LVL64:
+ 178:.\main.c      **** 		    }
+ 490              		.loc 1 178 0
+ 491 0092 FFF7FEFF 		bl	UpdateLEDColor
+ 492              	.LVL65:
+ 169:.\main.c      ****             
+ 493              		.loc 1 169 0
+ 494 0096 0024     		mov	r4, #0
+ 495 0098 C6E7     		b	.L20
+ 496              	.LVL66:
+ 497              	.L23:
+ 188:.\main.c      **** 			
+ 498              		.loc 1 188 0
+ 499 009a 0020     		mov	r0, #0
+ 500              	.LVL67:
+ 501 009c FFF7FEFF 		bl	LED_SetBrightness
+ 502              	.LVL68:
+ 191:.\main.c      **** 			
+ 503              		.loc 1 191 0
+ 504 00a0 0134     		add	r4, r4, #1
+ 505              	.LVL69:
+ 506 00a2 E4B2     		uxtb	r4, r4
+ 507              	.LVL70:
+ 194:.\main.c      **** 			{
+ 508              		.loc 1 194 0
+ 509 00a4 632C     		cmp	r4, #99
+ 510 00a6 17D9     		bls	.L27
+ 511              	.LVL71:
+ 200:.\main.c      **** 				{
+ 512              		.loc 1 200 0
+ 513 00a8 022D     		cmp	r5, #2
+ 514 00aa 14D1     		bne	.L30
+ 204:.\main.c      **** 					
+ 515              		.loc 1 204 0
+ 516 00ac C824     		mov	r4, #200
+ 517 00ae 2401     		lsl	r4, r4, #4
+ 518 00b0 0020     		mov	r0, #0
+ 519 00b2 211C     		mov	r1, r4
+ 520 00b4 FFF7FEFF 		bl	CySysWdtSetMatch
+ 521              	.LVL72:
+ 207:.\main.c      **** 					
+ 522              		.loc 1 207 0
+ 523 00b8 0020     		mov	r0, #0
+ 524 00ba FFF7FEFF 		bl	CySysWdtGetCount
+ 525              	.LVL73:
+ 526 00be 80B2     		uxth	r0, r0
+ 527              	.LVL74:
+ 211:.\main.c      **** 				    {
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 19
+
+
+ 528              		.loc 1 211 0
+ 529 00c0 A042     		cmp	r0, r4
+ 530 00c2 02D9     		bls	.L28
+ 213:.\main.c      **** 					}
+ 531              		.loc 1 213 0
+ 532 00c4 0820     		mov	r0, #8
+ 533              	.LVL75:
+ 534 00c6 FFF7FEFF 		bl	CySysWdtResetCounters
+ 535              	.LVL76:
+ 536              	.L28:
+ 218:.\main.c      **** 					
+ 537              		.loc 1 218 0
+ 538 00ca 7D20     		mov	r0, #125
+ 539 00cc FFF7FEFF 		bl	CyDelayUs
+ 540              	.LVL77:
+ 222:.\main.c      **** 				}
+ 541              		.loc 1 222 0
+ 542 00d0 0125     		mov	r5, #1
+ 197:.\main.c      **** 				
+ 543              		.loc 1 197 0
+ 544 00d2 6424     		mov	r4, #100
+ 545 00d4 00E0     		b	.L27
+ 546              	.LVL78:
+ 547              	.L30:
+ 548 00d6 6424     		mov	r4, #100
+ 549              	.LVL79:
+ 550              	.L27:
+ 231:.\main.c      **** 			#endif
+ 551              		.loc 1 231 0
+ 552 00d8 FFF7FEFF 		bl	EnterDeepSleepLowPowerMode
+ 553              	.LVL80:
+ 554 00dc A4E7     		b	.L20
+ 555              	.L32:
+ 556 00de C046     		.align	2
+ 557              	.L31:
+ 558 00e0 00000000 		.word	.LANCHOR0
+ 559              		.cfi_endproc
+ 560              	.LFE34:
+ 561              		.size	main, .-main
+ 562              		.global	acclerometer_configured
+ 563              		.global	uC_Probe_z_dirMovement
+ 564              		.global	uC_Probe_y_dirMovement
+ 565              		.global	uC_Probe_x_dirMovement
+ 566              		.global	uC_Probe_Prox_Indicator
+ 567              		.bss
+ 568              		.align	2
+ 569              		.set	.LANCHOR0,. + 0
+ 570              		.type	uC_Probe_x_dirMovement, %object
+ 571              		.size	uC_Probe_x_dirMovement, 2
+ 572              	uC_Probe_x_dirMovement:
+ 573 0000 0000     		.space	2
+ 574              		.type	prev_x_value.5825, %object
+ 575              		.size	prev_x_value.5825, 2
+ 576              	prev_x_value.5825:
+ 577 0002 0000     		.space	2
+ 578              		.type	uC_Probe_y_dirMovement, %object
+ 579              		.size	uC_Probe_y_dirMovement, 2
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 20
+
+
+ 580              	uC_Probe_y_dirMovement:
+ 581 0004 0000     		.space	2
+ 582              		.type	prev_y_value.5826, %object
+ 583              		.size	prev_y_value.5826, 2
+ 584              	prev_y_value.5826:
+ 585 0006 0000     		.space	2
+ 586              		.type	acclerometer_configured, %object
+ 587              		.size	acclerometer_configured, 1
+ 588              	acclerometer_configured:
+ 589 0008 00       		.space	1
+ 590 0009 00       		.space	1
+ 591              		.type	uC_Probe_z_dirMovement, %object
+ 592              		.size	uC_Probe_z_dirMovement, 2
+ 593              	uC_Probe_z_dirMovement:
+ 594 000a 0000     		.space	2
+ 595              		.type	uC_Probe_Prox_Indicator, %object
+ 596              		.size	uC_Probe_Prox_Indicator, 4
+ 597              	uC_Probe_Prox_Indicator:
+ 598 000c 00000000 		.space	4
+ 599              		.text
+ 600              	.Letext0:
+ 601              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 602              		.file 3 "Generated_Source\\PSoC4/CapSense.h"
+ 603              		.file 4 "Generated_Source\\PSoC4/CapSense_CSHL.h"
+ 604              		.file 5 "Generated_Source\\PSoC4/PWM_Green.h"
+ 605              		.file 6 "Generated_Source\\PSoC4/cyPm.h"
+ 606              		.file 7 "Generated_Source\\PSoC4/Pin_GreenLED.h"
+ 607              		.file 8 "Generated_Source\\PSoC4/Pin_Vibe.h"
+ 608              		.file 9 "Generated_Source\\PSoC4/Pin_EMiddle.h"
+ 609              		.file 10 "Generated_Source\\PSoC4/Pin_EBottom.h"
+ 610              		.file 11 "Generated_Source\\PSoC4/Pin_ETop.h"
+ 611              		.file 12 "Generated_Source\\PSoC4/CyLib.h"
+ 612              		.file 13 "Generated_Source\\PSoC4/I2C.h"
+ 613              		.file 14 ".\\accelerometer.h"
+ 614              		.file 15 "Generated_Source\\PSoC4/CyLFClk.h"
+ 615              		.section	.debug_info,"",%progbits
+ 616              	.Ldebug_info0:
+ 617 0000 30070000 		.4byte	0x730
+ 618 0004 0400     		.2byte	0x4
+ 619 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 620 000a 04       		.byte	0x4
+ 621 000b 01       		.uleb128 0x1
+ 622 000c DD010000 		.4byte	.LASF68
+ 623 0010 01       		.byte	0x1
+ 624 0011 4B040000 		.4byte	.LASF69
+ 625 0015 07010000 		.4byte	.LASF70
+ 626 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 627 001d 00000000 		.4byte	0
+ 628 0021 00000000 		.4byte	.Ldebug_line0
+ 629 0025 02       		.uleb128 0x2
+ 630 0026 01       		.byte	0x1
+ 631 0027 06       		.byte	0x6
+ 632 0028 B8020000 		.4byte	.LASF0
+ 633 002c 02       		.uleb128 0x2
+ 634 002d 01       		.byte	0x1
+ 635 002e 08       		.byte	0x8
+ 636 002f C0010000 		.4byte	.LASF1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 21
+
+
+ 637 0033 02       		.uleb128 0x2
+ 638 0034 02       		.byte	0x2
+ 639 0035 05       		.byte	0x5
+ 640 0036 50000000 		.4byte	.LASF2
+ 641 003a 02       		.uleb128 0x2
+ 642 003b 02       		.byte	0x2
+ 643 003c 07       		.byte	0x7
+ 644 003d 4F030000 		.4byte	.LASF3
+ 645 0041 02       		.uleb128 0x2
+ 646 0042 04       		.byte	0x4
+ 647 0043 05       		.byte	0x5
+ 648 0044 90010000 		.4byte	.LASF4
+ 649 0048 02       		.uleb128 0x2
+ 650 0049 04       		.byte	0x4
+ 651 004a 07       		.byte	0x7
+ 652 004b FA030000 		.4byte	.LASF5
+ 653 004f 02       		.uleb128 0x2
+ 654 0050 08       		.byte	0x8
+ 655 0051 05       		.byte	0x5
+ 656 0052 6B010000 		.4byte	.LASF6
+ 657 0056 02       		.uleb128 0x2
+ 658 0057 08       		.byte	0x8
+ 659 0058 07       		.byte	0x7
+ 660 0059 D3020000 		.4byte	.LASF7
+ 661 005d 03       		.uleb128 0x3
+ 662 005e 04       		.byte	0x4
+ 663 005f 05       		.byte	0x5
+ 664 0060 696E7400 		.ascii	"int\000"
+ 665 0064 02       		.uleb128 0x2
+ 666 0065 04       		.byte	0x4
+ 667 0066 07       		.byte	0x7
+ 668 0067 11030000 		.4byte	.LASF8
+ 669 006b 04       		.uleb128 0x4
+ 670 006c F5000000 		.4byte	.LASF9
+ 671 0070 02       		.byte	0x2
+ 672 0071 B3       		.byte	0xb3
+ 673 0072 2C000000 		.4byte	0x2c
+ 674 0076 04       		.uleb128 0x4
+ 675 0077 CA000000 		.4byte	.LASF10
+ 676 007b 02       		.byte	0x2
+ 677 007c B4       		.byte	0xb4
+ 678 007d 3A000000 		.4byte	0x3a
+ 679 0081 04       		.uleb128 0x4
+ 680 0082 F3030000 		.4byte	.LASF11
+ 681 0086 02       		.byte	0x2
+ 682 0087 B5       		.byte	0xb5
+ 683 0088 48000000 		.4byte	0x48
+ 684 008c 04       		.uleb128 0x4
+ 685 008d EF000000 		.4byte	.LASF12
+ 686 0091 02       		.byte	0x2
+ 687 0092 B7       		.byte	0xb7
+ 688 0093 33000000 		.4byte	0x33
+ 689 0097 02       		.uleb128 0x2
+ 690 0098 04       		.byte	0x4
+ 691 0099 04       		.byte	0x4
+ 692 009a 55010000 		.4byte	.LASF13
+ 693 009e 02       		.uleb128 0x2
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 22
+
+
+ 694 009f 08       		.byte	0x8
+ 695 00a0 04       		.byte	0x4
+ 696 00a1 23040000 		.4byte	.LASF14
+ 697 00a5 02       		.uleb128 0x2
+ 698 00a6 01       		.byte	0x1
+ 699 00a7 08       		.byte	0x8
+ 700 00a8 8A030000 		.4byte	.LASF15
+ 701 00ac 02       		.uleb128 0x2
+ 702 00ad 04       		.byte	0x4
+ 703 00ae 07       		.byte	0x7
+ 704 00af 6C000000 		.4byte	.LASF16
+ 705 00b3 05       		.uleb128 0x5
+ 706 00b4 C9040000 		.4byte	.LASF17
+ 707 00b8 01       		.byte	0x1
+ 708 00b9 FB       		.byte	0xfb
+ 709 00ba 00000000 		.4byte	.LFB35
+ 710 00be 24000000 		.4byte	.LFE35-.LFB35
+ 711 00c2 01       		.uleb128 0x1
+ 712 00c3 9C       		.byte	0x9c
+ 713 00c4 1C010000 		.4byte	0x11c
+ 714 00c8 06       		.uleb128 0x6
+ 715 00c9 06000000 		.4byte	.LVL0
+ 716 00cd B1050000 		.4byte	0x5b1
+ 717 00d1 07       		.uleb128 0x7
+ 718 00d2 0C000000 		.4byte	.LVL1
+ 719 00d6 B8050000 		.4byte	0x5b8
+ 720 00da E4000000 		.4byte	0xe4
+ 721 00de 08       		.uleb128 0x8
+ 722 00df 01       		.uleb128 0x1
+ 723 00e0 50       		.byte	0x50
+ 724 00e1 01       		.uleb128 0x1
+ 725 00e2 30       		.byte	0x30
+ 726 00e3 00       		.byte	0
+ 727 00e4 06       		.uleb128 0x6
+ 728 00e5 10000000 		.4byte	.LVL2
+ 729 00e9 C9050000 		.4byte	0x5c9
+ 730 00ed 06       		.uleb128 0x6
+ 731 00ee 14000000 		.4byte	.LVL3
+ 732 00f2 D1050000 		.4byte	0x5d1
+ 733 00f6 06       		.uleb128 0x6
+ 734 00f7 18000000 		.4byte	.LVL4
+ 735 00fb D8050000 		.4byte	0x5d8
+ 736 00ff 07       		.uleb128 0x7
+ 737 0100 1E000000 		.4byte	.LVL5
+ 738 0104 B8050000 		.4byte	0x5b8
+ 739 0108 12010000 		.4byte	0x112
+ 740 010c 08       		.uleb128 0x8
+ 741 010d 01       		.uleb128 0x1
+ 742 010e 50       		.byte	0x50
+ 743 010f 01       		.uleb128 0x1
+ 744 0110 36       		.byte	0x36
+ 745 0111 00       		.byte	0
+ 746 0112 06       		.uleb128 0x6
+ 747 0113 22000000 		.4byte	.LVL6
+ 748 0117 E0050000 		.4byte	0x5e0
+ 749 011b 00       		.byte	0
+ 750 011c 09       		.uleb128 0x9
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 23
+
+
+ 751 011d 87040000 		.4byte	.LASF18
+ 752 0121 01       		.byte	0x1
+ 753 0122 4A01     		.2byte	0x14a
+ 754 0124 00000000 		.4byte	.LFB37
+ 755 0128 1C000000 		.4byte	.LFE37-.LFB37
+ 756 012c 01       		.uleb128 0x1
+ 757 012d 9C       		.byte	0x9c
+ 758 012e 7B010000 		.4byte	0x17b
+ 759 0132 07       		.uleb128 0x7
+ 760 0133 08000000 		.4byte	.LVL7
+ 761 0137 E7050000 		.4byte	0x5e7
+ 762 013b 45010000 		.4byte	0x145
+ 763 013f 08       		.uleb128 0x8
+ 764 0140 01       		.uleb128 0x1
+ 765 0141 50       		.byte	0x50
+ 766 0142 01       		.uleb128 0x1
+ 767 0143 30       		.byte	0x30
+ 768 0144 00       		.byte	0
+ 769 0145 07       		.uleb128 0x7
+ 770 0146 0E000000 		.4byte	.LVL8
+ 771 014a F8050000 		.4byte	0x5f8
+ 772 014e 58010000 		.4byte	0x158
+ 773 0152 08       		.uleb128 0x8
+ 774 0153 01       		.uleb128 0x1
+ 775 0154 50       		.byte	0x50
+ 776 0155 01       		.uleb128 0x1
+ 777 0156 3F       		.byte	0x3f
+ 778 0157 00       		.byte	0
+ 779 0158 07       		.uleb128 0x7
+ 780 0159 14000000 		.4byte	.LVL9
+ 781 015d 09060000 		.4byte	0x609
+ 782 0161 6B010000 		.4byte	0x16b
+ 783 0165 08       		.uleb128 0x8
+ 784 0166 01       		.uleb128 0x1
+ 785 0167 50       		.byte	0x50
+ 786 0168 01       		.uleb128 0x1
+ 787 0169 30       		.byte	0x30
+ 788 016a 00       		.byte	0
+ 789 016b 0A       		.uleb128 0xa
+ 790 016c 1A000000 		.4byte	.LVL10
+ 791 0170 1A060000 		.4byte	0x61a
+ 792 0174 08       		.uleb128 0x8
+ 793 0175 01       		.uleb128 0x1
+ 794 0176 50       		.byte	0x50
+ 795 0177 01       		.uleb128 0x1
+ 796 0178 30       		.byte	0x30
+ 797 0179 00       		.byte	0
+ 798 017a 00       		.byte	0
+ 799 017b 09       		.uleb128 0x9
+ 800 017c 81040000 		.4byte	.LASF19
+ 801 0180 01       		.byte	0x1
+ 802 0181 5101     		.2byte	0x151
+ 803 0183 00000000 		.4byte	.LFB38
+ 804 0187 1C000000 		.4byte	.LFE38-.LFB38
+ 805 018b 01       		.uleb128 0x1
+ 806 018c 9C       		.byte	0x9c
+ 807 018d DA010000 		.4byte	0x1da
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 24
+
+
+ 808 0191 07       		.uleb128 0x7
+ 809 0192 08000000 		.4byte	.LVL11
+ 810 0196 1A060000 		.4byte	0x61a
+ 811 019a A4010000 		.4byte	0x1a4
+ 812 019e 08       		.uleb128 0x8
+ 813 019f 01       		.uleb128 0x1
+ 814 01a0 50       		.byte	0x50
+ 815 01a1 01       		.uleb128 0x1
+ 816 01a2 3F       		.byte	0x3f
+ 817 01a3 00       		.byte	0
+ 818 01a4 07       		.uleb128 0x7
+ 819 01a5 0E000000 		.4byte	.LVL12
+ 820 01a9 E7050000 		.4byte	0x5e7
+ 821 01ad B7010000 		.4byte	0x1b7
+ 822 01b1 08       		.uleb128 0x8
+ 823 01b2 01       		.uleb128 0x1
+ 824 01b3 50       		.byte	0x50
+ 825 01b4 01       		.uleb128 0x1
+ 826 01b5 30       		.byte	0x30
+ 827 01b6 00       		.byte	0
+ 828 01b7 07       		.uleb128 0x7
+ 829 01b8 14000000 		.4byte	.LVL13
+ 830 01bc F8050000 		.4byte	0x5f8
+ 831 01c0 CA010000 		.4byte	0x1ca
+ 832 01c4 08       		.uleb128 0x8
+ 833 01c5 01       		.uleb128 0x1
+ 834 01c6 50       		.byte	0x50
+ 835 01c7 01       		.uleb128 0x1
+ 836 01c8 30       		.byte	0x30
+ 837 01c9 00       		.byte	0
+ 838 01ca 0A       		.uleb128 0xa
+ 839 01cb 1A000000 		.4byte	.LVL14
+ 840 01cf 09060000 		.4byte	0x609
+ 841 01d3 08       		.uleb128 0x8
+ 842 01d4 01       		.uleb128 0x1
+ 843 01d5 50       		.byte	0x50
+ 844 01d6 01       		.uleb128 0x1
+ 845 01d7 30       		.byte	0x30
+ 846 01d8 00       		.byte	0
+ 847 01d9 00       		.byte	0
+ 848 01da 0B       		.uleb128 0xb
+ 849 01db 5A000000 		.4byte	.LASF20
+ 850 01df 01       		.byte	0x1
+ 851 01e0 2701     		.2byte	0x127
+ 852 01e2 00000000 		.4byte	.LFB36
+ 853 01e6 50000000 		.4byte	.LFE36-.LFB36
+ 854 01ea 01       		.uleb128 0x1
+ 855 01eb 9C       		.byte	0x9c
+ 856 01ec 2C020000 		.4byte	0x22c
+ 857 01f0 0C       		.uleb128 0xc
+ 858 01f1 B3000000 		.4byte	.LASF71
+ 859 01f5 01       		.byte	0x1
+ 860 01f6 2701     		.2byte	0x127
+ 861 01f8 6B000000 		.4byte	0x6b
+ 862 01fc 00000000 		.4byte	.LLST0
+ 863 0200 0D       		.uleb128 0xd
+ 864 0201 A1000000 		.4byte	.LASF24
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 25
+
+
+ 865 0205 01       		.byte	0x1
+ 866 0206 2901     		.2byte	0x129
+ 867 0208 76000000 		.4byte	0x76
+ 868 020c 3A000000 		.4byte	.LLST1
+ 869 0210 06       		.uleb128 0x6
+ 870 0211 0A000000 		.4byte	.LVL17
+ 871 0215 7B010000 		.4byte	0x17b
+ 872 0219 06       		.uleb128 0x6
+ 873 021a 2E000000 		.4byte	.LVL21
+ 874 021e 1C010000 		.4byte	0x11c
+ 875 0222 06       		.uleb128 0x6
+ 876 0223 38000000 		.4byte	.LVL23
+ 877 0227 2B060000 		.4byte	0x62b
+ 878 022b 00       		.byte	0
+ 879 022c 09       		.uleb128 0x9
+ 880 022d 6B020000 		.4byte	.LASF21
+ 881 0231 01       		.byte	0x1
+ 882 0232 5801     		.2byte	0x158
+ 883 0234 00000000 		.4byte	.LFB39
+ 884 0238 22000000 		.4byte	.LFE39-.LFB39
+ 885 023c 01       		.uleb128 0x1
+ 886 023d 9C       		.byte	0x9c
+ 887 023e 9F020000 		.4byte	0x29f
+ 888 0242 07       		.uleb128 0x7
+ 889 0243 08000000 		.4byte	.LVL24
+ 890 0247 1A060000 		.4byte	0x61a
+ 891 024b 55020000 		.4byte	0x255
+ 892 024f 08       		.uleb128 0x8
+ 893 0250 01       		.uleb128 0x1
+ 894 0251 50       		.byte	0x50
+ 895 0252 01       		.uleb128 0x1
+ 896 0253 3F       		.byte	0x3f
+ 897 0254 00       		.byte	0
+ 898 0255 07       		.uleb128 0x7
+ 899 0256 0E000000 		.4byte	.LVL25
+ 900 025a F8050000 		.4byte	0x5f8
+ 901 025e 68020000 		.4byte	0x268
+ 902 0262 08       		.uleb128 0x8
+ 903 0263 01       		.uleb128 0x1
+ 904 0264 50       		.byte	0x50
+ 905 0265 01       		.uleb128 0x1
+ 906 0266 30       		.byte	0x30
+ 907 0267 00       		.byte	0
+ 908 0268 07       		.uleb128 0x7
+ 909 0269 14000000 		.4byte	.LVL26
+ 910 026d 09060000 		.4byte	0x609
+ 911 0271 7B020000 		.4byte	0x27b
+ 912 0275 08       		.uleb128 0x8
+ 913 0276 01       		.uleb128 0x1
+ 914 0277 50       		.byte	0x50
+ 915 0278 01       		.uleb128 0x1
+ 916 0279 3F       		.byte	0x3f
+ 917 027a 00       		.byte	0
+ 918 027b 07       		.uleb128 0x7
+ 919 027c 1A000000 		.4byte	.LVL27
+ 920 0280 E7050000 		.4byte	0x5e7
+ 921 0284 8E020000 		.4byte	0x28e
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 26
+
+
+ 922 0288 08       		.uleb128 0x8
+ 923 0289 01       		.uleb128 0x1
+ 924 028a 50       		.byte	0x50
+ 925 028b 01       		.uleb128 0x1
+ 926 028c 3F       		.byte	0x3f
+ 927 028d 00       		.byte	0
+ 928 028e 0A       		.uleb128 0xa
+ 929 028f 20000000 		.4byte	.LVL28
+ 930 0293 3D060000 		.4byte	0x63d
+ 931 0297 08       		.uleb128 0x8
+ 932 0298 01       		.uleb128 0x1
+ 933 0299 50       		.byte	0x50
+ 934 029a 02       		.uleb128 0x2
+ 935 029b 08       		.byte	0x8
+ 936 029c 64       		.byte	0x64
+ 937 029d 00       		.byte	0
+ 938 029e 00       		.byte	0
+ 939 029f 09       		.uleb128 0x9
+ 940 02a0 B2030000 		.4byte	.LASF22
+ 941 02a4 01       		.byte	0x1
+ 942 02a5 6E01     		.2byte	0x16e
+ 943 02a7 00000000 		.4byte	.LFB40
+ 944 02ab 10000000 		.4byte	.LFE40-.LFB40
+ 945 02af 01       		.uleb128 0x1
+ 946 02b0 9C       		.byte	0x9c
+ 947 02b1 D0020000 		.4byte	0x2d0
+ 948 02b5 06       		.uleb128 0x6
+ 949 02b6 06000000 		.4byte	.LVL29
+ 950 02ba 4E060000 		.4byte	0x64e
+ 951 02be 0A       		.uleb128 0xa
+ 952 02bf 0E000000 		.4byte	.LVL30
+ 953 02c3 3D060000 		.4byte	0x63d
+ 954 02c7 08       		.uleb128 0x8
+ 955 02c8 01       		.uleb128 0x1
+ 956 02c9 50       		.byte	0x50
+ 957 02ca 03       		.uleb128 0x3
+ 958 02cb 0A       		.byte	0xa
+ 959 02cc BC02     		.2byte	0x2bc
+ 960 02ce 00       		.byte	0
+ 961 02cf 00       		.byte	0
+ 962 02d0 09       		.uleb128 0x9
+ 963 02d1 2A040000 		.4byte	.LASF23
+ 964 02d5 01       		.byte	0x1
+ 965 02d6 8401     		.2byte	0x184
+ 966 02d8 00000000 		.4byte	.LFB41
+ 967 02dc 50000000 		.4byte	.LFE41-.LFB41
+ 968 02e0 01       		.uleb128 0x1
+ 969 02e1 9C       		.byte	0x9c
+ 970 02e2 4D030000 		.4byte	0x34d
+ 971 02e6 0E       		.uleb128 0xe
+ 972 02e7 00000000 		.4byte	.LASF25
+ 973 02eb 01       		.byte	0x1
+ 974 02ec 8701     		.2byte	0x187
+ 975 02ee 8C000000 		.4byte	0x8c
+ 976 02f2 05       		.uleb128 0x5
+ 977 02f3 03       		.byte	0x3
+ 978 02f4 02000000 		.4byte	prev_x_value.5825
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 27
+
+
+ 979 02f8 0E       		.uleb128 0xe
+ 980 02f9 D5030000 		.4byte	.LASF26
+ 981 02fd 01       		.byte	0x1
+ 982 02fe 8801     		.2byte	0x188
+ 983 0300 8C000000 		.4byte	0x8c
+ 984 0304 05       		.uleb128 0x5
+ 985 0305 03       		.byte	0x3
+ 986 0306 06000000 		.4byte	prev_y_value.5826
+ 987 030a 0D       		.uleb128 0xd
+ 988 030b B8000000 		.4byte	.LASF27
+ 989 030f 01       		.byte	0x1
+ 990 0310 8B01     		.2byte	0x18b
+ 991 0312 8C000000 		.4byte	0x8c
+ 992 0316 70000000 		.4byte	.LLST2
+ 993 031a 0D       		.uleb128 0xd
+ 994 031b C1000000 		.4byte	.LASF28
+ 995 031f 01       		.byte	0x1
+ 996 0320 8C01     		.2byte	0x18c
+ 997 0322 8C000000 		.4byte	0x8c
+ 998 0326 9A000000 		.4byte	.LLST3
+ 999 032a 0D       		.uleb128 0xd
+ 1000 032b 75000000 		.4byte	.LASF29
+ 1001 032f 01       		.byte	0x1
+ 1002 0330 8D01     		.2byte	0x18d
+ 1003 0332 76000000 		.4byte	0x76
+ 1004 0336 DA000000 		.4byte	.LLST4
+ 1005 033a 06       		.uleb128 0x6
+ 1006 033b 26000000 		.4byte	.LVL35
+ 1007 033f 2C020000 		.4byte	0x22c
+ 1008 0343 06       		.uleb128 0x6
+ 1009 0344 4A000000 		.4byte	.LVL39
+ 1010 0348 2C020000 		.4byte	0x22c
+ 1011 034c 00       		.byte	0
+ 1012 034d 0F       		.uleb128 0xf
+ 1013 034e AE000000 		.4byte	.LASF30
+ 1014 0352 01       		.byte	0x1
+ 1015 0353 4F       		.byte	0x4f
+ 1016 0354 5D000000 		.4byte	0x5d
+ 1017 0358 00000000 		.4byte	.LFB34
+ 1018 035c E4000000 		.4byte	.LFE34-.LFB34
+ 1019 0360 01       		.uleb128 0x1
+ 1020 0361 9C       		.byte	0x9c
+ 1021 0362 34050000 		.4byte	0x534
+ 1022 0366 10       		.uleb128 0x10
+ 1023 0367 97000000 		.4byte	.LASF31
+ 1024 036b 01       		.byte	0x1
+ 1025 036c 58       		.byte	0x58
+ 1026 036d 6B000000 		.4byte	0x6b
+ 1027 0371 04010000 		.4byte	.LLST5
+ 1028 0375 10       		.uleb128 0x10
+ 1029 0376 FB000000 		.4byte	.LASF32
+ 1030 037a 01       		.byte	0x1
+ 1031 037b 5D       		.byte	0x5d
+ 1032 037c 6B000000 		.4byte	0x6b
+ 1033 0380 2E010000 		.4byte	.LLST6
+ 1034 0384 10       		.uleb128 0x10
+ 1035 0385 5B010000 		.4byte	.LASF33
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 28
+
+
+ 1036 0389 01       		.byte	0x1
+ 1037 038a 60       		.byte	0x60
+ 1038 038b 76000000 		.4byte	0x76
+ 1039 038f 87010000 		.4byte	.LLST7
+ 1040 0393 10       		.uleb128 0x10
+ 1041 0394 1E030000 		.4byte	.LASF34
+ 1042 0398 01       		.byte	0x1
+ 1043 0399 63       		.byte	0x63
+ 1044 039a 6B000000 		.4byte	0x6b
+ 1045 039e B1010000 		.4byte	.LLST8
+ 1046 03a2 06       		.uleb128 0x6
+ 1047 03a3 06000000 		.4byte	.LVL40
+ 1048 03a7 9F020000 		.4byte	0x29f
+ 1049 03ab 06       		.uleb128 0x6
+ 1050 03ac 0A000000 		.4byte	.LVL41
+ 1051 03b0 55060000 		.4byte	0x655
+ 1052 03b4 06       		.uleb128 0x6
+ 1053 03b5 10000000 		.4byte	.LVL42
+ 1054 03b9 5C060000 		.4byte	0x65c
+ 1055 03bd 07       		.uleb128 0x7
+ 1056 03be 16000000 		.4byte	.LVL43
+ 1057 03c2 63060000 		.4byte	0x663
+ 1058 03c6 D0030000 		.4byte	0x3d0
+ 1059 03ca 08       		.uleb128 0x8
+ 1060 03cb 01       		.uleb128 0x1
+ 1061 03cc 50       		.byte	0x50
+ 1062 03cd 01       		.uleb128 0x1
+ 1063 03ce 30       		.byte	0x30
+ 1064 03cf 00       		.byte	0
+ 1065 03d0 06       		.uleb128 0x6
+ 1066 03d1 1A000000 		.4byte	.LVL44
+ 1067 03d5 74060000 		.4byte	0x674
+ 1068 03d9 07       		.uleb128 0x7
+ 1069 03da 20000000 		.4byte	.LVL45
+ 1070 03de DA010000 		.4byte	0x1da
+ 1071 03e2 EC030000 		.4byte	0x3ec
+ 1072 03e6 08       		.uleb128 0x8
+ 1073 03e7 01       		.uleb128 0x1
+ 1074 03e8 50       		.byte	0x50
+ 1075 03e9 01       		.uleb128 0x1
+ 1076 03ea 30       		.byte	0x30
+ 1077 03eb 00       		.byte	0
+ 1078 03ec 07       		.uleb128 0x7
+ 1079 03ed 2E000000 		.4byte	.LVL48
+ 1080 03f1 7C060000 		.4byte	0x67c
+ 1081 03f5 FF030000 		.4byte	0x3ff
+ 1082 03f9 08       		.uleb128 0x8
+ 1083 03fa 01       		.uleb128 0x1
+ 1084 03fb 50       		.byte	0x50
+ 1085 03fc 01       		.uleb128 0x1
+ 1086 03fd 30       		.byte	0x30
+ 1087 03fe 00       		.byte	0
+ 1088 03ff 07       		.uleb128 0x7
+ 1089 0400 34000000 		.4byte	.LVL49
+ 1090 0404 8D060000 		.4byte	0x68d
+ 1091 0408 12040000 		.4byte	0x412
+ 1092 040c 08       		.uleb128 0x8
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 29
+
+
+ 1093 040d 01       		.uleb128 0x1
+ 1094 040e 50       		.byte	0x50
+ 1095 040f 01       		.uleb128 0x1
+ 1096 0410 30       		.byte	0x30
+ 1097 0411 00       		.byte	0
+ 1098 0412 06       		.uleb128 0x6
+ 1099 0413 3A000000 		.4byte	.LVL50
+ 1100 0417 9E060000 		.4byte	0x69e
+ 1101 041b 06       		.uleb128 0x6
+ 1102 041c 3E000000 		.4byte	.LVL51
+ 1103 0420 A5060000 		.4byte	0x6a5
+ 1104 0424 06       		.uleb128 0x6
+ 1105 0425 46000000 		.4byte	.LVL52
+ 1106 0429 B0060000 		.4byte	0x6b0
+ 1107 042d 06       		.uleb128 0x6
+ 1108 042e 50000000 		.4byte	.LVL54
+ 1109 0432 DA010000 		.4byte	0x1da
+ 1110 0436 06       		.uleb128 0x6
+ 1111 0437 54000000 		.4byte	.LVL55
+ 1112 043b D0020000 		.4byte	0x2d0
+ 1113 043f 07       		.uleb128 0x7
+ 1114 0440 64000000 		.4byte	.LVL57
+ 1115 0444 C5060000 		.4byte	0x6c5
+ 1116 0448 58040000 		.4byte	0x458
+ 1117 044c 08       		.uleb128 0x8
+ 1118 044d 01       		.uleb128 0x1
+ 1119 044e 51       		.byte	0x51
+ 1120 044f 02       		.uleb128 0x2
+ 1121 0450 74       		.byte	0x74
+ 1122 0451 00       		.sleb128 0
+ 1123 0452 08       		.uleb128 0x8
+ 1124 0453 01       		.uleb128 0x1
+ 1125 0454 50       		.byte	0x50
+ 1126 0455 01       		.uleb128 0x1
+ 1127 0456 30       		.byte	0x30
+ 1128 0457 00       		.byte	0
+ 1129 0458 07       		.uleb128 0x7
+ 1130 0459 6A000000 		.4byte	.LVL58
+ 1131 045d DB060000 		.4byte	0x6db
+ 1132 0461 6B040000 		.4byte	0x46b
+ 1133 0465 08       		.uleb128 0x8
+ 1134 0466 01       		.uleb128 0x1
+ 1135 0467 50       		.byte	0x50
+ 1136 0468 01       		.uleb128 0x1
+ 1137 0469 30       		.byte	0x30
+ 1138 046a 00       		.byte	0
+ 1139 046b 07       		.uleb128 0x7
+ 1140 046c 76000000 		.4byte	.LVL61
+ 1141 0470 F0060000 		.4byte	0x6f0
+ 1142 0474 7E040000 		.4byte	0x47e
+ 1143 0478 08       		.uleb128 0x8
+ 1144 0479 01       		.uleb128 0x1
+ 1145 047a 50       		.byte	0x50
+ 1146 047b 01       		.uleb128 0x1
+ 1147 047c 38       		.byte	0x38
+ 1148 047d 00       		.byte	0
+ 1149 047e 07       		.uleb128 0x7
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 30
+
+
+ 1150 047f 7C000000 		.4byte	.LVL62
+ 1151 0483 01070000 		.4byte	0x701
+ 1152 0487 92040000 		.4byte	0x492
+ 1153 048b 08       		.uleb128 0x8
+ 1154 048c 01       		.uleb128 0x1
+ 1155 048d 50       		.byte	0x50
+ 1156 048e 02       		.uleb128 0x2
+ 1157 048f 08       		.byte	0x8
+ 1158 0490 7D       		.byte	0x7d
+ 1159 0491 00       		.byte	0
+ 1160 0492 07       		.uleb128 0x7
+ 1161 0493 92000000 		.4byte	.LVL64
+ 1162 0497 12070000 		.4byte	0x712
+ 1163 049b BB040000 		.4byte	0x4bb
+ 1164 049f 08       		.uleb128 0x8
+ 1165 04a0 01       		.uleb128 0x1
+ 1166 04a1 52       		.byte	0x52
+ 1167 04a2 05       		.uleb128 0x5
+ 1168 04a3 03       		.byte	0x3
+ 1169 04a4 0A000000 		.4byte	.LANCHOR0+10
+ 1170 04a8 08       		.uleb128 0x8
+ 1171 04a9 01       		.uleb128 0x1
+ 1172 04aa 51       		.byte	0x51
+ 1173 04ab 05       		.uleb128 0x5
+ 1174 04ac 03       		.byte	0x3
+ 1175 04ad 04000000 		.4byte	.LANCHOR0+4
+ 1176 04b1 08       		.uleb128 0x8
+ 1177 04b2 01       		.uleb128 0x1
+ 1178 04b3 50       		.byte	0x50
+ 1179 04b4 05       		.uleb128 0x5
+ 1180 04b5 03       		.byte	0x3
+ 1181 04b6 00000000 		.4byte	.LANCHOR0
+ 1182 04ba 00       		.byte	0
+ 1183 04bb 06       		.uleb128 0x6
+ 1184 04bc 96000000 		.4byte	.LVL65
+ 1185 04c0 D0020000 		.4byte	0x2d0
+ 1186 04c4 07       		.uleb128 0x7
+ 1187 04c5 A0000000 		.4byte	.LVL68
+ 1188 04c9 DA010000 		.4byte	0x1da
+ 1189 04cd D7040000 		.4byte	0x4d7
+ 1190 04d1 08       		.uleb128 0x8
+ 1191 04d2 01       		.uleb128 0x1
+ 1192 04d3 50       		.byte	0x50
+ 1193 04d4 01       		.uleb128 0x1
+ 1194 04d5 30       		.byte	0x30
+ 1195 04d6 00       		.byte	0
+ 1196 04d7 07       		.uleb128 0x7
+ 1197 04d8 B8000000 		.4byte	.LVL72
+ 1198 04dc C5060000 		.4byte	0x6c5
+ 1199 04e0 F0040000 		.4byte	0x4f0
+ 1200 04e4 08       		.uleb128 0x8
+ 1201 04e5 01       		.uleb128 0x1
+ 1202 04e6 51       		.byte	0x51
+ 1203 04e7 02       		.uleb128 0x2
+ 1204 04e8 74       		.byte	0x74
+ 1205 04e9 00       		.sleb128 0
+ 1206 04ea 08       		.uleb128 0x8
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 31
+
+
+ 1207 04eb 01       		.uleb128 0x1
+ 1208 04ec 50       		.byte	0x50
+ 1209 04ed 01       		.uleb128 0x1
+ 1210 04ee 30       		.byte	0x30
+ 1211 04ef 00       		.byte	0
+ 1212 04f0 07       		.uleb128 0x7
+ 1213 04f1 BE000000 		.4byte	.LVL73
+ 1214 04f5 DB060000 		.4byte	0x6db
+ 1215 04f9 03050000 		.4byte	0x503
+ 1216 04fd 08       		.uleb128 0x8
+ 1217 04fe 01       		.uleb128 0x1
+ 1218 04ff 50       		.byte	0x50
+ 1219 0500 01       		.uleb128 0x1
+ 1220 0501 30       		.byte	0x30
+ 1221 0502 00       		.byte	0
+ 1222 0503 07       		.uleb128 0x7
+ 1223 0504 CA000000 		.4byte	.LVL76
+ 1224 0508 F0060000 		.4byte	0x6f0
+ 1225 050c 16050000 		.4byte	0x516
+ 1226 0510 08       		.uleb128 0x8
+ 1227 0511 01       		.uleb128 0x1
+ 1228 0512 50       		.byte	0x50
+ 1229 0513 01       		.uleb128 0x1
+ 1230 0514 38       		.byte	0x38
+ 1231 0515 00       		.byte	0
+ 1232 0516 07       		.uleb128 0x7
+ 1233 0517 D0000000 		.4byte	.LVL77
+ 1234 051b 01070000 		.4byte	0x701
+ 1235 051f 2A050000 		.4byte	0x52a
+ 1236 0523 08       		.uleb128 0x8
+ 1237 0524 01       		.uleb128 0x1
+ 1238 0525 50       		.byte	0x50
+ 1239 0526 02       		.uleb128 0x2
+ 1240 0527 08       		.byte	0x8
+ 1241 0528 7D       		.byte	0x7d
+ 1242 0529 00       		.byte	0
+ 1243 052a 06       		.uleb128 0x6
+ 1244 052b DC000000 		.4byte	.LVL80
+ 1245 052f B3000000 		.4byte	0xb3
+ 1246 0533 00       		.byte	0
+ 1247 0534 11       		.uleb128 0x11
+ 1248 0535 76000000 		.4byte	0x76
+ 1249 0539 44050000 		.4byte	0x544
+ 1250 053d 12       		.uleb128 0x12
+ 1251 053e AC000000 		.4byte	0xac
+ 1252 0542 00       		.byte	0
+ 1253 0543 00       		.byte	0
+ 1254 0544 13       		.uleb128 0x13
+ 1255 0545 27000000 		.4byte	.LASF35
+ 1256 0549 03       		.byte	0x3
+ 1257 054a D003     		.2byte	0x3d0
+ 1258 054c 34050000 		.4byte	0x534
+ 1259 0550 13       		.uleb128 0x13
+ 1260 0551 2A030000 		.4byte	.LASF36
+ 1261 0555 04       		.byte	0x4
+ 1262 0556 2401     		.2byte	0x124
+ 1263 0558 34050000 		.4byte	0x534
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 32
+
+
+ 1264 055c 14       		.uleb128 0x14
+ 1265 055d EA020000 		.4byte	.LASF37
+ 1266 0561 01       		.byte	0x1
+ 1267 0562 4D       		.byte	0x4d
+ 1268 0563 6B000000 		.4byte	0x6b
+ 1269 0567 05       		.uleb128 0x5
+ 1270 0568 03       		.byte	0x3
+ 1271 0569 00000000 		.4byte	acclerometer_configured
+ 1272 056d 14       		.uleb128 0x14
+ 1273 056e 8F040000 		.4byte	.LASF38
+ 1274 0572 01       		.byte	0x1
+ 1275 0573 45       		.byte	0x45
+ 1276 0574 81000000 		.4byte	0x81
+ 1277 0578 05       		.uleb128 0x5
+ 1278 0579 03       		.byte	0x3
+ 1279 057a 00000000 		.4byte	uC_Probe_Prox_Indicator
+ 1280 057e 14       		.uleb128 0x14
+ 1281 057f 79010000 		.4byte	.LASF39
+ 1282 0583 01       		.byte	0x1
+ 1283 0584 48       		.byte	0x48
+ 1284 0585 8C000000 		.4byte	0x8c
+ 1285 0589 05       		.uleb128 0x5
+ 1286 058a 03       		.byte	0x3
+ 1287 058b 00000000 		.4byte	uC_Probe_x_dirMovement
+ 1288 058f 14       		.uleb128 0x14
+ 1289 0590 73030000 		.4byte	.LASF40
+ 1290 0594 01       		.byte	0x1
+ 1291 0595 49       		.byte	0x49
+ 1292 0596 8C000000 		.4byte	0x8c
+ 1293 059a 05       		.uleb128 0x5
+ 1294 059b 03       		.byte	0x3
+ 1295 059c 00000000 		.4byte	uC_Probe_y_dirMovement
+ 1296 05a0 14       		.uleb128 0x14
+ 1297 05a1 99010000 		.4byte	.LASF41
+ 1298 05a5 01       		.byte	0x1
+ 1299 05a6 4A       		.byte	0x4a
+ 1300 05a7 8C000000 		.4byte	0x8c
+ 1301 05ab 05       		.uleb128 0x5
+ 1302 05ac 03       		.byte	0x3
+ 1303 05ad 00000000 		.4byte	uC_Probe_z_dirMovement
+ 1304 05b1 15       		.uleb128 0x15
+ 1305 05b2 C4020000 		.4byte	.LASF42
+ 1306 05b6 03       		.byte	0x3
+ 1307 05b7 98       		.byte	0x98
+ 1308 05b8 16       		.uleb128 0x16
+ 1309 05b9 0D000000 		.4byte	.LASF47
+ 1310 05bd 07       		.byte	0x7
+ 1311 05be 1E       		.byte	0x1e
+ 1312 05bf C9050000 		.4byte	0x5c9
+ 1313 05c3 17       		.uleb128 0x17
+ 1314 05c4 6B000000 		.4byte	0x6b
+ 1315 05c8 00       		.byte	0
+ 1316 05c9 18       		.uleb128 0x18
+ 1317 05ca A7040000 		.4byte	.LASF43
+ 1318 05ce 05       		.byte	0x5
+ 1319 05cf 6401     		.2byte	0x164
+ 1320 05d1 15       		.uleb128 0x15
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 33
+
+
+ 1321 05d2 8F030000 		.4byte	.LASF44
+ 1322 05d6 06       		.byte	0x6
+ 1323 05d7 1D       		.byte	0x1d
+ 1324 05d8 18       		.uleb128 0x18
+ 1325 05d9 E2030000 		.4byte	.LASF45
+ 1326 05dd 05       		.byte	0x5
+ 1327 05de 6501     		.2byte	0x165
+ 1328 05e0 15       		.uleb128 0x15
+ 1329 05e1 B0010000 		.4byte	.LASF46
+ 1330 05e5 03       		.byte	0x3
+ 1331 05e6 9A       		.byte	0x9a
+ 1332 05e7 16       		.uleb128 0x16
+ 1333 05e8 CE010000 		.4byte	.LASF48
+ 1334 05ec 08       		.byte	0x8
+ 1335 05ed 33       		.byte	0x33
+ 1336 05ee F8050000 		.4byte	0x5f8
+ 1337 05f2 17       		.uleb128 0x17
+ 1338 05f3 6B000000 		.4byte	0x6b
+ 1339 05f7 00       		.byte	0
+ 1340 05f8 16       		.uleb128 0x16
+ 1341 05f9 85000000 		.4byte	.LASF49
+ 1342 05fd 09       		.byte	0x9
+ 1343 05fe 33       		.byte	0x33
+ 1344 05ff 09060000 		.4byte	0x609
+ 1345 0603 17       		.uleb128 0x17
+ 1346 0604 6B000000 		.4byte	0x6b
+ 1347 0608 00       		.byte	0
+ 1348 0609 16       		.uleb128 0x16
+ 1349 060a A0030000 		.4byte	.LASF50
+ 1350 060e 0A       		.byte	0xa
+ 1351 060f 33       		.byte	0x33
+ 1352 0610 1A060000 		.4byte	0x61a
+ 1353 0614 17       		.uleb128 0x17
+ 1354 0615 6B000000 		.4byte	0x6b
+ 1355 0619 00       		.byte	0
+ 1356 061a 16       		.uleb128 0x16
+ 1357 061b 46010000 		.4byte	.LASF51
+ 1358 061f 0B       		.byte	0xb
+ 1359 0620 33       		.byte	0x33
+ 1360 0621 2B060000 		.4byte	0x62b
+ 1361 0625 17       		.uleb128 0x17
+ 1362 0626 6B000000 		.4byte	0x6b
+ 1363 062a 00       		.byte	0
+ 1364 062b 19       		.uleb128 0x19
+ 1365 062c 0C040000 		.4byte	.LASF52
+ 1366 0630 05       		.byte	0x5
+ 1367 0631 5401     		.2byte	0x154
+ 1368 0633 3D060000 		.4byte	0x63d
+ 1369 0637 17       		.uleb128 0x17
+ 1370 0638 81000000 		.4byte	0x81
+ 1371 063c 00       		.byte	0
+ 1372 063d 16       		.uleb128 0x16
+ 1373 063e B7040000 		.4byte	.LASF53
+ 1374 0642 0C       		.byte	0xc
+ 1375 0643 57       		.byte	0x57
+ 1376 0644 4E060000 		.4byte	0x64e
+ 1377 0648 17       		.uleb128 0x17
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 34
+
+
+ 1378 0649 81000000 		.4byte	0x81
+ 1379 064d 00       		.byte	0
+ 1380 064e 15       		.uleb128 0x15
+ 1381 064f BF040000 		.4byte	.LASF54
+ 1382 0653 0D       		.byte	0xd
+ 1383 0654 68       		.byte	0x68
+ 1384 0655 15       		.uleb128 0x15
+ 1385 0656 8C020000 		.4byte	.LASF55
+ 1386 065a 0E       		.byte	0xe
+ 1387 065b C2       		.byte	0xc2
+ 1388 065c 15       		.uleb128 0x15
+ 1389 065d 02030000 		.4byte	.LASF56
+ 1390 0661 03       		.byte	0x3
+ 1391 0662 95       		.byte	0x95
+ 1392 0663 16       		.uleb128 0x16
+ 1393 0664 E4040000 		.4byte	.LASF57
+ 1394 0668 04       		.byte	0x4
+ 1395 0669 AA       		.byte	0xaa
+ 1396 066a 74060000 		.4byte	0x674
+ 1397 066e 17       		.uleb128 0x17
+ 1398 066f 81000000 		.4byte	0x81
+ 1399 0673 00       		.byte	0
+ 1400 0674 18       		.uleb128 0x18
+ 1401 0675 C5030000 		.4byte	.LASF58
+ 1402 0679 05       		.byte	0x5
+ 1403 067a 3101     		.2byte	0x131
+ 1404 067c 16       		.uleb128 0x16
+ 1405 067d D1000000 		.4byte	.LASF59
+ 1406 0681 04       		.byte	0x4
+ 1407 0682 AD       		.byte	0xad
+ 1408 0683 8D060000 		.4byte	0x68d
+ 1409 0687 17       		.uleb128 0x17
+ 1410 0688 81000000 		.4byte	0x81
+ 1411 068c 00       		.byte	0
+ 1412 068d 16       		.uleb128 0x16
+ 1413 068e A4020000 		.4byte	.LASF60
+ 1414 0692 03       		.byte	0x3
+ 1415 0693 9C       		.byte	0x9c
+ 1416 0694 9E060000 		.4byte	0x69e
+ 1417 0698 17       		.uleb128 0x17
+ 1418 0699 81000000 		.4byte	0x81
+ 1419 069d 00       		.byte	0
+ 1420 069e 15       		.uleb128 0x15
+ 1421 069f 42030000 		.4byte	.LASF61
+ 1422 06a3 06       		.byte	0x6
+ 1423 06a4 1C       		.byte	0x1c
+ 1424 06a5 1A       		.uleb128 0x1a
+ 1425 06a6 71040000 		.4byte	.LASF72
+ 1426 06aa 03       		.byte	0x3
+ 1427 06ab 9B       		.byte	0x9b
+ 1428 06ac 81000000 		.4byte	0x81
+ 1429 06b0 1B       		.uleb128 0x1b
+ 1430 06b1 54040000 		.4byte	.LASF63
+ 1431 06b5 04       		.byte	0x4
+ 1432 06b6 D5       		.byte	0xd5
+ 1433 06b7 81000000 		.4byte	0x81
+ 1434 06bb C5060000 		.4byte	0x6c5
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 35
+
+
+ 1435 06bf 17       		.uleb128 0x17
+ 1436 06c0 81000000 		.4byte	0x81
+ 1437 06c4 00       		.byte	0
+ 1438 06c5 16       		.uleb128 0x16
+ 1439 06c6 62030000 		.4byte	.LASF62
+ 1440 06ca 0F       		.byte	0xf
+ 1441 06cb 3C       		.byte	0x3c
+ 1442 06cc DB060000 		.4byte	0x6db
+ 1443 06d0 17       		.uleb128 0x17
+ 1444 06d1 81000000 		.4byte	0x81
+ 1445 06d5 17       		.uleb128 0x17
+ 1446 06d6 81000000 		.4byte	0x81
+ 1447 06da 00       		.byte	0
+ 1448 06db 1B       		.uleb128 0x1b
+ 1449 06dc 71020000 		.4byte	.LASF64
+ 1450 06e0 0F       		.byte	0xf
+ 1451 06e1 40       		.byte	0x40
+ 1452 06e2 81000000 		.4byte	0x81
+ 1453 06e6 F0060000 		.4byte	0x6f0
+ 1454 06ea 17       		.uleb128 0x17
+ 1455 06eb 81000000 		.4byte	0x81
+ 1456 06ef 00       		.byte	0
+ 1457 06f0 16       		.uleb128 0x16
+ 1458 06f1 3A000000 		.4byte	.LASF65
+ 1459 06f5 0F       		.byte	0xf
+ 1460 06f6 43       		.byte	0x43
+ 1461 06f7 01070000 		.4byte	0x701
+ 1462 06fb 17       		.uleb128 0x17
+ 1463 06fc 81000000 		.4byte	0x81
+ 1464 0700 00       		.byte	0
+ 1465 0701 16       		.uleb128 0x16
+ 1466 0702 82020000 		.4byte	.LASF66
+ 1467 0706 0C       		.byte	0xc
+ 1468 0707 58       		.byte	0x58
+ 1469 0708 12070000 		.4byte	0x712
+ 1470 070c 17       		.uleb128 0x17
+ 1471 070d 76000000 		.4byte	0x76
+ 1472 0711 00       		.byte	0
+ 1473 0712 16       		.uleb128 0x16
+ 1474 0713 39040000 		.4byte	.LASF67
+ 1475 0717 0E       		.byte	0xe
+ 1476 0718 C3       		.byte	0xc3
+ 1477 0719 2D070000 		.4byte	0x72d
+ 1478 071d 17       		.uleb128 0x17
+ 1479 071e 2D070000 		.4byte	0x72d
+ 1480 0722 17       		.uleb128 0x17
+ 1481 0723 2D070000 		.4byte	0x72d
+ 1482 0727 17       		.uleb128 0x17
+ 1483 0728 2D070000 		.4byte	0x72d
+ 1484 072c 00       		.byte	0
+ 1485 072d 1C       		.uleb128 0x1c
+ 1486 072e 04       		.byte	0x4
+ 1487 072f 8C000000 		.4byte	0x8c
+ 1488 0733 00       		.byte	0
+ 1489              		.section	.debug_abbrev,"",%progbits
+ 1490              	.Ldebug_abbrev0:
+ 1491 0000 01       		.uleb128 0x1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 36
+
+
+ 1492 0001 11       		.uleb128 0x11
+ 1493 0002 01       		.byte	0x1
+ 1494 0003 25       		.uleb128 0x25
+ 1495 0004 0E       		.uleb128 0xe
+ 1496 0005 13       		.uleb128 0x13
+ 1497 0006 0B       		.uleb128 0xb
+ 1498 0007 03       		.uleb128 0x3
+ 1499 0008 0E       		.uleb128 0xe
+ 1500 0009 1B       		.uleb128 0x1b
+ 1501 000a 0E       		.uleb128 0xe
+ 1502 000b 55       		.uleb128 0x55
+ 1503 000c 17       		.uleb128 0x17
+ 1504 000d 11       		.uleb128 0x11
+ 1505 000e 01       		.uleb128 0x1
+ 1506 000f 10       		.uleb128 0x10
+ 1507 0010 17       		.uleb128 0x17
+ 1508 0011 00       		.byte	0
+ 1509 0012 00       		.byte	0
+ 1510 0013 02       		.uleb128 0x2
+ 1511 0014 24       		.uleb128 0x24
+ 1512 0015 00       		.byte	0
+ 1513 0016 0B       		.uleb128 0xb
+ 1514 0017 0B       		.uleb128 0xb
+ 1515 0018 3E       		.uleb128 0x3e
+ 1516 0019 0B       		.uleb128 0xb
+ 1517 001a 03       		.uleb128 0x3
+ 1518 001b 0E       		.uleb128 0xe
+ 1519 001c 00       		.byte	0
+ 1520 001d 00       		.byte	0
+ 1521 001e 03       		.uleb128 0x3
+ 1522 001f 24       		.uleb128 0x24
+ 1523 0020 00       		.byte	0
+ 1524 0021 0B       		.uleb128 0xb
+ 1525 0022 0B       		.uleb128 0xb
+ 1526 0023 3E       		.uleb128 0x3e
+ 1527 0024 0B       		.uleb128 0xb
+ 1528 0025 03       		.uleb128 0x3
+ 1529 0026 08       		.uleb128 0x8
+ 1530 0027 00       		.byte	0
+ 1531 0028 00       		.byte	0
+ 1532 0029 04       		.uleb128 0x4
+ 1533 002a 16       		.uleb128 0x16
+ 1534 002b 00       		.byte	0
+ 1535 002c 03       		.uleb128 0x3
+ 1536 002d 0E       		.uleb128 0xe
+ 1537 002e 3A       		.uleb128 0x3a
+ 1538 002f 0B       		.uleb128 0xb
+ 1539 0030 3B       		.uleb128 0x3b
+ 1540 0031 0B       		.uleb128 0xb
+ 1541 0032 49       		.uleb128 0x49
+ 1542 0033 13       		.uleb128 0x13
+ 1543 0034 00       		.byte	0
+ 1544 0035 00       		.byte	0
+ 1545 0036 05       		.uleb128 0x5
+ 1546 0037 2E       		.uleb128 0x2e
+ 1547 0038 01       		.byte	0x1
+ 1548 0039 3F       		.uleb128 0x3f
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 37
+
+
+ 1549 003a 19       		.uleb128 0x19
+ 1550 003b 03       		.uleb128 0x3
+ 1551 003c 0E       		.uleb128 0xe
+ 1552 003d 3A       		.uleb128 0x3a
+ 1553 003e 0B       		.uleb128 0xb
+ 1554 003f 3B       		.uleb128 0x3b
+ 1555 0040 0B       		.uleb128 0xb
+ 1556 0041 27       		.uleb128 0x27
+ 1557 0042 19       		.uleb128 0x19
+ 1558 0043 11       		.uleb128 0x11
+ 1559 0044 01       		.uleb128 0x1
+ 1560 0045 12       		.uleb128 0x12
+ 1561 0046 06       		.uleb128 0x6
+ 1562 0047 40       		.uleb128 0x40
+ 1563 0048 18       		.uleb128 0x18
+ 1564 0049 9742     		.uleb128 0x2117
+ 1565 004b 19       		.uleb128 0x19
+ 1566 004c 01       		.uleb128 0x1
+ 1567 004d 13       		.uleb128 0x13
+ 1568 004e 00       		.byte	0
+ 1569 004f 00       		.byte	0
+ 1570 0050 06       		.uleb128 0x6
+ 1571 0051 898201   		.uleb128 0x4109
+ 1572 0054 00       		.byte	0
+ 1573 0055 11       		.uleb128 0x11
+ 1574 0056 01       		.uleb128 0x1
+ 1575 0057 31       		.uleb128 0x31
+ 1576 0058 13       		.uleb128 0x13
+ 1577 0059 00       		.byte	0
+ 1578 005a 00       		.byte	0
+ 1579 005b 07       		.uleb128 0x7
+ 1580 005c 898201   		.uleb128 0x4109
+ 1581 005f 01       		.byte	0x1
+ 1582 0060 11       		.uleb128 0x11
+ 1583 0061 01       		.uleb128 0x1
+ 1584 0062 31       		.uleb128 0x31
+ 1585 0063 13       		.uleb128 0x13
+ 1586 0064 01       		.uleb128 0x1
+ 1587 0065 13       		.uleb128 0x13
+ 1588 0066 00       		.byte	0
+ 1589 0067 00       		.byte	0
+ 1590 0068 08       		.uleb128 0x8
+ 1591 0069 8A8201   		.uleb128 0x410a
+ 1592 006c 00       		.byte	0
+ 1593 006d 02       		.uleb128 0x2
+ 1594 006e 18       		.uleb128 0x18
+ 1595 006f 9142     		.uleb128 0x2111
+ 1596 0071 18       		.uleb128 0x18
+ 1597 0072 00       		.byte	0
+ 1598 0073 00       		.byte	0
+ 1599 0074 09       		.uleb128 0x9
+ 1600 0075 2E       		.uleb128 0x2e
+ 1601 0076 01       		.byte	0x1
+ 1602 0077 3F       		.uleb128 0x3f
+ 1603 0078 19       		.uleb128 0x19
+ 1604 0079 03       		.uleb128 0x3
+ 1605 007a 0E       		.uleb128 0xe
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 38
+
+
+ 1606 007b 3A       		.uleb128 0x3a
+ 1607 007c 0B       		.uleb128 0xb
+ 1608 007d 3B       		.uleb128 0x3b
+ 1609 007e 05       		.uleb128 0x5
+ 1610 007f 27       		.uleb128 0x27
+ 1611 0080 19       		.uleb128 0x19
+ 1612 0081 11       		.uleb128 0x11
+ 1613 0082 01       		.uleb128 0x1
+ 1614 0083 12       		.uleb128 0x12
+ 1615 0084 06       		.uleb128 0x6
+ 1616 0085 40       		.uleb128 0x40
+ 1617 0086 18       		.uleb128 0x18
+ 1618 0087 9742     		.uleb128 0x2117
+ 1619 0089 19       		.uleb128 0x19
+ 1620 008a 01       		.uleb128 0x1
+ 1621 008b 13       		.uleb128 0x13
+ 1622 008c 00       		.byte	0
+ 1623 008d 00       		.byte	0
+ 1624 008e 0A       		.uleb128 0xa
+ 1625 008f 898201   		.uleb128 0x4109
+ 1626 0092 01       		.byte	0x1
+ 1627 0093 11       		.uleb128 0x11
+ 1628 0094 01       		.uleb128 0x1
+ 1629 0095 31       		.uleb128 0x31
+ 1630 0096 13       		.uleb128 0x13
+ 1631 0097 00       		.byte	0
+ 1632 0098 00       		.byte	0
+ 1633 0099 0B       		.uleb128 0xb
+ 1634 009a 2E       		.uleb128 0x2e
+ 1635 009b 01       		.byte	0x1
+ 1636 009c 3F       		.uleb128 0x3f
+ 1637 009d 19       		.uleb128 0x19
+ 1638 009e 03       		.uleb128 0x3
+ 1639 009f 0E       		.uleb128 0xe
+ 1640 00a0 3A       		.uleb128 0x3a
+ 1641 00a1 0B       		.uleb128 0xb
+ 1642 00a2 3B       		.uleb128 0x3b
+ 1643 00a3 05       		.uleb128 0x5
+ 1644 00a4 27       		.uleb128 0x27
+ 1645 00a5 19       		.uleb128 0x19
+ 1646 00a6 11       		.uleb128 0x11
+ 1647 00a7 01       		.uleb128 0x1
+ 1648 00a8 12       		.uleb128 0x12
+ 1649 00a9 06       		.uleb128 0x6
+ 1650 00aa 40       		.uleb128 0x40
+ 1651 00ab 18       		.uleb128 0x18
+ 1652 00ac 9642     		.uleb128 0x2116
+ 1653 00ae 19       		.uleb128 0x19
+ 1654 00af 01       		.uleb128 0x1
+ 1655 00b0 13       		.uleb128 0x13
+ 1656 00b1 00       		.byte	0
+ 1657 00b2 00       		.byte	0
+ 1658 00b3 0C       		.uleb128 0xc
+ 1659 00b4 05       		.uleb128 0x5
+ 1660 00b5 00       		.byte	0
+ 1661 00b6 03       		.uleb128 0x3
+ 1662 00b7 0E       		.uleb128 0xe
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 39
+
+
+ 1663 00b8 3A       		.uleb128 0x3a
+ 1664 00b9 0B       		.uleb128 0xb
+ 1665 00ba 3B       		.uleb128 0x3b
+ 1666 00bb 05       		.uleb128 0x5
+ 1667 00bc 49       		.uleb128 0x49
+ 1668 00bd 13       		.uleb128 0x13
+ 1669 00be 02       		.uleb128 0x2
+ 1670 00bf 17       		.uleb128 0x17
+ 1671 00c0 00       		.byte	0
+ 1672 00c1 00       		.byte	0
+ 1673 00c2 0D       		.uleb128 0xd
+ 1674 00c3 34       		.uleb128 0x34
+ 1675 00c4 00       		.byte	0
+ 1676 00c5 03       		.uleb128 0x3
+ 1677 00c6 0E       		.uleb128 0xe
+ 1678 00c7 3A       		.uleb128 0x3a
+ 1679 00c8 0B       		.uleb128 0xb
+ 1680 00c9 3B       		.uleb128 0x3b
+ 1681 00ca 05       		.uleb128 0x5
+ 1682 00cb 49       		.uleb128 0x49
+ 1683 00cc 13       		.uleb128 0x13
+ 1684 00cd 02       		.uleb128 0x2
+ 1685 00ce 17       		.uleb128 0x17
+ 1686 00cf 00       		.byte	0
+ 1687 00d0 00       		.byte	0
+ 1688 00d1 0E       		.uleb128 0xe
+ 1689 00d2 34       		.uleb128 0x34
+ 1690 00d3 00       		.byte	0
+ 1691 00d4 03       		.uleb128 0x3
+ 1692 00d5 0E       		.uleb128 0xe
+ 1693 00d6 3A       		.uleb128 0x3a
+ 1694 00d7 0B       		.uleb128 0xb
+ 1695 00d8 3B       		.uleb128 0x3b
+ 1696 00d9 05       		.uleb128 0x5
+ 1697 00da 49       		.uleb128 0x49
+ 1698 00db 13       		.uleb128 0x13
+ 1699 00dc 02       		.uleb128 0x2
+ 1700 00dd 18       		.uleb128 0x18
+ 1701 00de 00       		.byte	0
+ 1702 00df 00       		.byte	0
+ 1703 00e0 0F       		.uleb128 0xf
+ 1704 00e1 2E       		.uleb128 0x2e
+ 1705 00e2 01       		.byte	0x1
+ 1706 00e3 3F       		.uleb128 0x3f
+ 1707 00e4 19       		.uleb128 0x19
+ 1708 00e5 03       		.uleb128 0x3
+ 1709 00e6 0E       		.uleb128 0xe
+ 1710 00e7 3A       		.uleb128 0x3a
+ 1711 00e8 0B       		.uleb128 0xb
+ 1712 00e9 3B       		.uleb128 0x3b
+ 1713 00ea 0B       		.uleb128 0xb
+ 1714 00eb 49       		.uleb128 0x49
+ 1715 00ec 13       		.uleb128 0x13
+ 1716 00ed 11       		.uleb128 0x11
+ 1717 00ee 01       		.uleb128 0x1
+ 1718 00ef 12       		.uleb128 0x12
+ 1719 00f0 06       		.uleb128 0x6
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 40
+
+
+ 1720 00f1 40       		.uleb128 0x40
+ 1721 00f2 18       		.uleb128 0x18
+ 1722 00f3 9742     		.uleb128 0x2117
+ 1723 00f5 19       		.uleb128 0x19
+ 1724 00f6 01       		.uleb128 0x1
+ 1725 00f7 13       		.uleb128 0x13
+ 1726 00f8 00       		.byte	0
+ 1727 00f9 00       		.byte	0
+ 1728 00fa 10       		.uleb128 0x10
+ 1729 00fb 34       		.uleb128 0x34
+ 1730 00fc 00       		.byte	0
+ 1731 00fd 03       		.uleb128 0x3
+ 1732 00fe 0E       		.uleb128 0xe
+ 1733 00ff 3A       		.uleb128 0x3a
+ 1734 0100 0B       		.uleb128 0xb
+ 1735 0101 3B       		.uleb128 0x3b
+ 1736 0102 0B       		.uleb128 0xb
+ 1737 0103 49       		.uleb128 0x49
+ 1738 0104 13       		.uleb128 0x13
+ 1739 0105 02       		.uleb128 0x2
+ 1740 0106 17       		.uleb128 0x17
+ 1741 0107 00       		.byte	0
+ 1742 0108 00       		.byte	0
+ 1743 0109 11       		.uleb128 0x11
+ 1744 010a 01       		.uleb128 0x1
+ 1745 010b 01       		.byte	0x1
+ 1746 010c 49       		.uleb128 0x49
+ 1747 010d 13       		.uleb128 0x13
+ 1748 010e 01       		.uleb128 0x1
+ 1749 010f 13       		.uleb128 0x13
+ 1750 0110 00       		.byte	0
+ 1751 0111 00       		.byte	0
+ 1752 0112 12       		.uleb128 0x12
+ 1753 0113 21       		.uleb128 0x21
+ 1754 0114 00       		.byte	0
+ 1755 0115 49       		.uleb128 0x49
+ 1756 0116 13       		.uleb128 0x13
+ 1757 0117 2F       		.uleb128 0x2f
+ 1758 0118 0B       		.uleb128 0xb
+ 1759 0119 00       		.byte	0
+ 1760 011a 00       		.byte	0
+ 1761 011b 13       		.uleb128 0x13
+ 1762 011c 34       		.uleb128 0x34
+ 1763 011d 00       		.byte	0
+ 1764 011e 03       		.uleb128 0x3
+ 1765 011f 0E       		.uleb128 0xe
+ 1766 0120 3A       		.uleb128 0x3a
+ 1767 0121 0B       		.uleb128 0xb
+ 1768 0122 3B       		.uleb128 0x3b
+ 1769 0123 05       		.uleb128 0x5
+ 1770 0124 49       		.uleb128 0x49
+ 1771 0125 13       		.uleb128 0x13
+ 1772 0126 3F       		.uleb128 0x3f
+ 1773 0127 19       		.uleb128 0x19
+ 1774 0128 3C       		.uleb128 0x3c
+ 1775 0129 19       		.uleb128 0x19
+ 1776 012a 00       		.byte	0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 41
+
+
+ 1777 012b 00       		.byte	0
+ 1778 012c 14       		.uleb128 0x14
+ 1779 012d 34       		.uleb128 0x34
+ 1780 012e 00       		.byte	0
+ 1781 012f 03       		.uleb128 0x3
+ 1782 0130 0E       		.uleb128 0xe
+ 1783 0131 3A       		.uleb128 0x3a
+ 1784 0132 0B       		.uleb128 0xb
+ 1785 0133 3B       		.uleb128 0x3b
+ 1786 0134 0B       		.uleb128 0xb
+ 1787 0135 49       		.uleb128 0x49
+ 1788 0136 13       		.uleb128 0x13
+ 1789 0137 3F       		.uleb128 0x3f
+ 1790 0138 19       		.uleb128 0x19
+ 1791 0139 02       		.uleb128 0x2
+ 1792 013a 18       		.uleb128 0x18
+ 1793 013b 00       		.byte	0
+ 1794 013c 00       		.byte	0
+ 1795 013d 15       		.uleb128 0x15
+ 1796 013e 2E       		.uleb128 0x2e
+ 1797 013f 00       		.byte	0
+ 1798 0140 3F       		.uleb128 0x3f
+ 1799 0141 19       		.uleb128 0x19
+ 1800 0142 03       		.uleb128 0x3
+ 1801 0143 0E       		.uleb128 0xe
+ 1802 0144 3A       		.uleb128 0x3a
+ 1803 0145 0B       		.uleb128 0xb
+ 1804 0146 3B       		.uleb128 0x3b
+ 1805 0147 0B       		.uleb128 0xb
+ 1806 0148 27       		.uleb128 0x27
+ 1807 0149 19       		.uleb128 0x19
+ 1808 014a 3C       		.uleb128 0x3c
+ 1809 014b 19       		.uleb128 0x19
+ 1810 014c 00       		.byte	0
+ 1811 014d 00       		.byte	0
+ 1812 014e 16       		.uleb128 0x16
+ 1813 014f 2E       		.uleb128 0x2e
+ 1814 0150 01       		.byte	0x1
+ 1815 0151 3F       		.uleb128 0x3f
+ 1816 0152 19       		.uleb128 0x19
+ 1817 0153 03       		.uleb128 0x3
+ 1818 0154 0E       		.uleb128 0xe
+ 1819 0155 3A       		.uleb128 0x3a
+ 1820 0156 0B       		.uleb128 0xb
+ 1821 0157 3B       		.uleb128 0x3b
+ 1822 0158 0B       		.uleb128 0xb
+ 1823 0159 27       		.uleb128 0x27
+ 1824 015a 19       		.uleb128 0x19
+ 1825 015b 3C       		.uleb128 0x3c
+ 1826 015c 19       		.uleb128 0x19
+ 1827 015d 01       		.uleb128 0x1
+ 1828 015e 13       		.uleb128 0x13
+ 1829 015f 00       		.byte	0
+ 1830 0160 00       		.byte	0
+ 1831 0161 17       		.uleb128 0x17
+ 1832 0162 05       		.uleb128 0x5
+ 1833 0163 00       		.byte	0
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 42
+
+
+ 1834 0164 49       		.uleb128 0x49
+ 1835 0165 13       		.uleb128 0x13
+ 1836 0166 00       		.byte	0
+ 1837 0167 00       		.byte	0
+ 1838 0168 18       		.uleb128 0x18
+ 1839 0169 2E       		.uleb128 0x2e
+ 1840 016a 00       		.byte	0
+ 1841 016b 3F       		.uleb128 0x3f
+ 1842 016c 19       		.uleb128 0x19
+ 1843 016d 03       		.uleb128 0x3
+ 1844 016e 0E       		.uleb128 0xe
+ 1845 016f 3A       		.uleb128 0x3a
+ 1846 0170 0B       		.uleb128 0xb
+ 1847 0171 3B       		.uleb128 0x3b
+ 1848 0172 05       		.uleb128 0x5
+ 1849 0173 27       		.uleb128 0x27
+ 1850 0174 19       		.uleb128 0x19
+ 1851 0175 3C       		.uleb128 0x3c
+ 1852 0176 19       		.uleb128 0x19
+ 1853 0177 00       		.byte	0
+ 1854 0178 00       		.byte	0
+ 1855 0179 19       		.uleb128 0x19
+ 1856 017a 2E       		.uleb128 0x2e
+ 1857 017b 01       		.byte	0x1
+ 1858 017c 3F       		.uleb128 0x3f
+ 1859 017d 19       		.uleb128 0x19
+ 1860 017e 03       		.uleb128 0x3
+ 1861 017f 0E       		.uleb128 0xe
+ 1862 0180 3A       		.uleb128 0x3a
+ 1863 0181 0B       		.uleb128 0xb
+ 1864 0182 3B       		.uleb128 0x3b
+ 1865 0183 05       		.uleb128 0x5
+ 1866 0184 27       		.uleb128 0x27
+ 1867 0185 19       		.uleb128 0x19
+ 1868 0186 3C       		.uleb128 0x3c
+ 1869 0187 19       		.uleb128 0x19
+ 1870 0188 01       		.uleb128 0x1
+ 1871 0189 13       		.uleb128 0x13
+ 1872 018a 00       		.byte	0
+ 1873 018b 00       		.byte	0
+ 1874 018c 1A       		.uleb128 0x1a
+ 1875 018d 2E       		.uleb128 0x2e
+ 1876 018e 00       		.byte	0
+ 1877 018f 3F       		.uleb128 0x3f
+ 1878 0190 19       		.uleb128 0x19
+ 1879 0191 03       		.uleb128 0x3
+ 1880 0192 0E       		.uleb128 0xe
+ 1881 0193 3A       		.uleb128 0x3a
+ 1882 0194 0B       		.uleb128 0xb
+ 1883 0195 3B       		.uleb128 0x3b
+ 1884 0196 0B       		.uleb128 0xb
+ 1885 0197 27       		.uleb128 0x27
+ 1886 0198 19       		.uleb128 0x19
+ 1887 0199 49       		.uleb128 0x49
+ 1888 019a 13       		.uleb128 0x13
+ 1889 019b 3C       		.uleb128 0x3c
+ 1890 019c 19       		.uleb128 0x19
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 43
+
+
+ 1891 019d 00       		.byte	0
+ 1892 019e 00       		.byte	0
+ 1893 019f 1B       		.uleb128 0x1b
+ 1894 01a0 2E       		.uleb128 0x2e
+ 1895 01a1 01       		.byte	0x1
+ 1896 01a2 3F       		.uleb128 0x3f
+ 1897 01a3 19       		.uleb128 0x19
+ 1898 01a4 03       		.uleb128 0x3
+ 1899 01a5 0E       		.uleb128 0xe
+ 1900 01a6 3A       		.uleb128 0x3a
+ 1901 01a7 0B       		.uleb128 0xb
+ 1902 01a8 3B       		.uleb128 0x3b
+ 1903 01a9 0B       		.uleb128 0xb
+ 1904 01aa 27       		.uleb128 0x27
+ 1905 01ab 19       		.uleb128 0x19
+ 1906 01ac 49       		.uleb128 0x49
+ 1907 01ad 13       		.uleb128 0x13
+ 1908 01ae 3C       		.uleb128 0x3c
+ 1909 01af 19       		.uleb128 0x19
+ 1910 01b0 01       		.uleb128 0x1
+ 1911 01b1 13       		.uleb128 0x13
+ 1912 01b2 00       		.byte	0
+ 1913 01b3 00       		.byte	0
+ 1914 01b4 1C       		.uleb128 0x1c
+ 1915 01b5 0F       		.uleb128 0xf
+ 1916 01b6 00       		.byte	0
+ 1917 01b7 0B       		.uleb128 0xb
+ 1918 01b8 0B       		.uleb128 0xb
+ 1919 01b9 49       		.uleb128 0x49
+ 1920 01ba 13       		.uleb128 0x13
+ 1921 01bb 00       		.byte	0
+ 1922 01bc 00       		.byte	0
+ 1923 01bd 00       		.byte	0
+ 1924              		.section	.debug_loc,"",%progbits
+ 1925              	.Ldebug_loc0:
+ 1926              	.LLST0:
+ 1927 0000 00000000 		.4byte	.LVL15
+ 1928 0004 09000000 		.4byte	.LVL17-1
+ 1929 0008 0100     		.2byte	0x1
+ 1930 000a 50       		.byte	0x50
+ 1931 000b 09000000 		.4byte	.LVL17-1
+ 1932 000f 2A000000 		.4byte	.LVL20
+ 1933 0013 0400     		.2byte	0x4
+ 1934 0015 F3       		.byte	0xf3
+ 1935 0016 01       		.uleb128 0x1
+ 1936 0017 50       		.byte	0x50
+ 1937 0018 9F       		.byte	0x9f
+ 1938 0019 2A000000 		.4byte	.LVL20
+ 1939 001d 2D000000 		.4byte	.LVL21-1
+ 1940 0021 0100     		.2byte	0x1
+ 1941 0023 50       		.byte	0x50
+ 1942 0024 2D000000 		.4byte	.LVL21-1
+ 1943 0028 50000000 		.4byte	.LFE36
+ 1944 002c 0400     		.2byte	0x4
+ 1945 002e F3       		.byte	0xf3
+ 1946 002f 01       		.uleb128 0x1
+ 1947 0030 50       		.byte	0x50
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 44
+
+
+ 1948 0031 9F       		.byte	0x9f
+ 1949 0032 00000000 		.4byte	0
+ 1950 0036 00000000 		.4byte	0
+ 1951              	.LLST1:
+ 1952 003a 02000000 		.4byte	.LVL16
+ 1953 003e 28000000 		.4byte	.LVL19
+ 1954 0042 0200     		.2byte	0x2
+ 1955 0044 30       		.byte	0x30
+ 1956 0045 9F       		.byte	0x9f
+ 1957 0046 28000000 		.4byte	.LVL19
+ 1958 004a 2A000000 		.4byte	.LVL20
+ 1959 004e 0100     		.2byte	0x1
+ 1960 0050 50       		.byte	0x50
+ 1961 0051 2A000000 		.4byte	.LVL20
+ 1962 0055 34000000 		.4byte	.LVL22
+ 1963 0059 0200     		.2byte	0x2
+ 1964 005b 30       		.byte	0x30
+ 1965 005c 9F       		.byte	0x9f
+ 1966 005d 34000000 		.4byte	.LVL22
+ 1967 0061 37000000 		.4byte	.LVL23-1
+ 1968 0065 0100     		.2byte	0x1
+ 1969 0067 50       		.byte	0x50
+ 1970 0068 00000000 		.4byte	0
+ 1971 006c 00000000 		.4byte	0
+ 1972              	.LLST2:
+ 1973 0070 02000000 		.4byte	.LVL31
+ 1974 0074 0E000000 		.4byte	.LVL32
+ 1975 0078 0200     		.2byte	0x2
+ 1976 007a 30       		.byte	0x30
+ 1977 007b 9F       		.byte	0x9f
+ 1978 007c 0E000000 		.4byte	.LVL32
+ 1979 0080 25000000 		.4byte	.LVL35-1
+ 1980 0084 0100     		.2byte	0x1
+ 1981 0086 52       		.byte	0x52
+ 1982 0087 32000000 		.4byte	.LVL36
+ 1983 008b 49000000 		.4byte	.LVL39-1
+ 1984 008f 0100     		.2byte	0x1
+ 1985 0091 52       		.byte	0x52
+ 1986 0092 00000000 		.4byte	0
+ 1987 0096 00000000 		.4byte	0
+ 1988              	.LLST3:
+ 1989 009a 02000000 		.4byte	.LVL31
+ 1990 009e 12000000 		.4byte	.LVL33
+ 1991 00a2 0200     		.2byte	0x2
+ 1992 00a4 30       		.byte	0x30
+ 1993 00a5 9F       		.byte	0x9f
+ 1994 00a6 12000000 		.4byte	.LVL33
+ 1995 00aa 1E000000 		.4byte	.LVL34
+ 1996 00ae 0100     		.2byte	0x1
+ 1997 00b0 53       		.byte	0x53
+ 1998 00b1 1E000000 		.4byte	.LVL34
+ 1999 00b5 25000000 		.4byte	.LVL35-1
+ 2000 00b9 0100     		.2byte	0x1
+ 2001 00bb 51       		.byte	0x51
+ 2002 00bc 36000000 		.4byte	.LVL37
+ 2003 00c0 42000000 		.4byte	.LVL38
+ 2004 00c4 0100     		.2byte	0x1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 45
+
+
+ 2005 00c6 53       		.byte	0x53
+ 2006 00c7 42000000 		.4byte	.LVL38
+ 2007 00cb 49000000 		.4byte	.LVL39-1
+ 2008 00cf 0100     		.2byte	0x1
+ 2009 00d1 51       		.byte	0x51
+ 2010 00d2 00000000 		.4byte	0
+ 2011 00d6 00000000 		.4byte	0
+ 2012              	.LLST4:
+ 2013 00da 02000000 		.4byte	.LVL31
+ 2014 00de 1E000000 		.4byte	.LVL34
+ 2015 00e2 0200     		.2byte	0x2
+ 2016 00e4 30       		.byte	0x30
+ 2017 00e5 9F       		.byte	0x9f
+ 2018 00e6 1E000000 		.4byte	.LVL34
+ 2019 00ea 25000000 		.4byte	.LVL35-1
+ 2020 00ee 0100     		.2byte	0x1
+ 2021 00f0 53       		.byte	0x53
+ 2022 00f1 42000000 		.4byte	.LVL38
+ 2023 00f5 49000000 		.4byte	.LVL39-1
+ 2024 00f9 0100     		.2byte	0x1
+ 2025 00fb 53       		.byte	0x53
+ 2026 00fc 00000000 		.4byte	0
+ 2027 0100 00000000 		.4byte	0
+ 2028              	.LLST5:
+ 2029 0104 0A000000 		.4byte	.LVL41
+ 2030 0108 26000000 		.4byte	.LVL46
+ 2031 010c 0200     		.2byte	0x2
+ 2032 010e 30       		.byte	0x30
+ 2033 010f 9F       		.byte	0x9f
+ 2034 0110 48000000 		.4byte	.LVL53
+ 2035 0114 4F000000 		.4byte	.LVL54-1
+ 2036 0118 0100     		.2byte	0x1
+ 2037 011a 50       		.byte	0x50
+ 2038 011b 9A000000 		.4byte	.LVL66
+ 2039 011f 9C000000 		.4byte	.LVL67
+ 2040 0123 0100     		.2byte	0x1
+ 2041 0125 50       		.byte	0x50
+ 2042 0126 00000000 		.4byte	0
+ 2043 012a 00000000 		.4byte	0
+ 2044              	.LLST6:
+ 2045 012e 0A000000 		.4byte	.LVL41
+ 2046 0132 28000000 		.4byte	.LVL47
+ 2047 0136 0200     		.2byte	0x2
+ 2048 0138 30       		.byte	0x30
+ 2049 0139 9F       		.byte	0x9f
+ 2050 013a 28000000 		.4byte	.LVL47
+ 2051 013e 5A000000 		.4byte	.LVL56
+ 2052 0142 0100     		.2byte	0x1
+ 2053 0144 54       		.byte	0x54
+ 2054 0145 7E000000 		.4byte	.LVL63
+ 2055 0149 9A000000 		.4byte	.LVL66
+ 2056 014d 0200     		.2byte	0x2
+ 2057 014f 30       		.byte	0x30
+ 2058 0150 9F       		.byte	0x9f
+ 2059 0151 9A000000 		.4byte	.LVL66
+ 2060 0155 A2000000 		.4byte	.LVL69
+ 2061 0159 0100     		.2byte	0x1
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 46
+
+
+ 2062 015b 54       		.byte	0x54
+ 2063 015c A4000000 		.4byte	.LVL70
+ 2064 0160 A8000000 		.4byte	.LVL71
+ 2065 0164 0100     		.2byte	0x1
+ 2066 0166 54       		.byte	0x54
+ 2067 0167 A8000000 		.4byte	.LVL71
+ 2068 016b D8000000 		.4byte	.LVL79
+ 2069 016f 0300     		.2byte	0x3
+ 2070 0171 08       		.byte	0x8
+ 2071 0172 64       		.byte	0x64
+ 2072 0173 9F       		.byte	0x9f
+ 2073 0174 D8000000 		.4byte	.LVL79
+ 2074 0178 E4000000 		.4byte	.LFE34
+ 2075 017c 0100     		.2byte	0x1
+ 2076 017e 54       		.byte	0x54
+ 2077 017f 00000000 		.4byte	0
+ 2078 0183 00000000 		.4byte	0
+ 2079              	.LLST7:
+ 2080 0187 0A000000 		.4byte	.LVL41
+ 2081 018b 26000000 		.4byte	.LVL46
+ 2082 018f 0200     		.2byte	0x2
+ 2083 0191 30       		.byte	0x30
+ 2084 0192 9F       		.byte	0x9f
+ 2085 0193 6C000000 		.4byte	.LVL59
+ 2086 0197 72000000 		.4byte	.LVL60
+ 2087 019b 0100     		.2byte	0x1
+ 2088 019d 50       		.byte	0x50
+ 2089 019e C0000000 		.4byte	.LVL74
+ 2090 01a2 C6000000 		.4byte	.LVL75
+ 2091 01a6 0100     		.2byte	0x1
+ 2092 01a8 50       		.byte	0x50
+ 2093 01a9 00000000 		.4byte	0
+ 2094 01ad 00000000 		.4byte	0
+ 2095              	.LLST8:
+ 2096 01b1 0A000000 		.4byte	.LVL41
+ 2097 01b5 26000000 		.4byte	.LVL46
+ 2098 01b9 0200     		.2byte	0x2
+ 2099 01bb 32       		.byte	0x32
+ 2100 01bc 9F       		.byte	0x9f
+ 2101 01bd 26000000 		.4byte	.LVL46
+ 2102 01c1 7C000000 		.4byte	.LVL62
+ 2103 01c5 0100     		.2byte	0x1
+ 2104 01c7 55       		.byte	0x55
+ 2105 01c8 7C000000 		.4byte	.LVL62
+ 2106 01cc 7E000000 		.4byte	.LVL63
+ 2107 01d0 0200     		.2byte	0x2
+ 2108 01d2 32       		.byte	0x32
+ 2109 01d3 9F       		.byte	0x9f
+ 2110 01d4 7E000000 		.4byte	.LVL63
+ 2111 01d8 D0000000 		.4byte	.LVL77
+ 2112 01dc 0100     		.2byte	0x1
+ 2113 01de 55       		.byte	0x55
+ 2114 01df D0000000 		.4byte	.LVL77
+ 2115 01e3 D6000000 		.4byte	.LVL78
+ 2116 01e7 0200     		.2byte	0x2
+ 2117 01e9 31       		.byte	0x31
+ 2118 01ea 9F       		.byte	0x9f
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 47
+
+
+ 2119 01eb D6000000 		.4byte	.LVL78
+ 2120 01ef E4000000 		.4byte	.LFE34
+ 2121 01f3 0100     		.2byte	0x1
+ 2122 01f5 55       		.byte	0x55
+ 2123 01f6 00000000 		.4byte	0
+ 2124 01fa 00000000 		.4byte	0
+ 2125              		.section	.debug_aranges,"",%progbits
+ 2126 0000 54000000 		.4byte	0x54
+ 2127 0004 0200     		.2byte	0x2
+ 2128 0006 00000000 		.4byte	.Ldebug_info0
+ 2129 000a 04       		.byte	0x4
+ 2130 000b 00       		.byte	0
+ 2131 000c 0000     		.2byte	0
+ 2132 000e 0000     		.2byte	0
+ 2133 0010 00000000 		.4byte	.LFB35
+ 2134 0014 24000000 		.4byte	.LFE35-.LFB35
+ 2135 0018 00000000 		.4byte	.LFB37
+ 2136 001c 1C000000 		.4byte	.LFE37-.LFB37
+ 2137 0020 00000000 		.4byte	.LFB38
+ 2138 0024 1C000000 		.4byte	.LFE38-.LFB38
+ 2139 0028 00000000 		.4byte	.LFB36
+ 2140 002c 50000000 		.4byte	.LFE36-.LFB36
+ 2141 0030 00000000 		.4byte	.LFB39
+ 2142 0034 22000000 		.4byte	.LFE39-.LFB39
+ 2143 0038 00000000 		.4byte	.LFB40
+ 2144 003c 10000000 		.4byte	.LFE40-.LFB40
+ 2145 0040 00000000 		.4byte	.LFB41
+ 2146 0044 50000000 		.4byte	.LFE41-.LFB41
+ 2147 0048 00000000 		.4byte	.LFB34
+ 2148 004c E4000000 		.4byte	.LFE34-.LFB34
+ 2149 0050 00000000 		.4byte	0
+ 2150 0054 00000000 		.4byte	0
+ 2151              		.section	.debug_ranges,"",%progbits
+ 2152              	.Ldebug_ranges0:
+ 2153 0000 00000000 		.4byte	.LFB35
+ 2154 0004 24000000 		.4byte	.LFE35
+ 2155 0008 00000000 		.4byte	.LFB37
+ 2156 000c 1C000000 		.4byte	.LFE37
+ 2157 0010 00000000 		.4byte	.LFB38
+ 2158 0014 1C000000 		.4byte	.LFE38
+ 2159 0018 00000000 		.4byte	.LFB36
+ 2160 001c 50000000 		.4byte	.LFE36
+ 2161 0020 00000000 		.4byte	.LFB39
+ 2162 0024 22000000 		.4byte	.LFE39
+ 2163 0028 00000000 		.4byte	.LFB40
+ 2164 002c 10000000 		.4byte	.LFE40
+ 2165 0030 00000000 		.4byte	.LFB41
+ 2166 0034 50000000 		.4byte	.LFE41
+ 2167 0038 00000000 		.4byte	.LFB34
+ 2168 003c E4000000 		.4byte	.LFE34
+ 2169 0040 00000000 		.4byte	0
+ 2170 0044 00000000 		.4byte	0
+ 2171              		.section	.debug_line,"",%progbits
+ 2172              	.Ldebug_line0:
+ 2173 0000 05020000 		.section	.debug_str,"MS",%progbits,1
+ 2173      02000301 
+ 2173      00000201 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 48
+
+
+ 2173      FB0E0D00 
+ 2173      01010101 
+ 2174              	.LASF25:
+ 2175 0000 70726576 		.ascii	"prev_x_value\000"
+ 2175      5F785F76 
+ 2175      616C7565 
+ 2175      00
+ 2176              	.LASF47:
+ 2177 000d 50696E5F 		.ascii	"Pin_GreenLED_SetDriveMode\000"
+ 2177      47726565 
+ 2177      6E4C4544 
+ 2177      5F536574 
+ 2177      44726976 
+ 2178              	.LASF35:
+ 2179 0027 43617053 		.ascii	"CapSense_sensorRaw\000"
+ 2179      656E7365 
+ 2179      5F73656E 
+ 2179      736F7252 
+ 2179      617700
+ 2180              	.LASF65:
+ 2181 003a 43795379 		.ascii	"CySysWdtResetCounters\000"
+ 2181      73576474 
+ 2181      52657365 
+ 2181      74436F75 
+ 2181      6E746572 
+ 2182              	.LASF2:
+ 2183 0050 73686F72 		.ascii	"short int\000"
+ 2183      7420696E 
+ 2183      7400
+ 2184              	.LASF20:
+ 2185 005a 4C45445F 		.ascii	"LED_SetBrightness\000"
+ 2185      53657442 
+ 2185      72696768 
+ 2185      746E6573 
+ 2185      7300
+ 2186              	.LASF16:
+ 2187 006c 73697A65 		.ascii	"sizetype\000"
+ 2187      74797065 
+ 2187      00
+ 2188              	.LASF29:
+ 2189 0075 706F7369 		.ascii	"positiveDiffVal\000"
+ 2189      74697665 
+ 2189      44696666 
+ 2189      56616C00 
+ 2190              	.LASF49:
+ 2191 0085 50696E5F 		.ascii	"Pin_EMiddle_Write\000"
+ 2191      454D6964 
+ 2191      646C655F 
+ 2191      57726974 
+ 2191      6500
+ 2192              	.LASF31:
+ 2193 0097 70726F78 		.ascii	"proximity\000"
+ 2193      696D6974 
+ 2193      7900
+ 2194              	.LASF24:
+ 2195 00a1 6C656442 		.ascii	"ledBrighness\000"
+ 2195      72696768 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 49
+
+
+ 2195      6E657373 
+ 2195      00
+ 2196              	.LASF30:
+ 2197 00ae 6D61696E 		.ascii	"main\000"
+ 2197      00
+ 2198              	.LASF71:
+ 2199 00b3 6D6F6465 		.ascii	"mode\000"
+ 2199      00
+ 2200              	.LASF27:
+ 2201 00b8 64696666 		.ascii	"diffVal1\000"
+ 2201      56616C31 
+ 2201      00
+ 2202              	.LASF28:
+ 2203 00c1 64696666 		.ascii	"diffVal2\000"
+ 2203      56616C32 
+ 2203      00
+ 2204              	.LASF10:
+ 2205 00ca 75696E74 		.ascii	"uint16\000"
+ 2205      313600
+ 2206              	.LASF59:
+ 2207 00d1 43617053 		.ascii	"CapSense_UpdateSensorBaseline\000"
+ 2207      656E7365 
+ 2207      5F557064 
+ 2207      61746553 
+ 2207      656E736F 
+ 2208              	.LASF12:
+ 2209 00ef 696E7431 		.ascii	"int16\000"
+ 2209      3600
+ 2210              	.LASF9:
+ 2211 00f5 75696E74 		.ascii	"uint8\000"
+ 2211      3800
+ 2212              	.LASF32:
+ 2213 00fb 736F6674 		.ascii	"softCounter\000"
+ 2213      436F756E 
+ 2213      74657200 
+ 2214              	.LASF70:
+ 2215 0107 433A5C55 		.ascii	"C:\\Users\\merlin\\Documents\\PSoC Creator\\Sandbox"
+ 2215      73657273 
+ 2215      5C6D6572 
+ 2215      6C696E5C 
+ 2215      446F6375 
+ 2216 0135 5F437261 		.ascii	"_CrazyEyes.cydsn\000"
+ 2216      7A794579 
+ 2216      65732E63 
+ 2216      7964736E 
+ 2216      00
+ 2217              	.LASF51:
+ 2218 0146 50696E5F 		.ascii	"Pin_ETop_Write\000"
+ 2218      45546F70 
+ 2218      5F577269 
+ 2218      746500
+ 2219              	.LASF13:
+ 2220 0155 666C6F61 		.ascii	"float\000"
+ 2220      7400
+ 2221              	.LASF33:
+ 2222 015b 63757272 		.ascii	"currentCountVal\000"
+ 2222      656E7443 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 50
+
+
+ 2222      6F756E74 
+ 2222      56616C00 
+ 2223              	.LASF6:
+ 2224 016b 6C6F6E67 		.ascii	"long long int\000"
+ 2224      206C6F6E 
+ 2224      6720696E 
+ 2224      7400
+ 2225              	.LASF39:
+ 2226 0179 75435F50 		.ascii	"uC_Probe_x_dirMovement\000"
+ 2226      726F6265 
+ 2226      5F785F64 
+ 2226      69724D6F 
+ 2226      76656D65 
+ 2227              	.LASF4:
+ 2228 0190 6C6F6E67 		.ascii	"long int\000"
+ 2228      20696E74 
+ 2228      00
+ 2229              	.LASF41:
+ 2230 0199 75435F50 		.ascii	"uC_Probe_z_dirMovement\000"
+ 2230      726F6265 
+ 2230      5F7A5F64 
+ 2230      69724D6F 
+ 2230      76656D65 
+ 2231              	.LASF46:
+ 2232 01b0 43617053 		.ascii	"CapSense_Wakeup\000"
+ 2232      656E7365 
+ 2232      5F57616B 
+ 2232      65757000 
+ 2233              	.LASF1:
+ 2234 01c0 756E7369 		.ascii	"unsigned char\000"
+ 2234      676E6564 
+ 2234      20636861 
+ 2234      7200
+ 2235              	.LASF48:
+ 2236 01ce 50696E5F 		.ascii	"Pin_Vibe_Write\000"
+ 2236      56696265 
+ 2236      5F577269 
+ 2236      746500
+ 2237              	.LASF68:
+ 2238 01dd 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 2238      4320342E 
+ 2238      392E3320 
+ 2238      32303135 
+ 2238      30333033 
+ 2239 0210 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m0 -mthumb -g -O"
+ 2239      20726576 
+ 2239      6973696F 
+ 2239      6E203232 
+ 2239      31323230 
+ 2240 0243 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2240      66756E63 
+ 2240      74696F6E 
+ 2240      2D736563 
+ 2240      74696F6E 
+ 2241              	.LASF21:
+ 2242 026b 416C6172 		.ascii	"Alarm\000"
+ 2242      6D00
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 51
+
+
+ 2243              	.LASF64:
+ 2244 0271 43795379 		.ascii	"CySysWdtGetCount\000"
+ 2244      73576474 
+ 2244      47657443 
+ 2244      6F756E74 
+ 2244      00
+ 2245              	.LASF66:
+ 2246 0282 43794465 		.ascii	"CyDelayUs\000"
+ 2246      6C617955 
+ 2246      7300
+ 2247              	.LASF55:
+ 2248 028c 496E6974 		.ascii	"InitializeAccelerometer\000"
+ 2248      69616C69 
+ 2248      7A654163 
+ 2248      63656C65 
+ 2248      726F6D65 
+ 2249              	.LASF60:
+ 2250 02a4 43617053 		.ascii	"CapSense_ScanSensor\000"
+ 2250      656E7365 
+ 2250      5F536361 
+ 2250      6E53656E 
+ 2250      736F7200 
+ 2251              	.LASF0:
+ 2252 02b8 7369676E 		.ascii	"signed char\000"
+ 2252      65642063 
+ 2252      68617200 
+ 2253              	.LASF42:
+ 2254 02c4 43617053 		.ascii	"CapSense_Sleep\000"
+ 2254      656E7365 
+ 2254      5F536C65 
+ 2254      657000
+ 2255              	.LASF7:
+ 2256 02d3 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2256      206C6F6E 
+ 2256      6720756E 
+ 2256      7369676E 
+ 2256      65642069 
+ 2257              	.LASF37:
+ 2258 02ea 6163636C 		.ascii	"acclerometer_configured\000"
+ 2258      65726F6D 
+ 2258      65746572 
+ 2258      5F636F6E 
+ 2258      66696775 
+ 2259              	.LASF56:
+ 2260 0302 43617053 		.ascii	"CapSense_Start\000"
+ 2260      656E7365 
+ 2260      5F537461 
+ 2260      727400
+ 2261              	.LASF8:
+ 2262 0311 756E7369 		.ascii	"unsigned int\000"
+ 2262      676E6564 
+ 2262      20696E74 
+ 2262      00
+ 2263              	.LASF34:
+ 2264 031e 75706461 		.ascii	"updateMatch\000"
+ 2264      74654D61 
+ 2264      74636800 
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 52
+
+
+ 2265              	.LASF36:
+ 2266 032a 43617053 		.ascii	"CapSense_sensorBaseline\000"
+ 2266      656E7365 
+ 2266      5F73656E 
+ 2266      736F7242 
+ 2266      6173656C 
+ 2267              	.LASF61:
+ 2268 0342 43795379 		.ascii	"CySysPmSleep\000"
+ 2268      73506D53 
+ 2268      6C656570 
+ 2268      00
+ 2269              	.LASF3:
+ 2270 034f 73686F72 		.ascii	"short unsigned int\000"
+ 2270      7420756E 
+ 2270      7369676E 
+ 2270      65642069 
+ 2270      6E7400
+ 2271              	.LASF62:
+ 2272 0362 43795379 		.ascii	"CySysWdtSetMatch\000"
+ 2272      73576474 
+ 2272      5365744D 
+ 2272      61746368 
+ 2272      00
+ 2273              	.LASF40:
+ 2274 0373 75435F50 		.ascii	"uC_Probe_y_dirMovement\000"
+ 2274      726F6265 
+ 2274      5F795F64 
+ 2274      69724D6F 
+ 2274      76656D65 
+ 2275              	.LASF15:
+ 2276 038a 63686172 		.ascii	"char\000"
+ 2276      00
+ 2277              	.LASF44:
+ 2278 038f 43795379 		.ascii	"CySysPmDeepSleep\000"
+ 2278      73506D44 
+ 2278      65657053 
+ 2278      6C656570 
+ 2278      00
+ 2279              	.LASF50:
+ 2280 03a0 50696E5F 		.ascii	"Pin_EBottom_Write\000"
+ 2280      45426F74 
+ 2280      746F6D5F 
+ 2280      57726974 
+ 2280      6500
+ 2281              	.LASF22:
+ 2282 03b2 496E6974 		.ascii	"Initialize_Project\000"
+ 2282      69616C69 
+ 2282      7A655F50 
+ 2282      726F6A65 
+ 2282      637400
+ 2283              	.LASF58:
+ 2284 03c5 50574D5F 		.ascii	"PWM_Green_Start\000"
+ 2284      47726565 
+ 2284      6E5F5374 
+ 2284      61727400 
+ 2285              	.LASF26:
+ 2286 03d5 70726576 		.ascii	"prev_y_value\000"
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 53
+
+
+ 2286      5F795F76 
+ 2286      616C7565 
+ 2286      00
+ 2287              	.LASF45:
+ 2288 03e2 50574D5F 		.ascii	"PWM_Green_Wakeup\000"
+ 2288      47726565 
+ 2288      6E5F5761 
+ 2288      6B657570 
+ 2288      00
+ 2289              	.LASF11:
+ 2290 03f3 75696E74 		.ascii	"uint32\000"
+ 2290      333200
+ 2291              	.LASF5:
+ 2292 03fa 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2292      20756E73 
+ 2292      69676E65 
+ 2292      6420696E 
+ 2292      7400
+ 2293              	.LASF52:
+ 2294 040c 50574D5F 		.ascii	"PWM_Green_WriteCompare\000"
+ 2294      47726565 
+ 2294      6E5F5772 
+ 2294      69746543 
+ 2294      6F6D7061 
+ 2295              	.LASF14:
+ 2296 0423 646F7562 		.ascii	"double\000"
+ 2296      6C6500
+ 2297              	.LASF23:
+ 2298 042a 55706461 		.ascii	"UpdateLEDColor\000"
+ 2298      74654C45 
+ 2298      44436F6C 
+ 2298      6F7200
+ 2299              	.LASF67:
+ 2300 0439 52656164 		.ascii	"ReadAccelerometer\000"
+ 2300      41636365 
+ 2300      6C65726F 
+ 2300      6D657465 
+ 2300      7200
+ 2301              	.LASF69:
+ 2302 044b 2E5C6D61 		.ascii	".\\main.c\000"
+ 2302      696E2E63 
+ 2302      00
+ 2303              	.LASF63:
+ 2304 0454 43617053 		.ascii	"CapSense_CheckIsSensorActive\000"
+ 2304      656E7365 
+ 2304      5F436865 
+ 2304      636B4973 
+ 2304      53656E73 
+ 2305              	.LASF72:
+ 2306 0471 43617053 		.ascii	"CapSense_IsBusy\000"
+ 2306      656E7365 
+ 2306      5F497342 
+ 2306      75737900 
+ 2307              	.LASF19:
+ 2308 0481 48617070 		.ascii	"Happy\000"
+ 2308      7900
+ 2309              	.LASF18:
+ARM GAS  C:\Users\merlin\AppData\Local\Temp\ccsSLXlh.s 			page 54
+
+
+ 2310 0487 4E657574 		.ascii	"Neutral\000"
+ 2310      72616C00 
+ 2311              	.LASF38:
+ 2312 048f 75435F50 		.ascii	"uC_Probe_Prox_Indicator\000"
+ 2312      726F6265 
+ 2312      5F50726F 
+ 2312      785F496E 
+ 2312      64696361 
+ 2313              	.LASF43:
+ 2314 04a7 50574D5F 		.ascii	"PWM_Green_Sleep\000"
+ 2314      47726565 
+ 2314      6E5F536C 
+ 2314      65657000 
+ 2315              	.LASF53:
+ 2316 04b7 43794465 		.ascii	"CyDelay\000"
+ 2316      6C617900 
+ 2317              	.LASF54:
+ 2318 04bf 4932435F 		.ascii	"I2C_Start\000"
+ 2318      53746172 
+ 2318      7400
+ 2319              	.LASF17:
+ 2320 04c9 456E7465 		.ascii	"EnterDeepSleepLowPowerMode\000"
+ 2320      72446565 
+ 2320      70536C65 
+ 2320      65704C6F 
+ 2320      77506F77 
+ 2321              	.LASF57:
+ 2322 04e4 43617053 		.ascii	"CapSense_InitializeSensorBaseline\000"
+ 2322      656E7365 
+ 2322      5F496E69 
+ 2322      7469616C 
+ 2322      697A6553 
+ 2323              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

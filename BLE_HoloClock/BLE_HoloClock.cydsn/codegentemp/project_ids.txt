@@ -1,0 +1,5 @@
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|69211abc-902f-4927-a7cc-0048baf70949
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|485f8dc8-1bf6-4d8b-b0a3-92c803829c53
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|d6f97f61-e408-4d11-88fa-119a86c8a1f8
+C:\Program Files (x86)\Cypress\PSoC Creator\3.3\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|f888f364-9bae-44d6-b00e-51f3dbcd3e74
+C:\Users\merlin\Documents\PSoC Creator\BLE_HoloClock\BLE_HoloClock.cydsn\BLE_HoloClock.cyprj|47d08ae1-c692-4f87-adbe-399872815397

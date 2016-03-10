@@ -1,0 +1,25 @@
+(DELAYFILE
+ (SDFVERSION "IEEE 1497 4.0")
+ (DATE "2016-03-09T03:26:04Z")
+ (DESIGN "BLE_HoloClock")
+ (VENDOR "Cypress Semiconductor")
+ (PROGRAM "PSoC Creator")
+ (VERSION " 3.3 SP1")
+ (DIVIDER .)
+ (TIMESCALE 1 ns)
+ (CELL
+  (CELLTYPE "BLE_HoloClock")
+  (INSTANCE *)
+  (DELAY
+   (ABSOLUTE
+    (INTERCONNECT ClockBlock.hfclk \\BLE\:bless_isr\\.clock (0.000:0.000:0.000))
+    (INTERCONNECT \\BLE\:cy_m0s8_ble\\.interrupt \\BLE\:bless_isr\\.interrupt (1.000:1.000:1.000))
+    (INTERCONNECT Advertising_LED\(0\)_PAD Advertising_LED\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Alert_LED\(0\)_PAD Alert_LED\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Disconnect_LED\(0\)_PAD Disconnect_LED\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Laser\(0\)_PAD Laser\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT LED\(0\)_PAD LED\(0\).pad_in (0.000:0.000:0.000))
+   )
+  )
+ )
+)
